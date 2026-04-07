@@ -20,6 +20,7 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 |-------|---------|
 | **[code-map](skills/code-map/)** | Generate AI-optimized YAML code maps (`.codemap.yaml`) that help AI agents quickly understand repository structure and navigate codebases efficiently |
 | **[feature-writer](skills/feature-writer/)** | Write comprehensive feature implementations with proper architecture, testing, and documentation |
+| **[root-cause](skills/root-cause/)** | Systematically analyze bugs, failures, and unexpected behavior to identify root causes through structured investigation of code, data, dependencies, and logs |
 | **[story-writer](skills/story-writer/)** | Create well-structured user stories and tasks with clear acceptance criteria and technical requirements |
 | **[story-splitter](skills/story-splitter/)** | Break down complex stories and epics into smaller, manageable tasks |
 | **[story-prefinement](skills/story-prefinement/)** | Review and score stories for quality and readiness before sprint planning |
@@ -92,6 +93,7 @@ ai_tools/
 ├── skills/                              # Reusable AI development workflows
 │   ├── code-map/                        # AI-optimized codebase mapping
 │   ├── feature-writer/                  # Feature implementation guidance
+│   ├── root-cause/                      # Root cause analysis
 │   ├── story-prefinement/               # Story quality review
 │   ├── story-splitter/                  # Task breakdown
 │   └── story-writer/                    # Story creation
