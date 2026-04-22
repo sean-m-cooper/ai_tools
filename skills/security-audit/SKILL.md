@@ -2,8 +2,8 @@
 name: security-audit
 description: Use when performing a security review of a codebase, app, or system design. Triggers include: pre-launch security checks, post-incident audits, reviewing auth/authz systems, evaluating third-party integrations, or any request for adversarial threat modeling.
 metadata:
-  original-concept: https://www.linkedin.com/in/saedf/
-  original-post: "https://www.linkedin.com/posts/saedf_if-youre-a-software-engineer-working-with-share-7452321418656137216-7B1Z"
+  original-concept: "https://www.linkedin.com/in/saedf/"
+  original-post: "https://www.linkedin.com/posts/saedf_if-youre-a-software-engineer-working-with-share-7452321418656137216-7B1Z?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAA0ewkBDBtblz2LcOEAVmqsGA8MuRF3Izc"
 ---
 
 # Security Audit Skill
