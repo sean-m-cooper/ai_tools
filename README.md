@@ -23,6 +23,7 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 | **[root-cause](skills/root-cause/)** | Systematically analyze bugs, failures, and unexpected behavior to identify root causes through structured investigation of code, data, dependencies, and logs |
 | **[story-writer](skills/story-writer/)** | Create well-structured user stories and tasks with clear acceptance criteria and technical requirements |
 | **[story-splitter](skills/story-splitter/)** | Break down complex stories and epics into smaller, manageable tasks |
+| **[security-audit](skills/security-audit/)** | Perform an adversarial security audit covering frontend, backend, auth, database, infrastructure, and third-party integrations with threat modeling and structured findings |
 | **[story-prefinement](skills/story-prefinement/)** | Review and score stories for quality and readiness before sprint planning |
 
 Each skill directory contains a `SKILL.md` file with:
@@ -94,6 +95,7 @@ ai_tools/
 │   ├── code-map/                        # AI-optimized codebase mapping
 │   ├── feature-writer/                  # Feature implementation guidance
 │   ├── root-cause/                      # Root cause analysis
+│   ├── security-audit/                  # Adversarial security audit workflow
 │   ├── story-prefinement/               # Story quality review
 │   ├── story-splitter/                  # Task breakdown
 │   └── story-writer/                    # Story creation
