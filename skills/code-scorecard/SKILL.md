@@ -44,10 +44,10 @@ The deterministic pass starts from scorecard-native JSON evidence at `<solution-
 Inspect the invocation args string for these flags before scoring:
 
 - **Solution path** (`.sln` or `.slnx`): scope the scorecard to that solution (see Solution scope above).
-- **`--express`**: emit only Section 1 (Scorecard Table) and Section 5 (Top 3 Issues). Skip every other section. Use when the user wants the score and the headline problems without supporting detail.
-- **`--explain`** or **`--verbose`**: after the full normal scorecard, also emit Section 7 (Score Derivation Detail) showing filter counts, per-signal scores, threshold lookups, and offender attribution. Load `metrics-glossary.md` for the formulas and threshold rationale needed to write that section.
+- **`--verbose`**: also emit Sections 4 (Score Lift Summary), 5 (Top Offenders by Metric), and 6 (Deterministic Detail). Use when the user wants the extra prose backing the scores.
+- **`--explain`**: also emit Section 7 (Score Derivation Detail) — filter counts, per-signal scores, threshold lookups, offender attribution. Load `metrics-glossary.md` for the formulas and threshold rationale. Section 7 is written to stand on its own; it does not require `--verbose`.
 
-`--express` and `--explain`/`--verbose` are contradictory. If both appear, `--explain`/`--verbose` wins (the user asked for more detail, not less). If args are absent or contain none of the above, run the default scorecard (Sections 1–6).
+The flags are additive — pass both for the full breakdown. If args are absent, run the default scorecard (Sections 1, 2, 3).
 
 ---
 
@@ -123,9 +123,12 @@ Return exactly this, in this order. Which sections render depends on invocation 
 
 | Mode | Sections emitted |
 |---|---|
-| **`--express`** | 1, 5 only |
-| Default | 1, 2, 3, 4, 5, 6 |
-| **`--explain`** / **`--verbose`** | 1, 2, 3, 4, 5, 6, 7 |
+| Default | 1, 2, 3 |
+| **`--verbose`** | 1, 2, 3, 4, 5, 6 |
+| **`--explain`** | 1, 2, 3, 7 |
+| **`--verbose --explain`** | 1, 2, 3, 4, 5, 6, 7 |
+
+Sections 1–3 are always shown (summary layer). Sections 4–6 are verbose justification, ordered from highest-leverage to most analytical. Section 7 is the math, gated on `--explain`.
 
 ### 1. Scorecard Table
 
@@ -156,9 +159,26 @@ Below the main scorecard, include a compact table of JSON evidence status:
 
 For skipped/failed dimensions, show the explicit reason and what fallback was used. If JSON was unavailable and CSV fallback was used, say so in the Source column.
 
-### 3. Deterministic Detail (Dimensions 2 and 9)
+### 3. Top 3 Issues
 
-Below the main scorecard, include a section showing the three-signal breakdown:
+Highest-impact problems to fix first. For each:
+
+- What it is
+- Where (file/pattern/count)
+- Why it matters
+- For deterministic-dimension issues: estimated score lift if fixed (from CSV fallback Step 9, when applicable)
+
+### 4. Score Lift Summary (`--verbose`, when applicable)
+
+If Top 3 Issues touch deterministic dimensions, restate the projected score after addressing them.
+
+### 5. Top Offenders by Metric (`--verbose`)
+
+For each of the three primary metrics, list the top 5 (not 10) worst classes with their metric value, archetype, and a one-sentence reason. Surface God/Legacy reclassifications even if they rank below 5.
+
+### 6. Deterministic Detail (`--verbose`, Dimensions 2 and 9)
+
+Three-signal breakdown for the deterministic dimensions:
 
 ```
 Code Quality detail
@@ -170,26 +190,9 @@ Maintainability detail
   Maintainability index:  P=X T=X E=X  → score X.X
 ```
 
-### 4. Top Offenders by Metric
+### 7. Score Derivation Detail (`--explain` only)
 
-For each of the three primary metrics, list the top 5 (not 10) worst classes with their metric value, archetype, and a one-sentence reason. Surface God/Legacy reclassifications even if they rank below 5.
-
-### 5. Top 3 Issues
-
-Highest-impact problems to fix first. For each:
-
-- What it is
-- Where (file/pattern/count)
-- Why it matters
-- For deterministic-dimension issues: estimated score lift if fixed (from CSV fallback Step 9, when applicable)
-
-### 6. Score Lift Summary (when applicable)
-
-If Top 3 Issues touch deterministic dimensions, restate the projected score after addressing them.
-
-### 7. Score Derivation Detail (verbose only — `--explain` / `--verbose`)
-
-Emit this section **only** when `--explain` or `--verbose` appeared in the invocation args. Otherwise skip entirely.
+Emit this section **only** when `--explain` appeared in the invocation args. Otherwise skip entirely. Section 7 is self-contained — it does not assume Section 6 was shown, so it must restate the three-signal breakdown for any deterministic dimension it covers.
 
 For each deterministic dimension (Code Quality, Maintainability), show:
 
@@ -224,4 +227,4 @@ Load `metrics-glossary.md` for formulas, threshold rationale, and the canonical 
 - **`bootstrap.md`** — first-time setup, tool install/update, evidence regeneration (Steps 0–5), Path A/B input details
 - **`csv-fallback.md`** — CSV deterministic procedure for Code Quality (dim 2) and Maintainability (dim 9), including the 9-step pass, archetype tagging, per-archetype scoring reference, and calibration notes
 - **`troubleshooting.md`** — common failures and fixes (tool not found, solution load errors, missing/unsupported evidence, skipped probes, empty CSV)
-- **`metrics-glossary.md`** — *load only when `--explain` / `--verbose` is set.* Formulas behind decomposition ratio, max member CC, and MI; threshold rationale; how a dimension score is derived from the three signals; canonical layout for the verbose Section 7 output.
+- **`metrics-glossary.md`** — *load only when `--explain` is set.* Formulas behind decomposition ratio, max member CC, and MI; threshold rationale; how a dimension score is derived from the three signals; canonical layout for the Section 7 output.
