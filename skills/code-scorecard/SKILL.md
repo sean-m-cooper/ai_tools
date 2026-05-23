@@ -107,7 +107,7 @@ If the user says **yes**, proceed to Step 2. If they say **I'll export from VS i
 The tool is published to nuget.org. No authentication is required — install or update directly:
 
 ```pwsh
-if (dotnet tool list -g | Select-String "amp.devops.codemetrics") {
+if (dotnet tool list -g | Select-String "codemetrics.ai") {
     dotnet tool update -g CodeMetrics.AI
 } else {
     dotnet tool install -g CodeMetrics.AI
