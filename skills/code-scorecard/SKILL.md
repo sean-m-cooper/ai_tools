@@ -39,6 +39,18 @@ The deterministic pass starts from scorecard-native JSON evidence at `<solution-
 
 ---
 
+## Invocation Args
+
+Inspect the invocation args string for these flags before scoring:
+
+- **Solution path** (`.sln` or `.slnx`): scope the scorecard to that solution (see Solution scope above).
+- **`--express`**: emit only Section 1 (Scorecard Table) and Section 5 (Top 3 Issues). Skip every other section. Use when the user wants the score and the headline problems without supporting detail.
+- **`--explain`** or **`--verbose`**: after the full normal scorecard, also emit Section 7 (Score Derivation Detail) showing filter counts, per-signal scores, threshold lookups, and offender attribution. Load `metrics-glossary.md` for the formulas and threshold rationale needed to write that section.
+
+`--express` and `--explain`/`--verbose` are contradictory. If both appear, `--explain`/`--verbose` wins (the user asked for more detail, not less). If args are absent or contain none of the above, run the default scorecard (Sections 1–6).
+
+---
+
 ## Dimensions
 
 ### 1. Architecture & SOLID *(JSON deterministic when available; otherwise qualitative)*
@@ -107,7 +119,13 @@ If evidence is missing entirely or doesn't match the requested run, jump to `boo
 
 ## Output Format
 
-Return exactly this, in this order:
+Return exactly this, in this order. Which sections render depends on invocation args:
+
+| Mode | Sections emitted |
+|---|---|
+| **`--express`** | 1, 5 only |
+| Default | 1, 2, 3, 4, 5, 6 |
+| **`--explain`** / **`--verbose`** | 1, 2, 3, 4, 5, 6, 7 |
 
 ### 1. Scorecard Table
 
@@ -169,6 +187,24 @@ Highest-impact problems to fix first. For each:
 
 If Top 3 Issues touch deterministic dimensions, restate the projected score after addressing them.
 
+### 7. Score Derivation Detail (verbose only — `--explain` / `--verbose`)
+
+Emit this section **only** when `--explain` or `--verbose` appeared in the invocation args. Otherwise skip entirely.
+
+For each deterministic dimension (Code Quality, Maintainability), show:
+
+- **Filter summary:** total CSV type rows, counts excluded by each rule, surviving N
+- **Per metric** (decomposition ratio, max member CC, MI):
+  - One-line definition of what the metric means
+  - Each of the three signals (population / tail / extreme): actual value, threshold-table row matched, signal score
+  - Per-metric score = mean of three signal scores
+- **Composite dimension score:** the arithmetic that combined the per-metric scores
+- **Top contributors:** 3–5 offenders driving the score down, with their values
+
+For qualitative dimensions when `--explain` is set, briefly state what evidence was inspected (files read, patterns counted, scope of search) so the user can audit the call.
+
+Load `metrics-glossary.md` for formulas, threshold rationale, and the canonical layout of this section. Keep prose minimal — the user asked for the math, not narrative.
+
 ---
 
 ## Rules
@@ -188,3 +224,4 @@ If Top 3 Issues touch deterministic dimensions, restate the projected score afte
 - **`bootstrap.md`** — first-time setup, tool install/update, evidence regeneration (Steps 0–5), Path A/B input details
 - **`csv-fallback.md`** — CSV deterministic procedure for Code Quality (dim 2) and Maintainability (dim 9), including the 9-step pass, archetype tagging, per-archetype scoring reference, and calibration notes
 - **`troubleshooting.md`** — common failures and fixes (tool not found, solution load errors, missing/unsupported evidence, skipped probes, empty CSV)
+- **`metrics-glossary.md`** — *load only when `--explain` / `--verbose` is set.* Formulas behind decomposition ratio, max member CC, and MI; threshold rationale; how a dimension score is derived from the three signals; canonical layout for the verbose Section 7 output.
