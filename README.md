@@ -17,9 +17,10 @@ This repo is a [Claude Code plugin marketplace](https://docs.claude.com/en/docs/
 ```bash
 /plugin marketplace add sean-m-cooper/ai_tools
 /plugin install ai-tools@ai-tools
+/reload-plugins
 ```
 
-The first command registers the marketplace; the second installs the `ai-tools` plugin (all skills and commands). Once installed, skills are invoked with the plugin namespace, e.g. `/ai-tools:code-scorecard`. Run `/plugin update ai-tools` to pull the latest version.
+The first command registers the marketplace; the second installs the `ai-tools` plugin (all skills and commands); `/reload-plugins` applies it to the current session. Once installed, skills are invoked with the plugin namespace, e.g. `/ai-tools:code-scorecard`. Run `/plugin update ai-tools` to pull the latest version.
 
 ## Skills
 
