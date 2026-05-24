@@ -19,7 +19,7 @@ Prefinement is the art of preparing a story so developers ask minimal questions 
 ### Step 1 — Get the Story
 
 Check `$ARGUMENTS` for:
-- Work item content passed inline (from `story-writer`)
+- Work item content passed inline (from `story-writer`, or per-story from `story-splitter`'s batch review)
 - A **TRACKING SYSTEM** block — if present, use it to fetch the work item without re-asking for system details
 
 ```
@@ -33,7 +33,7 @@ Project: [Azure DevOps project name, if applicable]
 
 Determine the source of the work item:
 
-- **Pasted content or inline from story-writer** — Use that content directly.
+- **Pasted content or inline from story-writer / story-splitter** — Use that content directly. When invoked per-story from a `story-splitter` batch, do not re-ask for the source on each story.
 - **Jira** — If a Jira issue key is provided (e.g., `EC-123`), use the cloud ID from the `TRACKING SYSTEM` block if available, otherwise ask. Fetch with the appropriate Jira MCP tool. Request description, acceptance criteria, technical details, summary, issue type, status, priority, components, and attachments.
 - **Azure DevOps** — If an Azure DevOps work item ID is provided, use the organization and project from the `TRACKING SYSTEM` block if available, otherwise ask. Fetch with the appropriate Azure DevOps MCP tool. Request title, description, acceptance criteria, state, priority, area path, and attachments.
 

@@ -196,8 +196,12 @@ Organization: [if applicable]
 Project: [if applicable]
 Parent: [Feature work item key/ID, if applicable]
 
+PREFINEMENT: defer
+
 Please use this as your starting context. Pre-fill what you can and only ask about what's missing.
 ```
+
+The `PREFINEMENT: defer` line tells `story-writer` to skip its per-story prefinement offer — the splitter runs a single batch prefinement pass over all stories at the end (Step 5).
 
 #### 3c. Link to Feature
 After story-writer creates the work item, link it to the parent Feature if both exist in the same tracking system:
@@ -244,6 +248,18 @@ If resuming later is possible (tracking system is in use), note:
 ```
 To resume or add stories later, run /story-splitter with the Feature key: [Feature Key/ID]
 ```
+
+---
+
+### Step 5 — Chain to Prefinement
+
+After the completion summary, offer a single quality review across all the stories just created:
+
+*"Would you like me to run a prefinement review on the [N] stories we just created?"*
+
+If yes, invoke the `story-prefinement` skill once per created story, passing each story's content (or its work item key/ID) and the `TRACKING SYSTEM` block. Review them in the order they were created. Present each story's review, then move to the next.
+
+If the PO declines, end with the completion summary — the stories remain ready to refine later via `/story-prefinement`.
 
 ---
 

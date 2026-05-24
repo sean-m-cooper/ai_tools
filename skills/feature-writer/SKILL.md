@@ -162,6 +162,8 @@ Parent: [work item key/ID of the Feature just created, if applicable]
 
 ### Step 7 — Chain to Story Splitter
 
+This is the first stage of the story pipeline: **feature-writer → story-splitter → story-writer → story-prefinement**. Once the feature is captured, hand off to the splitter.
+
 Ask: *"Would you like to break this feature into stories now? I can pass everything we just captured directly to the story splitter."*
 
 If yes, invoke the `story-splitter` skill and pass:

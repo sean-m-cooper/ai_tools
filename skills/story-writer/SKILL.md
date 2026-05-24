@@ -310,7 +310,9 @@ After the work item is created (or document delivered):
 1. Output confirmation:
    > "Created **[work item ID]** — [title]"
 
-2. Ask: *"Would you like me to run a quality review on this work item?"*
+2. **If the incoming brief contained `PREFINEMENT: defer`** (story-writer was invoked by `story-splitter` as part of a batch), skip the prefinement offer — the splitter runs a single batch review over all stories at the end. Just return after confirmation.
+
+   **Otherwise** (run standalone), ask: *"Would you like me to run a quality review on this work item?"*
 
    If yes, invoke the `story-prefinement` skill, passing the work item details and the `TRACKING SYSTEM` block if available.
 
