@@ -19,6 +19,7 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 | Skill | Purpose |
 |-------|---------|
 | **[code-map](skills/code-map/)** | Generate AI-optimized YAML code maps (`.codemap.yaml`) that help AI agents quickly understand repository structure and navigate codebases efficiently |
+| **[code-scorecard](skills/code-scorecard/)** | Audit a codebase across nine quality dimensions on a 0–10 scale, using deterministic metrics from the `CodeMetrics.AI` tool as evidence; supports `--verbose` and `--explain` output modes |
 | **[feature-writer](skills/feature-writer/)** | Write comprehensive feature implementations with proper architecture, testing, and documentation |
 | **[root-cause](skills/root-cause/)** | Systematically analyze bugs, failures, and unexpected behavior to identify root causes through structured investigation of code, data, dependencies, and logs |
 | **[story-writer](skills/story-writer/)** | Create well-structured user stories and tasks with clear acceptance criteria and technical requirements |
@@ -31,6 +32,18 @@ Each skill directory contains a `SKILL.md` file with:
 - Detailed workflows
 - Examples and best practices
 - Integration guidance
+
+### code-scorecard Output Flags
+
+The **code-scorecard** skill accepts optional flags at invocation (e.g. *"run the scorecard against eContract.API.slnx --verbose"*). They are additive — combine them for the full breakdown.
+
+| Flag | Output |
+|------|--------|
+| *(none)* | **Default.** Scorecard table, deterministic evidence summary (which scores came from JSON vs CSV vs qualitative), and the top 3 issues to fix. |
+| `--verbose` | Adds the projected score lift if the top issues are fixed, the top offenders per metric, and the three-signal breakdown behind each deterministic dimension. |
+| `--explain` | Adds a self-contained score-derivation section: filter counts, per-signal values with the threshold rows they matched, the score arithmetic, and what each metric (decomposition ratio, max member cyclomatic complexity, maintainability index) actually means. |
+
+You can also pass a specific `.sln`/`.slnx` path to scope the audit when a repo contains multiple solutions.
 
 ## Commands
 
@@ -93,6 +106,7 @@ The `agentic_coding_standards_example/` directory contains a comprehensive frame
 ai_tools/
 ├── skills/                              # Reusable AI development workflows
 │   ├── code-map/                        # AI-optimized codebase mapping
+│   ├── code-scorecard/                  # 9-dimension codebase quality audit
 │   ├── feature-writer/                  # Feature implementation guidance
 │   ├── root-cause/                      # Root cause analysis
 │   ├── security-audit/                  # Adversarial security audit workflow
@@ -154,5 +168,5 @@ For questions or issues:
 
 ---
 
-**Last Updated:** April 2026  
+**Last Updated:** May 2026  
 **Maintained by:** Sean Cooper
