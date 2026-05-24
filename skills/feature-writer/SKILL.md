@@ -1,7 +1,6 @@
 ---
 name: feature-writer
 description: "Guide a product owner through defining a feature — UI, backend, or full-stack. Conducts a structured interview that branches based on feature type, then produces a structured Feature document. Use when a PO wants to define a new feature, plan a screen flow, document an API, or describe a backend capability. Examples: \"let's define a new feature\", \"I want to plan a UI flow\", \"help me define an API feature\", \"plan a backend service\", \"/feature-writer\"."
-disable-model-invocation: true
 ---
 
 # Feature Guide

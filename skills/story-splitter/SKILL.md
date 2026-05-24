@@ -1,7 +1,6 @@
 ---
 name: story-splitter
 description: 'Break a Feature into individual stories — one per user action, CRUD operation, or backend operation — and create each one interactively using the story-writer skill. Use after /feature-writer, or when given a Feature to decompose. Supports UI, backend, and full-stack features. Supports Jira and Azure DevOps. Examples: "break this feature into stories", "split this feature into stories", "/story-splitter".'
-disable-model-invocation: true
 ---
 
 # Story Splitter
