@@ -1,5 +1,5 @@
 ---
-name: prefinement
+name: story-prefinement
 description: Use when asked to evaluate, review, or score a story or bug for quality, readiness, or completeness - especially when a product owner wants feedback before refinement or sprint planning. Supports Jira, Azure DevOps, or pasted content.
 ---
 
