@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ai-tools",
+  "description": "AI-powered development skills, commands, and coding standards for building high-quality software with AI assistance.",
+  "owner": {
+    "name": "Sean Cooper",
+    "email": "sean.m.cooper.ak@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "ai-tools",
+      "source": "./",
+      "description": "All ai_tools skills (code-map, code-scorecard, feature-writer, root-cause, security-audit, story-prefinement, story-splitter, story-writer) plus commands."
+    }
+  ]
+}

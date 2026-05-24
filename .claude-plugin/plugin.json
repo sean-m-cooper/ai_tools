@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "ai-tools",
+  "description": "A collection of AI development skills and commands: AI-optimized codebase mapping, 9-dimension quality scorecards, feature implementation, root-cause analysis, adversarial security audits, and story authoring/refinement.",
+  "author": {
+    "name": "Sean Cooper",
+    "email": "sean.m.cooper.ak@gmail.com"
+  },
+  "homepage": "https://github.com/sean-m-cooper/ai_tools",
+  "repository": "https://github.com/sean-m-cooper/ai_tools",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "skills",
+    "code-quality",
+    "scorecard",
+    "code-map",
+    "security-audit",
+    "root-cause",
+    "agile",
+    "user-stories"
+  ]
+}

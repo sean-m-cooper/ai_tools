@@ -10,6 +10,17 @@ This repository contains:
 - **Commands** – Specialized procedures for specific problem domains
 - **Agentic Coding Standards** – A complete framework for maintaining quality and consistency when working with AI-assisted development
 
+## Installation
+
+This repo is a [Claude Code plugin marketplace](https://docs.claude.com/en/docs/claude-code/plugins). Install everything as a single bundled plugin:
+
+```bash
+/plugin marketplace add sean-m-cooper/ai_tools
+/plugin install ai-tools@ai-tools
+```
+
+The first command registers the marketplace; the second installs the `ai-tools` plugin (all skills and commands). Once installed, skills are invoked with the plugin namespace, e.g. `/ai-tools:code-scorecard`. Run `/plugin update ai-tools` to pull the latest version.
+
 ## Skills
 
 Each skill is a focused, well-structured prompt designed to guide AI agents (like GitHub Copilot CLI or Claude) through a specific development task.
