@@ -1,80 +1,48 @@
 # Bootstrap — Setup & Evidence Generation
 
-Use this file when `.scorecard\evidence.json` is missing, doesn't match the requested run, or this is the first scorecard on a solution. Once evidence exists and matches the requested solution/configuration/tool-version, skip ahead and score directly from `SKILL.md`.
+Use this file when any detected ecosystem lacks `.scorecard\<ecosystem>\evidence.json`, the evidence doesn't match the requested run, or this is the first scorecard on a repo. Once evidence exists and matches the requested entry point / variant / tool version for every detected ecosystem, skip ahead and score directly from `SKILL.md`.
 
-## Required Inputs (detail)
+## Step 0 — Detect ecosystems and resolve entry points
 
-**Preferred deterministic evidence:** `<solution-root>\.scorecard\evidence.json`
+Check the repo root (non-recursive) and apply any invocation-arg scoping:
 
-**Compatibility fallback for dimensions 2 and 9 only:** `<solution-root>\.scorecard\metrics.csv`
+| Marker | Ecosystem id | Entry point to resolve |
+|---|---|---|
+| `*.sln` / `*.slnx` / `*.csproj` | `dotnet` | Prefer a solution file when one exists. If no solution exists, use a single project file. If multiple candidates exist at the same priority, ask which. |
+| `package.json` | `javascript-typescript` | The root `package.json` (workspace root in a monorepo). |
 
-There are two ways to produce these files:
+- Both markers → bootstrap **both** ecosystems unless the invocation scoped to one.
+- Neither marker → no deterministic analyzer applies. Return to `SKILL.md` and produce a fully qualitative scorecard, saying so explicitly.
 
-### Path A — MSBuild target (preferred, automated)
+Record each resolved entry point — evidence validation in `SKILL.md` compares `subject.entryPoint` against it.
 
-The `Scorecard` MSBuild target is installed by Step 3 below. Once in place, regenerating JSON evidence and the compatibility CSV is a one-liner:
-
-```pwsh
-dotnet build /t:Scorecard
-```
-
-### Path B — Visual Studio GUI export (reliable fallback)
-
-If `dotnet build /t:Scorecard` produces empty metrics (see `troubleshooting.md`), use VS directly:
-
-1. Open the solution in Visual Studio 2022
-2. **Analyze → Calculate Code Metrics → For Solution**
-3. Wait for the Code Metrics Results window to populate
-4. Click the **Export list** icon (floppy disk) → save as `.scorecard\metrics.csv` at the solution root
-
-The Visual Studio fallback produces only the CSV columns: `Scope`, `Project`, `Namespace`, `Type`, `Member`, `Maintainability Index`, `Cyclomatic Complexity`, `Depth of Inheritance`, `Class Coupling`, `Lines of Source code`, `Lines of Executable code`. It cannot replace JSON probe evidence for dimensions 1, 3, 4, 5, 6, 7, or 8.
-
-**For dimensions without usable JSON evidence**, source code access is required. The skill will read targeted files as needed during fallback qualitative scoring — it does not need to read every file.
-
----
-
-## Bootstrap Steps
-
-Before running the deterministic pass, check ALL of the following prerequisites in one pass. Present any gaps to the user as a consolidated list, then ask once whether to add everything automatically.
-
-### Step 0 — Resolve the solution
-
-Before checking any other prerequisite, determine which solution file to use. This drives where the `.scorecard\` output directory lives and what gets passed to `code-metrics`.
-
-1. If the user specified a solution path in their invocation (e.g. "scorecard against eContract.slnx"), use that path. Verify it exists; if not, tell the user and stop.
-2. If no path was specified, scan the working directory for `*.sln` and `*.slnx` files (non-recursive).
-   - **Exactly one found**: use it silently.
-   - **Multiple found**: list them and ask the user which to use before proceeding.
-   - **None found**: proceed without an explicit path — `code-metrics` will auto-discover from the working directory. Note this in the output.
-
-Record the resolved solution path (or "auto-discover") for use in Steps 4 and 5.
-
-### Step 1 — Check prerequisites
-
-Inspect the environment and solution root and report which items are missing or mismatched:
+## Step 1 — Check prerequisites (all detected ecosystems, one pass)
 
 | # | Check | What to look for |
 |---|-------|-----------------|
-| 1 | Latest `code-metrics` global tool available | Run Step 2 before generating or accepting metrics. Do not skip the update just because the tool is already installed. |
-| 2 | `Directory.Build.targets` exists at solution root AND defines a `Scorecard` target | If absent, the `Scorecard` MSBuild target won't be injected. |
-| 3 | `.scorecard\evidence.json` exists and matches the requested run | Require supported `schemaVersion`, resolved solution path, requested configuration, and current `CodeMetrics.AI` tool version. Do **not** use filesystem mtimes to decide freshness. |
-| 4 | `.scorecard\metrics.csv` exists for compatibility fallback | Required only if JSON is missing/unsupported and dimensions 2/9 must be scored from CSV |
+| 1 | Latest analyzer for each ecosystem | Run the matching install/update block below before generating or accepting evidence. Do not skip the update just because a tool is already installed. |
+| 2 | (`dotnet` only) `Directory.Build.targets` at solution/project root defines a `Scorecard` target | If absent, the MSBuild target won't be injected. |
+| 3 | `.scorecard\<ecosystem>\evidence.json` exists and matches the requested run | Require `schemaVersion == 2`, `tool.ecosystem` equal to the folder name, matching `subject.entryPoint`, matching `subject.variant` (dotnet), and current tool version. Do **not** use filesystem mtimes to decide freshness. |
+| 4 | (`dotnet` only) `.scorecard\dotnet\metrics.csv` for compatibility fallback | Required only if JSON is missing/unsupported and dimensions 2/9 must be scored from CSV. |
 
-If one or more items are missing, present the full list to the user before doing anything:
+Present any gaps to the user as one consolidated list, then ask once whether to set everything up automatically:
 
 > **Scorecard prerequisites missing:**
-> - [ ] latest `code-metrics` global tool (CodeMetrics.AI)
+> - [ ] latest `code-metrics` global tool (dotnet)
 > - [ ] `Directory.Build.targets` (MSBuild Scorecard target)
-> - [ ] `.scorecard\evidence.json` (missing, unsupported, or mismatched)
-> - [ ] `.scorecard\metrics.csv` (compatibility fallback)
+> - [ ] `.scorecard\dotnet\evidence.json` (missing, unsupported, or mismatched)
+> - [ ] latest `codemetrics-ai` NPM CLI (javascript-typescript)
+> - [ ] `.scorecard\javascript-typescript\evidence.json` (missing, unsupported, or mismatched)
 >
 > **Set up everything automatically?** (yes / no / I'll export from VS instead)
 
-If the user says **yes**, proceed to Step 2. If they say **I'll export from VS instead**, skip to the Path B instructions above and wait for the CSV to be placed.
+List only the rows for detected ecosystems. "I'll export from VS instead" applies to `dotnet` only — see Path B at the bottom.
 
-### Step 2 — Install or update the code-metrics tool
+---
 
-The tool is published to nuget.org. No authentication is required — install or update directly:
+## dotnet ecosystem
+
+### D1 — Install or update the tool
 
 ```pwsh
 if (dotnet tool list -g | Select-String "codemetrics.ai") {
@@ -84,46 +52,82 @@ if (dotnet tool list -g | Select-String "codemetrics.ai") {
 }
 ```
 
-This block is safe to run on every scorecard generation — it updates the tool if already installed, installs it if not. Always run it before generating or accepting a CSV so the scorecard uses the latest deterministic rules.
+Safe to run every time — fast, and guarantees the latest deterministic rules.
 
-### Step 3 — Drop the Directory.Build.targets
+### D2 — Drop the Directory.Build.targets
 
-Copy `scorecard-tooling/Directory.Build.targets` (in this skill's directory) to the solution root. It defines the `Scorecard` MSBuild target that shells out to `code-metrics`.
+Copy `scorecard-tooling/Directory.Build.targets` (in this skill's directory) to the solution or project root. It defines the `Scorecard` MSBuild target that shells out to `code-metrics` and writes under `.scorecard\dotnet\`. One-time setup per entry point root.
 
-### Step 4 — Generate scorecard evidence
+### D3 — Generate evidence
 
-By default the tool runs against `Debug`. To run against `Release` (e.g. for a release-build audit), pass `/p:ScorecardConfiguration=Release`.
-
-If a specific solution was resolved in Step 0, build that solution path directly and also pass it via `ScorecardSolutionPath`:
+Default configuration is `Debug`; pass `/p:ScorecardConfiguration=Release` for a release-build audit.
 
 ```pwsh
-# With explicit solution (resolved in Step 0):
-dotnet build "<path-to-sln-or-slnx>" /t:Scorecard /p:ScorecardSolutionPath="<path-to-sln-or-slnx>"
-dotnet build "<path-to-sln-or-slnx>" /t:Scorecard /p:ScorecardSolutionPath="<path-to-sln-or-slnx>" /p:ScorecardConfiguration=Release
+# With explicit entry point (resolved in Step 0):
+dotnet build "<path-to-sln-slnx-or-csproj>" /t:Scorecard /p:ScorecardEntryPointPath="<path-to-sln-slnx-or-csproj>"
 
-# Without explicit solution (auto-discovery):
+# Without explicit entry point (auto-discovery):
 dotnet build /t:Scorecard
-dotnet build /t:Scorecard /p:ScorecardConfiguration=Release
 ```
 
-### Step 5 — Validate the output
-
-After generation, sanity-check `.scorecard\evidence.json` and `.scorecard\metrics.csv`:
+### D4 — Validate
 
 ```pwsh
-$rows = Import-Csv .scorecard\metrics.csv
+$rows = Import-Csv .scorecard\dotnet\metrics.csv
 $typeCount = ($rows | Where-Object Scope -eq 'Type').Count
 $memberCount = ($rows | Where-Object Scope -eq 'Member').Count
-$evidence = Get-Content .scorecard\evidence.json -Raw | ConvertFrom-Json
-Write-Host "Schema: $($evidence.schemaVersion)   Types: $typeCount   Members: $memberCount"
+$evidence = Get-Content .scorecard\dotnet\evidence.json -Raw | ConvertFrom-Json
+Write-Host "Schema: $($evidence.schemaVersion)   Ecosystem: $($evidence.tool.ecosystem)   Types: $typeCount   Members: $memberCount"
 ```
 
-**If both counts are 0:** the tool ran but found nothing — most likely the solution path resolved to an empty file or every project was filter-skipped. Re-run with explicit args:
+Expected: `Schema: 2`, `Ecosystem: dotnet`, non-zero counts. **If both counts are 0:** re-run with explicit args:
 
 ```pwsh
-code-metrics --solution <path-to-sln-or-slnx> --output .scorecard\metrics.csv --scorecard-output .scorecard\evidence.json
+code-metrics --solution <path-to-sln-slnx-or-csproj> --output .scorecard\dotnet\metrics.csv --scorecard-output .scorecard\dotnet\evidence.json
 ```
 
-If that still produces zero rows, fall back to the Visual Studio GUI export (Path B) for dimensions 2 and 9 only. Otherwise the evidence is ready to score — return to `SKILL.md`.
+If still zero rows, fall back to the Visual Studio export (Path B) for dimensions 2 and 9 only.
 
-Step 3 (Directory.Build.targets) is a one-time setup per solution and can be skipped once in place. Step 2 (tool install/update) should always run before generating or accepting evidence — it is fast and ensures the latest tool version is used. Step 4 is skipped only when `.scorecard\evidence.json` already matches the resolved solution, requested configuration, supported schema, and current tool version. Do not compare evidence timestamps to source-file mtimes.
+---
+
+## javascript-typescript ecosystem
+
+### J1 — Check Node
+
+```pwsh
+node --version
+```
+
+Expected: v20 or later. If Node is missing, report it and score this ecosystem qualitatively.
+
+### J2 — Run the analyzer
+
+```pwsh
+npx --yes codemetrics-ai@latest
+```
+
+Defaults write `.scorecard/javascript-typescript/metrics.csv` and `.scorecard/javascript-typescript/evidence.json`. Pass `--project <path-to-package.json>` or `--tsconfig <path>` when Step 0 resolved a non-root entry point.
+
+**If the package is not yet published or the command produces no evidence file:** say so explicitly, score all nine dimensions for this ecosystem qualitatively against the Scoring Anchors, and never substitute the dotnet CSV fallback — its archetypes and thresholds are C#-calibrated.
+
+### J3 — Validate
+
+```pwsh
+$evidence = Get-Content .scorecard\javascript-typescript\evidence.json -Raw | ConvertFrom-Json
+Write-Host "Schema: $($evidence.schemaVersion)   Ecosystem: $($evidence.tool.ecosystem)   Types: $($evidence.population.types)   Members: $($evidence.population.members)"
+```
+
+Expected: `Schema: 2`, `Ecosystem: javascript-typescript`, non-zero counts.
+
+---
+
+## Path B — Visual Studio GUI export (dotnet only, reliable fallback)
+
+If `dotnet build /t:Scorecard` produces empty metrics for a solution entry point (see `troubleshooting.md`):
+
+1. Open the solution in Visual Studio 2022
+2. **Analyze → Calculate Code Metrics → For Solution**
+3. Wait for the Code Metrics Results window to populate
+4. Click the **Export list** icon (floppy disk) → save as `.scorecard\dotnet\metrics.csv` at the solution root
+
+The VS export produces only the CSV columns. It can replace JSON evidence for dimensions 2 and 9 only; dimensions 1, 3, 4, 5, 6, 7, and 8 require qualitative scoring with source access. For project-only entry points, prefer the CLI/MSBuild path; Visual Studio's solution-level export is not an equivalent project-scoped fallback.
