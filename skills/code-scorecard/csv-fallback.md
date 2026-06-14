@@ -1,6 +1,8 @@
 # CSV Deterministic Fallback (Dimensions 2 and 9)
 
-Use this file **only** when JSON evidence is missing or unsupported for Code Quality (Dimension 2) or Maintainability (Dimension 9) and a `.scorecard\metrics.csv` export is available. For all other cases, score from `.scorecard\evidence.json` per `SKILL.md`.
+> **Ecosystem scope: `dotnet` only.** The filters, archetypes, and thresholds in this file are calibrated for Roslyn metrics on C# code. Never apply them to another ecosystem's CSV; for non-dotnet ecosystems, score dimensions 2 and 9 qualitatively until that ecosystem completes the calibration procedure in the CodeMetrics.AI shared contract (`shared/scorecard-schema/calibration.md`).
+
+Use this file **only** when JSON evidence is missing or unsupported for Code Quality (Dimension 2) or Maintainability (Dimension 9) and a `.scorecard\dotnet\metrics.csv` export is available. For all other cases, score from `.scorecard\dotnet\evidence.json` per `SKILL.md`.
 
 Steps are mechanical — no judgment until the offender narrative.
 

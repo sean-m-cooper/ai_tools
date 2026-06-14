@@ -3,7 +3,7 @@
     <PropertyGroup>
       <ScorecardConfiguration Condition="'$(ScorecardConfiguration)' == ''">$(Configuration)</ScorecardConfiguration>
       <ScorecardSolutionPath Condition="'$(ScorecardSolutionPath)' == ''">$(SolutionPath)</ScorecardSolutionPath>
-      <ScorecardOutputDir>$(SolutionDir).scorecard\</ScorecardOutputDir>
+      <ScorecardOutputDir>$(SolutionDir).scorecard\dotnet\</ScorecardOutputDir>
     </PropertyGroup>
     <MakeDir Directories="$(ScorecardOutputDir)" />
     <Exec Command="code-metrics --solution &quot;$(ScorecardSolutionPath)&quot; --output &quot;$(ScorecardOutputDir)metrics.csv&quot; --scorecard-output &quot;$(ScorecardOutputDir)evidence.json&quot; --configuration $(ScorecardConfiguration)"

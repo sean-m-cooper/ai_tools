@@ -24,7 +24,7 @@ dotnet build /t:Scorecard /p:ScorecardConfiguration=Release
 
 ## Output
 
-The target produces two files under `.scorecard/`:
+The target produces two files under `.scorecard/dotnet/`:
 
 - `metrics.csv` — VS-compatible raw code metrics
-- `evidence.json` — scored scorecard evidence (schema v1)
+- `evidence.json` — scored scorecard evidence (schema v2)
