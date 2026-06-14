@@ -8,7 +8,7 @@ Check the repo root (non-recursive) and apply any invocation-arg scoping:
 
 | Marker | Ecosystem id | Entry point to resolve |
 |---|---|---|
-| `*.sln` / `*.slnx` | `dotnet` | The solution file. Exactly one found: use it silently. Multiple: ask which. |
+| `*.sln` / `*.slnx` / `*.csproj` | `dotnet` | Prefer a solution file when one exists. If no solution exists, use a single project file. If multiple candidates exist at the same priority, ask which. |
 | `package.json` | `javascript-typescript` | The root `package.json` (workspace root in a monorepo). |
 
 - Both markers → bootstrap **both** ecosystems unless the invocation scoped to one.
@@ -21,7 +21,7 @@ Record each resolved entry point — evidence validation in `SKILL.md` compares 
 | # | Check | What to look for |
 |---|-------|-----------------|
 | 1 | Latest analyzer for each ecosystem | Run the matching install/update block below before generating or accepting evidence. Do not skip the update just because a tool is already installed. |
-| 2 | (`dotnet` only) `Directory.Build.targets` at solution root defines a `Scorecard` target | If absent, the MSBuild target won't be injected. |
+| 2 | (`dotnet` only) `Directory.Build.targets` at solution/project root defines a `Scorecard` target | If absent, the MSBuild target won't be injected. |
 | 3 | `.scorecard\<ecosystem>\evidence.json` exists and matches the requested run | Require `schemaVersion == 2`, `tool.ecosystem` equal to the folder name, matching `subject.entryPoint`, matching `subject.variant` (dotnet), and current tool version. Do **not** use filesystem mtimes to decide freshness. |
 | 4 | (`dotnet` only) `.scorecard\dotnet\metrics.csv` for compatibility fallback | Required only if JSON is missing/unsupported and dimensions 2/9 must be scored from CSV. |
 
@@ -56,17 +56,17 @@ Safe to run every time — fast, and guarantees the latest deterministic rules.
 
 ### D2 — Drop the Directory.Build.targets
 
-Copy `scorecard-tooling/Directory.Build.targets` (in this skill's directory) to the solution root. It defines the `Scorecard` MSBuild target that shells out to `code-metrics` and writes under `.scorecard\dotnet\`. One-time setup per solution.
+Copy `scorecard-tooling/Directory.Build.targets` (in this skill's directory) to the solution or project root. It defines the `Scorecard` MSBuild target that shells out to `code-metrics` and writes under `.scorecard\dotnet\`. One-time setup per entry point root.
 
 ### D3 — Generate evidence
 
 Default configuration is `Debug`; pass `/p:ScorecardConfiguration=Release` for a release-build audit.
 
 ```pwsh
-# With explicit solution (resolved in Step 0):
-dotnet build "<path-to-sln-or-slnx>" /t:Scorecard /p:ScorecardSolutionPath="<path-to-sln-or-slnx>"
+# With explicit entry point (resolved in Step 0):
+dotnet build "<path-to-sln-slnx-or-csproj>" /t:Scorecard /p:ScorecardEntryPointPath="<path-to-sln-slnx-or-csproj>"
 
-# Without explicit solution (auto-discovery):
+# Without explicit entry point (auto-discovery):
 dotnet build /t:Scorecard
 ```
 
@@ -83,7 +83,7 @@ Write-Host "Schema: $($evidence.schemaVersion)   Ecosystem: $($evidence.tool.eco
 Expected: `Schema: 2`, `Ecosystem: dotnet`, non-zero counts. **If both counts are 0:** re-run with explicit args:
 
 ```pwsh
-code-metrics --solution <path-to-sln-or-slnx> --output .scorecard\dotnet\metrics.csv --scorecard-output .scorecard\dotnet\evidence.json
+code-metrics --solution <path-to-sln-slnx-or-csproj> --output .scorecard\dotnet\metrics.csv --scorecard-output .scorecard\dotnet\evidence.json
 ```
 
 If still zero rows, fall back to the Visual Studio export (Path B) for dimensions 2 and 9 only.
@@ -123,11 +123,11 @@ Expected: `Schema: 2`, `Ecosystem: javascript-typescript`, non-zero counts.
 
 ## Path B — Visual Studio GUI export (dotnet only, reliable fallback)
 
-If `dotnet build /t:Scorecard` produces empty metrics (see `troubleshooting.md`):
+If `dotnet build /t:Scorecard` produces empty metrics for a solution entry point (see `troubleshooting.md`):
 
 1. Open the solution in Visual Studio 2022
 2. **Analyze → Calculate Code Metrics → For Solution**
 3. Wait for the Code Metrics Results window to populate
 4. Click the **Export list** icon (floppy disk) → save as `.scorecard\dotnet\metrics.csv` at the solution root
 
-The VS export produces only the CSV columns. It can replace JSON evidence for dimensions 2 and 9 only; dimensions 1, 3, 4, 5, 6, 7, and 8 require qualitative scoring with source access.
+The VS export produces only the CSV columns. It can replace JSON evidence for dimensions 2 and 9 only; dimensions 1, 3, 4, 5, 6, 7, and 8 require qualitative scoring with source access. For project-only entry points, prefer the CLI/MSBuild path; Visual Studio's solution-level export is not an equivalent project-scoped fallback.

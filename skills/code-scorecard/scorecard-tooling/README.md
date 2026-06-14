@@ -1,6 +1,6 @@
 # Scorecard Tooling
 
-MSBuild integration for the `code-metrics` global tool. Copy `Directory.Build.targets` to your solution root to enable the `Scorecard` target.
+MSBuild integration for the `code-metrics` global tool. Copy `Directory.Build.targets` to your solution or project root to enable the `Scorecard` target.
 
 ## Prerequisites
 
@@ -16,9 +16,10 @@ dotnet tool install -g CodeMetrics.AI
 dotnet build /t:Scorecard
 ```
 
-Override the build configuration:
+Override the entry point or build configuration:
 
 ```bash
+dotnet build .\src\Worker\Worker.csproj /t:Scorecard /p:ScorecardEntryPointPath=".\src\Worker\Worker.csproj"
 dotnet build /t:Scorecard /p:ScorecardConfiguration=Release
 ```
 

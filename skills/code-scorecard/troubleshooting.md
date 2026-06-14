@@ -16,15 +16,15 @@ Make sure `%USERPROFILE%\.dotnet\tools` is on `PATH` (usually added automaticall
 
 **Symptom:** `code-metrics` exits with `No file format header found` or similar.
 
-**Cause:** The solution path is wrong, or you're pointing at a `.sln` file but it's actually `.slnx` (or vice versa).
+**Cause:** The entry-point path is wrong, or you're pointing at the wrong dotnet file type (`.sln`, `.slnx`, or `.csproj`).
 
 **Fix:** Pass the explicit path:
 
 ```pwsh
-code-metrics --solution <path-to-.sln-or-.slnx> --output .scorecard\dotnet\metrics.csv --scorecard-output .scorecard\dotnet\evidence.json
+code-metrics --solution <path-to-.sln-.slnx-or-.csproj> --output .scorecard\dotnet\metrics.csv --scorecard-output .scorecard\dotnet\evidence.json
 ```
 
-If a project inside the solution fails to load, the tool logs a warning and continues — the CSV will still be produced for the projects that loaded successfully. Look at stderr for the failing project name to investigate.
+If a project inside the solution fails to load, the tool logs a warning and continues — the CSV will still be produced for the projects that loaded successfully. If a single `.csproj` entry point fails to load, treat that as a blocking evidence-generation failure and inspect stderr for the project load error.
 
 ## Missing or unsupported evidence.json
 
@@ -54,6 +54,6 @@ If a project inside the solution fails to load, the tool logs a warning and cont
 
 **Symptom:** `metrics.csv` contains only the header row.
 
-**Cause:** Every project in the solution matched a skip rule (test, Aspire, benchmark, etc.) or the solution had no C# projects.
+**Cause:** Every project in the selected entry point matched a skip rule (test, Aspire, benchmark, etc.), the selected solution had no C# projects, or the selected `.csproj` is a non-production/support project.
 
 **Fix:** Verify project names against the skip patterns in `scorecard-tooling/README.md`. If a legitimate production project is being filtered, rename it or open an issue against `CodeMetrics.AI` to add an exception.

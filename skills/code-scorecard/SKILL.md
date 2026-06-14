@@ -33,7 +33,7 @@ The deterministic pass starts from scorecard-native JSON evidence at `<repo-root
 
 **First-time setup, missing evidence, or regenerating after a tool update:** see `bootstrap.md` for ecosystem detection and the per-ecosystem generation procedure.
 
-**Scope:** if the repo contains multiple `.sln`/`.slnx` files or multiple package workspaces, specify which entry point to use at invocation time — e.g. "run the scorecard against eContract.API.slnx". To restrict a polyglot repo to one ecosystem, say so — e.g. "scorecard the dotnet side only". If nothing is specified, the skill detects and prompts.
+**Scope:** if the repo contains multiple `.sln`/`.slnx`/`.csproj` files or multiple package workspaces, specify which entry point to use at invocation time — e.g. "run the scorecard against eContract.API.slnx" or "run the scorecard against Worker.csproj". To restrict a polyglot repo to one ecosystem, say so — e.g. "scorecard the dotnet side only". If nothing is specified, the skill detects and prompts.
 
 **For dimensions without usable JSON evidence**, source code access is required. The skill will read targeted files as needed during fallback qualitative scoring — it does not need to read every file.
 
@@ -45,12 +45,12 @@ Detect which analyzers apply before touching evidence. Check the repo root (non-
 
 | Marker | Ecosystem id | Analyzer |
 |---|---|---|
-| `*.sln` / `*.slnx` | `dotnet` | `code-metrics` dotnet global tool |
+| `*.sln` / `*.slnx` / `*.csproj` | `dotnet` | `code-metrics` dotnet global tool |
 | `package.json` | `javascript-typescript` | `codemetrics-ai` NPM CLI |
 
 - Both markers present → polyglot repo: score **each** detected ecosystem (unless the invocation scoped to one).
 - Evidence for each detected ecosystem lives at `.scorecard\<ecosystem>\evidence.json`. Missing, invalid, or mismatched evidence → run the bootstrap for that ecosystem (`bootstrap.md`).
-- An evidence directory with no matching marker (e.g. `.scorecard\dotnet\` in a repo with no solution) → stale evidence; report it and do not score from it.
+- An evidence directory with no matching marker (e.g. `.scorecard\dotnet\` in a repo with no `.sln`, `.slnx`, or `.csproj`) → stale evidence; report it and do not score from it.
 - No marker at all → no deterministic analyzer applies. Produce a fully qualitative scorecard and say so explicitly in the output.
 
 ---
@@ -59,7 +59,7 @@ Detect which analyzers apply before touching evidence. Check the repo root (non-
 
 Inspect the invocation args string for these flags before scoring:
 
-- **Entry-point path** (`.sln`, `.slnx`, or a `package.json`): scope the scorecard to that entry point's ecosystem (see Scope above).
+- **Entry-point path** (`.sln`, `.slnx`, `.csproj`, or a `package.json`): scope the scorecard to that entry point's ecosystem (see Scope above).
 - **Ecosystem name** (`dotnet`, `javascript-typescript`): scope a polyglot repo to one ecosystem.
 - **`--verbose`**: also emit Sections 4 (Score Lift Summary), 5 (Top Offenders by Metric), and 6 (Deterministic Detail). Use when the user wants the extra prose backing the scores.
 - **`--explain`**: also emit Section 7 (Score Derivation Detail) — filter counts, per-signal scores, threshold lookups, offender attribution. Load `metrics-glossary.md` for the formulas and threshold rationale. Section 7 is written to stand on its own; it does not require `--verbose`.
@@ -252,6 +252,6 @@ Load `metrics-glossary.md` for formulas, threshold rationale, and the canonical 
 
 - **`bootstrap.md`** — first-time setup, tool install/update, evidence regeneration (Steps 0–5), Path A/B input details
 - **`csv-fallback.md`** — CSV deterministic procedure for Code Quality (dim 2) and Maintainability (dim 9), **dotnet ecosystem only**, including the 9-step pass, archetype tagging, per-archetype scoring reference, and calibration notes
-- **`troubleshooting.md`** — common failures and fixes (tool not found, solution load errors, missing/unsupported evidence, skipped probes, empty CSV)
+- **`troubleshooting.md`** — common failures and fixes (tool not found, entry-point load errors, missing/unsupported evidence, skipped probes, empty CSV)
 - **`metrics-glossary.md`** — *load only when `--explain` is set.* Formulas behind decomposition ratio, max member CC, and MI; threshold rationale; how a dimension score is derived from the three signals; canonical layout for the Section 7 output.
 - **Shared contract** — schema v2, ecosystem registry, dimension keys, and the cross-ecosystem calibration procedure live in the CodeMetrics.AI repo under `shared/scorecard-schema/`
