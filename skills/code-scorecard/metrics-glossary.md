@@ -1,8 +1,8 @@
-# Metrics Glossary (verbose mode)
+# Metrics Glossary (`--explain` mode)
 
 Loaded only when the user invokes the scorecard with `--explain`. Defines every deterministic metric, the formulas behind it, the threshold rationale, and how a score is derived from the raw numbers.
 
-Use this file to enrich the verbose output section. Do not load it for normal runs.
+Use this file to enrich the Score Derivation Detail section. Do not load it for normal runs or `--stats`-only runs.
 
 ---
 
@@ -101,7 +101,7 @@ For Code Quality (dim 2) and Maintainability (dim 9), each metric produces three
 
 ## What Verbose Output Should Look Like
 
-When `--explain` is set, add a **Section 7 — Score Derivation Detail** with this format per deterministic dimension:
+When `--explain` is set, add a **Section 8 — Score Derivation Detail** with this format per deterministic dimension:
 
 ```
 === Code Quality (Dimension 2) ===

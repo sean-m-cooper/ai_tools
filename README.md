@@ -31,7 +31,7 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 | Skill | Purpose |
 |-------|---------|
 | **[code-map](skills/code-map/)** | Generate AI-optimized YAML code maps (`.codemap.yaml`) that help AI agents quickly understand repository structure and navigate codebases efficiently |
-| **[code-scorecard](skills/code-scorecard/)** | Audit a codebase across nine quality dimensions on a 0–10 scale, using deterministic metrics from the `CodeMetrics.AI` tool as evidence; supports `--verbose` and `--explain` output modes |
+| **[code-scorecard](skills/code-scorecard/)** | Audit a codebase across nine quality dimensions on a 0–10 scale, using deterministic metrics from the `CodeMetrics.AI` tool as evidence; supports `--verbose`, `--stats`, and `--explain` output modes |
 | **[feature-writer](skills/feature-writer/)** | Write comprehensive feature implementations with proper architecture, testing, and documentation |
 | **[root-cause](skills/root-cause/)** | Systematically analyze bugs, failures, and unexpected behavior to identify root causes through structured investigation of code, data, dependencies, and logs |
 | **[story-writer](skills/story-writer/)** | Create well-structured user stories and tasks with clear acceptance criteria and technical requirements |
@@ -45,17 +45,7 @@ Each skill directory contains a `SKILL.md` file with:
 - Examples and best practices
 - Integration guidance
 
-### code-scorecard Output Flags
-
-The **code-scorecard** skill accepts optional flags at invocation (e.g. *"run the scorecard against eContract.API.slnx --verbose"*). They are additive — combine them for the full breakdown.
-
-| Flag | Output |
-|------|--------|
-| *(none)* | **Default.** Scorecard table, deterministic evidence summary (which scores came from JSON vs CSV vs qualitative), and the top 3 issues to fix. |
-| `--verbose` | Adds the projected score lift if the top issues are fixed, the top offenders per metric, and the three-signal breakdown behind each deterministic dimension. |
-| `--explain` | Adds a self-contained score-derivation section: filter counts, per-signal values with the threshold rows they matched, the score arithmetic, and what each metric (decomposition ratio, max member cyclomatic complexity, maintainability index) actually means. |
-
-You can also pass a specific `.sln`/`.slnx` path to scope the audit when a repo contains multiple solutions.
+For scorecard output flags, scoring paths, formulas, and `--stats` examples, see [Code Scorecard](docs/code-scorecard.md).
 
 ## Commands
 
@@ -69,31 +59,7 @@ Specialized procedures for solving specific problem domains or handling complex 
 
 The `agentic_coding_standards_example/` directory contains a comprehensive framework for maintaining code quality and consistency when working with AI-assisted development.
 
-### Key Modules
-
-- **Golden Rules** – Non-negotiable principles that apply to all code changes
-- **Agentic Workflow** – Best practices for AI-human collaboration in development
-- **Architecture** – Design principles and dependency management (Presentation → Application → Domain)
-- **C# Conventions** – Naming, formatting, and idiom standards for C# code
-- **API Controllers** – REST endpoint design and documentation
-- **EF Core & Data Access** – Entity modeling, repositories, and query optimization
-- **Testing** – Unit, integration, and end-to-end testing standards
-- **Performance** – Optimization techniques and profiling guidelines
-- **Error Handling & Logging** – Exception management and observability
-- **Database Conventions** – Schema design, audit columns, soft-delete patterns
-- **Security** – Authentication, authorization, secrets, input validation
-- **CI/CD & DevOps** – Build pipelines and deployment automation
-- **Git & Commits** – Branching strategies and commit message standards
-- **PR Checklist** – Code review preparation and validation
-
-### Using the Standards
-
-1. Load `agentic_standards.md` – the root document
-2. Load additional modules based on your work (e.g., `csharp-conventions.md` + `api-controllers.md` for building an API endpoint)
-3. Apply the standards throughout development
-4. Cite specific standards when making non-obvious decisions
-
-**Developer Neutrality** – These standards apply equally to all developers, human or AI. AI-generated code is treated as first-class code, not drafts.
+Start with `agentic_coding_standards_example/ai/agentic_standards.md`, then load the modules that match the work being done. See [Agentic Coding Standards](docs/agentic-standards.md) for the module index and usage guidance.
 
 ## Getting Started
 
@@ -127,6 +93,9 @@ ai_tools/
 │   └── story-writer/                    # Story creation
 ├── commands/                            # Specialized procedures
 │   └── root-cause.md                    # Root cause analysis workflow
+├── docs/                                # Human-facing documentation
+│   ├── agentic-standards.md             # Standards module guide
+│   └── code-scorecard.md                # Scorecard scoring and output guide
 ├── agentic_coding_standards_example/    # Complete standards framework
 │   └── ai/                              # Detailed standard modules
 │       ├── agentic_standards.md         # Root document (start here)
