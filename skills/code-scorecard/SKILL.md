@@ -15,6 +15,44 @@ The deterministic pass starts from scorecard-native JSON evidence at `<repo-root
 
 ---
 
+## How Scores Are Determined
+
+Every dimension score must be traceable to one of three scoring paths. State the path in the scorecard output so the reader can tell how the number was obtained:
+
+1. **JSON deterministic score** — preferred path. Read `.scorecard\<ecosystem>\evidence.json`, validate schema/provenance, and use each dimension's `score` when its `status` is `scored`. The analyzer has already applied that ecosystem's probes and thresholds. Cite the JSON `basis`, signal summary, and top findings.
+2. **CSV deterministic fallback** — `dotnet` only, dimensions 2 and 9 only. Use `.scorecard\dotnet\metrics.csv` only when JSON is unavailable, unsupported, skipped, or failed for those dimensions. Apply `csv-fallback.md` mechanically: filter non-production/generated rows, derive per-class values, score population/tail/extreme signals against threshold tables, average signals into metric scores, and average metric scores into the dimension score.
+3. **Qualitative score** — only for dimensions without usable deterministic evidence. Inspect targeted source/docs/config artifacts, apply the Scoring Anchors literally, and cite the concrete evidence inspected. Do not use qualitative judgment to override a valid deterministic JSON score.
+
+Overall scores are the unweighted mean of applicable dimension scores for a single ecosystem, rounded to one decimal. Never combine ecosystem scores into one blended number.
+
+For the `dotnet` CSV deterministic fallback, use these formulas. When `--stats` is set, emit the same formulas with the actual values substituted:
+
+```text
+member_count = count(Member rows belonging to the type)
+decomposition_ratio = class_cyclomatic_complexity / member_count
+max_member_cc = max(member_cyclomatic_complexity for the type)
+
+population_rate = count(classes crossing the smell threshold) / scored_class_count
+extreme_rate = count(classes crossing the catastrophic threshold) / scored_class_count
+tail_value = p90 for decomposition_ratio and max_member_cc; p10 for maintainability_index
+
+signal_score = threshold_lookup(actual signal value)
+
+decomposition_metric_score = mean(population_signal_score, tail_signal_score, extreme_signal_score)
+max_member_cc_metric_score = mean(population_signal_score, tail_signal_score, extreme_signal_score)
+maintainability_metric_score = mean(population_signal_score, tail_signal_score, extreme_signal_score)
+
+code_quality_score = mean(decomposition_metric_score, max_member_cc_metric_score)
+maintainability_score = maintainability_metric_score
+overall_score = mean(applicable_dimension_scores)
+```
+
+`threshold_lookup` means selecting the first threshold-table row in `csv-fallback.md` that the actual signal value satisfies, then using that row's 0/2/4/6/8/10 score. Round metric, dimension, and overall scores to one decimal.
+
+When a user asks how scores were generated, or when the result might be reviewed by someone who was not present for the run, include the deterministic evidence summary and recommend `--stats` for populated formula blocks or `--explain` for the full derivation math.
+
+---
+
 ## When to Use This Skill
 
 ✅ Manual request for a codebase audit, scorecard, or quality review
@@ -62,7 +100,8 @@ Inspect the invocation args string for these flags before scoring:
 - **Entry-point path** (`.sln`, `.slnx`, `.csproj`, or a `package.json`): scope the scorecard to that entry point's ecosystem (see Scope above).
 - **Ecosystem name** (`dotnet`, `javascript-typescript`): scope a polyglot repo to one ecosystem.
 - **`--verbose`**: also emit Sections 4 (Score Lift Summary), 5 (Top Offenders by Metric), and 6 (Deterministic Detail). Use when the user wants the extra prose backing the scores.
-- **`--explain`**: also emit Section 7 (Score Derivation Detail) — filter counts, per-signal scores, threshold lookups, offender attribution. Load `metrics-glossary.md` for the formulas and threshold rationale. Section 7 is written to stand on its own; it does not require `--verbose`.
+- **`--stats`**: also emit Section 7 (Score Formula Stats) — populated formula blocks with actual counts, rates, threshold-derived signal scores, metric scores, dimension scores, and overall arithmetic. Use when the user wants the numbers behind the summary without the longer explanation narrative.
+- **`--explain`**: also emit Section 8 (Score Derivation Detail) — filter counts, per-signal scores, threshold lookups, offender attribution. Load `metrics-glossary.md` for the formulas and threshold rationale. Section 8 is written to stand on its own; it does not require `--verbose` or `--stats`.
 
 The flags are additive — pass both for the full breakdown. If args are absent, run the default scorecard (Sections 1, 2, 3).
 
@@ -142,10 +181,14 @@ Return exactly this, in this order. Which sections render depends on invocation 
 |---|---|
 | Default | 1, 2, 3 |
 | **`--verbose`** | 1, 2, 3, 4, 5, 6 |
-| **`--explain`** | 1, 2, 3, 7 |
-| **`--verbose --explain`** | 1, 2, 3, 4, 5, 6, 7 |
+| **`--stats`** | 1, 2, 3, 7 |
+| **`--explain`** | 1, 2, 3, 8 |
+| **`--verbose --stats`** | 1, 2, 3, 4, 5, 6, 7 |
+| **`--verbose --explain`** | 1, 2, 3, 4, 5, 6, 8 |
+| **`--stats --explain`** | 1, 2, 3, 7, 8 |
+| **`--verbose --stats --explain`** | 1, 2, 3, 4, 5, 6, 7, 8 |
 
-Sections 1–3 are always shown (summary layer). Sections 4–6 are verbose justification, ordered from highest-leverage to most analytical. Section 7 is the math, gated on `--explain`.
+Sections 1–3 are always shown (summary layer). Sections 4–6 are verbose justification, ordered from highest-leverage to most analytical. Section 7 is formula statistics, gated on `--stats`. Section 8 is the deeper derivation narrative, gated on `--explain`.
 
 **Polyglot repos:** when more than one ecosystem was scored, render the selected sections once **per ecosystem**, each under an `## <ecosystem>` heading, then close with a single **Suite Summary** table:
 
@@ -176,22 +219,25 @@ For deterministic dimensions, evidence is a one-sentence summary of the three si
 
 ### 2. Deterministic Evidence Summary
 
-Below the main scorecard, include a compact table of JSON evidence status:
+Below the main scorecard, include a compact provenance table showing where each score came from and how it was obtained:
 
 | Dimension | Source | Status | Basis / probe summary |
 |---|---|---|---|
 | Code Quality | JSON or CSV fallback | scored/skipped/failed/fallback | Key thresholds or fallback reason |
 
-For skipped/failed dimensions, show the explicit reason and what fallback was used. If JSON was unavailable and CSV fallback was used, say so in the Source column.
+For JSON-scored dimensions, the Basis column must cite the analyzer basis plus the signals/findings that drove the score. For CSV fallback dimensions, cite the threshold families used (population, tail, extreme) and the main offender metric. For qualitative dimensions, cite the inspected artifacts and the anchor band applied (for example, "qualitative anchor 6: adequate but inconsistent"). For skipped/failed dimensions, show the explicit reason and what fallback was used. If JSON was unavailable and CSV fallback was used, say so in the Source column.
 
 ### 3. Top 3 Issues
 
 Highest-impact problems to fix first. For each:
 
+- **Basis:** `Metrics` or `Current context`
 - What it is
 - Where (file/pattern/count)
 - Why it matters
 - For deterministic-dimension issues: estimated score lift if fixed (from CSV fallback Step 9, when applicable)
+
+Use `Metrics` when the recommendation is driven primarily by deterministic JSON findings, CSV fallback threshold misses, signal scores, top offenders, or score-lift calculations. Use `Current context` when the recommendation is driven primarily by qualitative review of files, docs, configs, tests, architecture, user-provided context, or dimensions without deterministic evidence. If both apply, choose the primary driver for **Basis** and mention the secondary evidence in the issue text.
 
 ### 4. Score Lift Summary (`--verbose`, when applicable)
 
@@ -215,9 +261,53 @@ Maintainability detail
   Maintainability index:  P=X T=X E=X  → score X.X
 ```
 
-### 7. Score Derivation Detail (`--explain` only)
+### 7. Score Formula Stats (`--stats` only)
 
-Emit this section **only** when `--explain` appeared in the invocation args. Otherwise skip entirely. Section 7 is self-contained — it does not assume Section 6 was shown, so it must restate the three-signal breakdown for any deterministic dimension it covers.
+Emit this section **only** when `--stats` appeared in the invocation args. The section must contain populated formula blocks, not symbolic formulas. Replace every count, rate, score, and mean with the actual values from the current run. If a deterministic score came from JSON evidence and the JSON contains enough signal detail to populate the formulas, use the JSON values. If the JSON score lacks the needed signal detail, state that the analyzer supplied the final score but not the intermediate formula stats, then show any available counts/signals. If CSV fallback was used, compute every value from `csv-fallback.md`.
+
+For each deterministic dimension with available stats, use this shape:
+
+```text
+Code Quality stats
+  scored_class_count = 412
+
+  decomposition_ratio:
+    population_rate = 28 / 412 = 6.8% -> threshold_lookup(6.8%) = 4
+    tail_value = p90(decomposition_ratio) = 3.1 -> threshold_lookup(3.1) = 6
+    extreme_rate = 1 / 412 = 0.2% -> threshold_lookup(0.2%) = 8
+    decomposition_metric_score = mean(4, 6, 8) = 6.0
+
+  max_member_cc:
+    population_rate = 22 / 412 = 5.3% -> threshold_lookup(5.3%) = 4
+    tail_value = p90(max_member_cc) = 11 -> threshold_lookup(11) = 4
+    extreme_rate = 3 / 412 = 0.7% -> threshold_lookup(0.7%) = 6
+    max_member_cc_metric_score = mean(4, 4, 6) = 4.7
+
+  code_quality_score = mean(6.0, 4.7) = 5.4
+
+Maintainability stats
+  scored_class_count = 412
+
+  maintainability_index:
+    population_rate = 37 / 412 = 9.0% -> threshold_lookup(9.0%) = 4
+    tail_value = p10(maintainability_index) = 58 -> threshold_lookup(58) = 4
+    extreme_rate = 4 / 412 = 1.0% -> threshold_lookup(1.0%) = 6
+    maintainability_metric_score = mean(4, 4, 6) = 4.7
+
+  maintainability_score = 4.7
+
+Overall stats
+  applicable_dimension_scores = [7.0, 5.4, 6.0, 8.0, 6.0, 7.0, 8.0, 6.0, 4.7]
+  overall_score = mean(applicable_dimension_scores) = 6.5
+```
+
+The example above shows format only. Do not copy those values into a real scorecard unless they are the current run's values.
+
+For qualitative dimensions, do not invent numeric formula stats. Include them only in `applicable_dimension_scores` for the overall calculation, and rely on Sections 1, 2, and optionally 8 for qualitative evidence.
+
+### 8. Score Derivation Detail (`--explain` only)
+
+Emit this section **only** when `--explain` appeared in the invocation args. Otherwise skip entirely. Section 8 is self-contained — it does not assume Section 6 or Section 7 was shown, so it must restate the three-signal breakdown for any deterministic dimension it covers.
 
 For each deterministic dimension (Code Quality, Maintainability), show:
 
@@ -238,6 +328,8 @@ Load `metrics-glossary.md` for formulas, threshold rationale, and the canonical 
 ## Rules
 
 - **Be strict.** Use the anchors literally for qualitative dimensions. A 6 means "adequate but inconsistent," not "pretty good." Use the threshold tables literally for deterministic dimensions.
+- **Show provenance.** Every score must make clear whether it came from JSON evidence, dotnet CSV fallback, or qualitative review. If a reader cannot tell how a score was produced from the output alone, the output is incomplete.
+- **Label recommendations.** Every Top 3 issue must include `Basis: Metrics` or `Basis: Current context` so the reader can tell whether the recommendation came from computed score evidence or the qualitative/current-code review.
 - **Cite evidence.** Every score must reference a concrete artifact. Prefer JSON dimension evidence; for CSV fallback, cite offender names from the metrics export.
 - **Do not estimate deterministic dimensions.** If JSON evidence is available, use it. For `dotnet`, if neither JSON nor CSV fallback is available for Code Quality or Maintainability, ask for evidence instead of guessing from reading code. For non-dotnet ecosystems without usable JSON, score qualitatively and state that deterministic evidence was unavailable.
 - **Do not pad.** Do not soften. If the codebase is bad, say so with evidence. If it's good, say so with evidence.
@@ -253,5 +345,5 @@ Load `metrics-glossary.md` for formulas, threshold rationale, and the canonical 
 - **`bootstrap.md`** — first-time setup, tool install/update, evidence regeneration (Steps 0–5), Path A/B input details
 - **`csv-fallback.md`** — CSV deterministic procedure for Code Quality (dim 2) and Maintainability (dim 9), **dotnet ecosystem only**, including the 9-step pass, archetype tagging, per-archetype scoring reference, and calibration notes
 - **`troubleshooting.md`** — common failures and fixes (tool not found, entry-point load errors, missing/unsupported evidence, skipped probes, empty CSV)
-- **`metrics-glossary.md`** — *load only when `--explain` is set.* Formulas behind decomposition ratio, max member CC, and MI; threshold rationale; how a dimension score is derived from the three signals; canonical layout for the Section 7 output.
+- **`metrics-glossary.md`** — *load only when `--explain` is set.* Formulas behind decomposition ratio, max member CC, and MI; threshold rationale; how a dimension score is derived from the three signals; canonical layout for the Section 8 output.
 - **Shared contract** — schema v2, ecosystem registry, dimension keys, and the cross-ecosystem calibration procedure live in the CodeMetrics.AI repo under `shared/scorecard-schema/`
