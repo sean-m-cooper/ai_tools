@@ -1,0 +1,4 @@
+interface:
+  display_name: "Content Voice Revision"
+  short_description: "Revise essays from audit findings"
+  default_prompt: "Use $content-voice-revision to improve the lowest-scoring essays from the latest content audit."

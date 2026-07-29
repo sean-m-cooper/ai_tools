@@ -1,0 +1,4 @@
+interface:
+  display_name: "Author Style Guide"
+  short_description: "Analyze samples and interview authors on voice"
+  default_prompt: "Use $author-style-guide to analyze my writing samples, interview me about voice and positioning, and create author-style-guide.md."

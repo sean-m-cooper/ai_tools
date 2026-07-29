@@ -1,0 +1,4 @@
+interface:
+  display_name: "Content Voice Audit"
+  short_description: "Audit long-form content for editorial risks"
+  default_prompt: "Use $content-voice-audit to generate a read-only editorial audit of the Markdown content in this repository."
