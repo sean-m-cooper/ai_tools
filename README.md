@@ -1,12 +1,12 @@
 # AI Tools
 
-A comprehensive collection of AI-powered development skills, commands, and standards for building high-quality software with AI assistance.
+A comprehensive collection of AI-powered development and content-writing skills, commands, and standards.
 
 ## Overview
 
 This repository contains:
 
-- **Skills** – Reusable AI prompts and workflows for common development tasks
+- **Skills** – Reusable AI prompts and workflows for development and content-writing tasks
 - **Commands** – Specialized procedures for specific problem domains
 - **Agentic Coding Standards** – A complete framework for maintaining quality and consistency when working with AI-assisted development
 
@@ -24,14 +24,17 @@ The first command registers the marketplace; the second installs the `ai-tools` 
 
 ## Skills
 
-Each skill is a focused, well-structured prompt designed to guide AI agents (like GitHub Copilot CLI or Claude) through a specific development task.
+Each skill is a focused, well-structured prompt designed to guide AI agents (like GitHub Copilot CLI or Claude) through a specific development or writing task.
 
 ### Available Skills
 
 | Skill | Purpose |
 |-------|---------|
+| **[author-style-guide](skills/author-style-guide/)** | Analyze writing samples, interview the author, and create a reusable guide covering core voice rules, audience and channel registers, and positioning |
 | **[code-map](skills/code-map/)** | Generate AI-optimized YAML code maps (`.codemap.yaml`) that help AI agents quickly understand repository structure and navigate codebases efficiently |
 | **[code-scorecard](skills/code-scorecard/)** | Audit a codebase across nine quality dimensions on a 0–10 scale, using deterministic metrics from the `CodeMetrics.AI` tool as evidence; supports `--verbose`, `--stats`, and `--explain` output modes |
+| **[content-voice-audit](skills/content-voice-audit/)** | Run a read-only editorial audit for AI-sounding cadence, weak evidence, formulaic phrasing, and thin structure |
+| **[content-voice-revision](skills/content-voice-revision/)** | Revise selected long-form content from audit findings while preserving the author's voice and requiring real evidence |
 | **[feature-writer](skills/feature-writer/)** | Write comprehensive feature implementations with proper architecture, testing, and documentation |
 | **[root-cause](skills/root-cause/)** | Systematically analyze bugs, failures, and unexpected behavior to identify root causes through structured investigation of code, data, dependencies, and logs |
 | **[story-writer](skills/story-writer/)** | Create well-structured user stories and tasks with clear acceptance criteria and technical requirements |
@@ -40,12 +43,69 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 | **[story-prefinement](skills/story-prefinement/)** | Review and score stories for quality and readiness before sprint planning |
 
 Each skill directory contains a `SKILL.md` file with:
+
 - Purpose and use cases
 - Detailed workflows
 - Examples and best practices
 - Integration guidance
 
 For scorecard output flags, scoring paths, formulas, and `--stats` examples, see [Code Scorecard](docs/code-scorecard.md).
+
+## Content Writing Workflow
+
+The three content-writing skills work as a sequence, but each can also be used independently.
+
+### 1. Build The Author Guide
+
+Use [`author-style-guide`](skills/author-style-guide/) to analyze real writing samples and interview the author about core voice rules, audience registers, channel behavior, positioning, anti-patterns, and editing preferences.
+
+```text
+/ai-tools:author-style-guide Analyze the writing in ./samples, interview me about the patterns you find, and create author-style-guide.md.
+```
+
+Provide several representative samples when possible, including different audiences or channels the guide must support. The skill distinguishes observed patterns from author-confirmed rules and creates `author-style-guide.md` in the repository root by default. It does not revise the source samples.
+
+### 2. Audit Existing Content
+
+Use [`content-voice-audit`](skills/content-voice-audit/) for a read-only editorial assessment of Markdown content.
+
+```text
+/ai-tools:content-voice-audit Audit the posts in ./content and ./drafts using author-style-guide.md.
+```
+
+The audit checks cadence, evidence, specificity, structure, and formula-pattern signals. It writes:
+
+- `content-voice-audit.html` – interactive report.
+- `content-voice-audit-data.js` – structured report data and previous-score history.
+
+The bundled generator discovers common content directories automatically. For explicit inputs or a separate report location, run:
+
+```text
+node "<skill-directory>/scripts/generate-content-audit.js" --content content --content drafts --output-dir reports
+```
+
+Repeat `--content` for additional Markdown files or directories. The generator searches directories recursively for `.md` and `.mdx` files.
+
+### 3. Revise Selected Pieces
+
+Use [`content-voice-revision`](skills/content-voice-revision/) with a named scope and the latest audit findings.
+
+```text
+/ai-tools:content-voice-revision Revise ./content/deployment-lessons.md using author-style-guide.md and the latest content voice audit.
+```
+
+The skill preserves the author's confirmed voice and positioning. It can directly fix expression problems such as repetition, cadence, and structure. When an argument needs an anecdote, measurement, source, or business claim, it asks the author instead of inventing evidence.
+
+### 4. Re-run The Audit
+
+Run `content-voice-audit` again after revision. Treat score movement as a diagnostic signal, not proof of writing quality. Review the revised piece against the author guide and the human argument before accepting it.
+
+### Boundaries
+
+- `author-style-guide` creates or updates the guide; it does not rewrite source content.
+- `content-voice-audit` does not edit source content, but it does create report files.
+- `content-voice-revision` changes only the pieces explicitly placed in scope.
+- None of the skills may invent anecdotes, measurements, sources, customer claims, product positioning, or outcomes.
 
 ## Commands
 
@@ -83,8 +143,11 @@ Start with `agentic_coding_standards_example/ai/agentic_standards.md`, then load
 ```
 ai_tools/
 ├── skills/                              # Reusable AI development workflows
+│   ├── author-style-guide/              # Personalized author voice guidance
 │   ├── code-map/                        # AI-optimized codebase mapping
 │   ├── code-scorecard/                  # 9-dimension codebase quality audit
+│   ├── content-voice-audit/             # Read-only editorial quality audit
+│   ├── content-voice-revision/          # Evidence-backed content revision
 │   ├── feature-writer/                  # Feature implementation guidance
 │   ├── root-cause/                      # Root cause analysis
 │   ├── security-audit/                  # Adversarial security audit workflow
@@ -149,5 +212,6 @@ For questions or issues:
 
 ---
 
-**Last Updated:** May 2026  
+**Last Updated:** July 2026
+
 **Maintained by:** Sean Cooper
