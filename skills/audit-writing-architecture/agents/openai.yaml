@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Architecture Audit"
+  short_description: "Diagnose nonfiction with SOLID, DRY, and YAGNI"
+  default_prompt: "Use $audit-writing-architecture to review this piece and identify its highest-impact structural improvements."
