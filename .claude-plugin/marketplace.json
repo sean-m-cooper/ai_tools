@@ -10,7 +10,7 @@
     {
       "name": "ai-tools",
       "source": "./",
-      "description": "All ai_tools skills (audit-writing-architecture, author-style-guide, code-map, code-scorecard, content-voice-audit, content-voice-revision, feature-writer, root-cause, security-audit, story-prefinement, story-splitter, story-writer) plus commands."
+      "description": "All ai_tools skills (audit-writing-architecture, author-style-guide, cold-start-audit, code-map, code-scorecard, content-voice-audit, content-voice-revision, feature-writer, root-cause, security-audit, story-prefinement, story-splitter, story-writer) plus commands."
     }
   ]
 }

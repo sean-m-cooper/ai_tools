@@ -32,6 +32,7 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 |-------|---------|
 | **[audit-writing-architecture](skills/audit-writing-architecture/)** | Diagnose technical and professional nonfiction using SOLID, DRY, YAGNI, paragraph contracts, and refactoring practices |
 | **[author-style-guide](skills/author-style-guide/)** | Analyze writing samples, interview the author, and create a reusable guide covering core voice rules, audience and channel registers, and positioning |
+| **[cold-start-audit](skills/cold-start-audit/)** | Audit standalone writing, specifications, runbooks, prompts, and instructions for context their intended consumers were never given |
 | **[code-map](skills/code-map/)** | Generate AI-optimized YAML code maps (`.codemap.yaml`) that help AI agents quickly understand repository structure and navigate codebases efficiently |
 | **[code-scorecard](skills/code-scorecard/)** | Audit a codebase across nine quality dimensions on a 0–10 scale, using deterministic metrics from the `CodeMetrics.AI` tool as evidence; supports `--verbose`, `--stats`, and `--explain` output modes |
 | **[content-voice-audit](skills/content-voice-audit/)** | Run a read-only editorial audit for AI-sounding cadence, weak evidence, formulaic phrasing, and thin structure |
@@ -54,7 +55,7 @@ For scorecard output flags, scoring paths, formulas, and `--stats` examples, see
 
 ## Content Writing Workflow
 
-The four content-writing skills work as a sequence, but each can also be used independently.
+The five content-writing skills work as a sequence, but each can also be used independently.
 
 ### 1. Build The Author Guide
 
@@ -97,7 +98,17 @@ Use [`audit-writing-architecture`](skills/audit-writing-architecture/) for a rea
 
 The audit maps component responsibilities and reader contracts, then applies SOLID, DRY, YAGNI, and refactoring diagnostics. It prioritizes reader consequences and recommends the smallest useful refactor without forcing one finding per principle or treating shorter as automatically better.
 
-### 4. Revise Selected Pieces
+### 4. Run A Cold-Start Audit
+
+Use [`cold-start-audit`](skills/cold-start-audit/) to determine whether an independently discovered artifact supplies the context its intended consumer needs.
+
+```text
+/ai-tools:cold-start-audit Review ./content/deployment-runbook.md as a first-time on-call engineer and identify context the runbook assumes but never supplies.
+```
+
+The audit isolates the publishable or operable artifact from the author's notes, conversations, and private rationale. It inventories supplied, declared, and absent prerequisites, then traces ambiguous referents, undefined terms, missing reasoning, unstated conditions, required information hidden behind links, and unused background.
+
+### 5. Revise Selected Pieces
 
 Use [`content-voice-revision`](skills/content-voice-revision/) with a named scope and the latest audit findings.
 
@@ -107,14 +118,15 @@ Use [`content-voice-revision`](skills/content-voice-revision/) with a named scop
 
 The skill preserves the author's confirmed voice and positioning. It can directly fix expression problems such as repetition, cadence, and structure. When an argument needs an anecdote, measurement, source, or business claim, it asks the author instead of inventing evidence.
 
-### 5. Re-run The Audits
+### 6. Re-run The Audits
 
-Run `content-voice-audit` and `audit-writing-architecture` again after revision. Treat the voice-audit score as a diagnostic signal, not proof of writing quality, and verify that the architectural findings were resolved without breaking neighboring reader contracts. Review the revised piece against the author guide and the human argument before accepting it.
+Run `content-voice-audit`, `audit-writing-architecture`, and `cold-start-audit` again after revision. Treat the voice-audit score as a diagnostic signal, not proof of writing quality, and verify that architectural and contextual findings were resolved without breaking neighboring reader contracts. Review the revised piece against the author guide and the human argument before accepting it.
 
 ### Boundaries
 
 - `author-style-guide` creates or updates the guide; it does not rewrite source content.
 - `audit-writing-architecture` remains read-only unless revision is explicitly requested.
+- `cold-start-audit` remains read-only unless revision is explicitly requested and never uses private author context to silently resolve an ambiguity.
 - `content-voice-audit` does not edit source content, but it does create report files.
 - `content-voice-revision` changes only the pieces explicitly placed in scope.
 - None of the skills may invent anecdotes, measurements, sources, customer claims, product positioning, or outcomes.
@@ -157,6 +169,7 @@ ai_tools/
 ├── skills/                              # Reusable AI development workflows
 │   ├── audit-writing-architecture/       # SOLID-based nonfiction architecture audit
 │   ├── author-style-guide/              # Personalized author voice guidance
+│   ├── cold-start-audit/                 # Standalone context-dependency audit
 │   ├── code-map/                        # AI-optimized codebase mapping
 │   ├── code-scorecard/                  # 9-dimension codebase quality audit
 │   ├── content-voice-audit/             # Read-only editorial quality audit

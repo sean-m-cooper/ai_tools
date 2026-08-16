@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cold-Start Audit"
+  short_description: "Find context readers were never given"
+  default_prompt: "Use $cold-start-audit to review this artifact as a first-time reader and identify context it assumes but never supplies."
