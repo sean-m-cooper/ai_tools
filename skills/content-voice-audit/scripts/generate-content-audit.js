@@ -319,7 +319,7 @@ function makeReview(meta, source, sourcePath, stats, previousScores) {
       : "It has no dedicated evidence items"} and ${cadencePct}% short single-line body paragraphs.`;
 
   const cadence = stats.singleRatio > 0.38
-    ? `Cadence risk is the main tell: ${stats.singleLineParagraphs} of ${stats.paragraphs} body paragraphs are short one-line beats. The piece may read like a social thread when the argument needs fuller development.`
+    ? `Cadence risk is the main signal: ${stats.singleLineParagraphs} of ${stats.paragraphs} body paragraphs are short one-line beats. The piece may read like a social thread when the argument needs fuller development.`
     : `Cadence is mostly controlled: ${stats.singleLineParagraphs} of ${stats.paragraphs} body paragraphs are short one-line beats. Check isolated lines against the author's intended rhythm before changing them.`;
 
   const evidence = stats.evidenceItems
@@ -337,7 +337,7 @@ function makeReview(meta, source, sourcePath, stats, previousScores) {
     ? `Voice risk: ${formulaParts.join(" and ")}. Repetition can make the prose feel templated even when each instance works by itself.`
     : stats.notBut > 0
       ? `Formula signal: ${stats.notBut} not-X-but-Y style ${stats.notBut === 1 ? "turn was" : "turns were"} detected. Review the phrasing in context; an isolated use may fit the author's voice without creating a pattern.`
-    : "No major formula tells were detected. Confirm that memorable lines are supported by the argument and fit the author's voice.";
+    : "No repeated formula pattern was detected. Confirm that memorable lines are supported by the argument and fit the author's voice.";
 
   const fixes = [
     stats.singleRatio > 0.32
@@ -426,7 +426,7 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:9px 10px;
 <h1>Content Voice Audit</h1>
 <p class="sub">Editorial audit of ${quantity(data.length, "Markdown piece")}. Generated ${generated}. Scores combine cadence, evidence, specificity, structure, and formula-pattern signals.</p>
 <div class="stats" id="stats"></div>
-<div class="lens"><b>Interpretation:</b> Scores are heuristic signals, not writing grades. Apply repository guidance and the author's demonstrated preferences before revising any flagged passage.</div>
+<div class="lens"><b>Interpretation:</b> Scores diagnose prose patterns, not authorship. Review clusters and repeated defaults in context; do not treat isolated words or punctuation as violations. Apply repository guidance and the author's demonstrated preferences before revising any flagged passage.</div>
 </div></header>
 <main class="wrap">
 <section><h2>Current Read</h2><div class="corr" id="summary"></div></section>
@@ -470,7 +470,7 @@ function renderSummary(){
 }
 function renderTable(){
   const rows = visible();
-  document.querySelector("#table").innerHTML = '<thead><tr><th>Score</th><th>Delta</th><th>Input</th><th>Title</th><th>Single-Line</th><th>Evidence</th><th>Formula Tells</th></tr></thead><tbody>' +
+  document.querySelector("#table").innerHTML = '<thead><tr><th>Score</th><th>Delta</th><th>Input</th><th>Title</th><th>Single-Line</th><th>Evidence</th><th>Formula Signals</th></tr></thead><tbody>' +
     rows.map(item => '<tr><td><span class="pill ' + band(item.score) + '">' + item.score + '</span></td><td>' + delta(item) + '</td><td>' + h(item.source) + '</td><td><b><a href="' + href(item.sourcePath) + '">' + h(item.title) + '</a></b><br><span class="slug">' + h(item.slug) + '</span></td><td>' + Math.round(item.metrics.singleRatio * 100) + '%</td><td>' + item.metrics.evidenceItems + '</td><td>' + item.metrics.notBut + '</td></tr>').join("") + '</tbody>';
 }
 function renderCards(){
