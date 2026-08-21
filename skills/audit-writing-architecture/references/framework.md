@@ -123,6 +123,7 @@ Ask:
 
 - What governing question and thesis organize the piece?
 - What exact role does each supporting item perform?
+- When the supplied evidence permits a conclusion, does the prose name the relationship it establishes rather than turning sequence, correlation, association, or contribution into cause?
 - Did the argument require this material, or did it receive space because it was interesting?
 - Could stronger evidence replace a source without forcing unrelated components to change?
 - Does each citation expose a specific evidentiary dependency?
