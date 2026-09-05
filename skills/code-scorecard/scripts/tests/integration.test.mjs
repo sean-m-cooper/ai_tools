@@ -113,6 +113,25 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
         assert.equal(evidence.analysis.runId, run.runId);
       }
     });
+    await t.test('explicit sln and slnx entry points score the same production projects', () => {
+      for (const args of [
+        ['new', 'sln', '--format', 'sln', '--name', 'Legacy'],
+        ['sln', 'Legacy.sln', 'add', 'src/App/App.csproj', 'src/Library/Library.csproj'],
+      ]) {
+        const command = spawnSync('dotnet', args, { cwd: root, encoding: 'utf8', timeout: 90_000, windowsHide: true });
+        assert.equal(command.status, 0, command.stdout + command.stderr);
+      }
+      for (const entryPoint of ['Legacy.sln', 'Audit.slnx']) {
+        const run = success('--entry-point', entryPoint, '--skip-dependency-probe');
+        const evidence = readJson(run.artifacts.evidence);
+        assert.equal(evidence.subject.entryPoint, path.join(root, entryPoint));
+        assert.equal(evidence.filters.totalUnits, 2);
+        assert.equal(evidence.population.members, 2);
+        assert.equal(evidence.subject.variant, 'Release');
+        assert.equal(evidence.analysis.runId, run.runId);
+        assert.equal(evidence.analysis.auditId, run.auditId);
+      }
+    });
     await t.test('changed configuration is incompatible and partial outputs never recover earlier scores', () => {
       write('ui/tsconfig.json', '{"include":["src/**/*.tsx"]}');
       const changed = invoke('--entry-point', 'ui/package.json', '--baseline', initial.artifacts.evidence);

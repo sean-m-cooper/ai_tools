@@ -6,6 +6,8 @@ Resolve `<skill>` to this skill directory and `<repo>` to the audited repository
 
 ```sh
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --discover
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point App.sln
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point App.slnx
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point src/App/App.csproj --configuration Release
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point packages/ui/package.json
 ```
