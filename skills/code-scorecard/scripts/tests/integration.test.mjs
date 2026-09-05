@@ -53,6 +53,8 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(dotnet.source, 'repository-pin');
       const inspected = readJson(dotnet.artifacts.inspection);
       assert.equal(inspected.evidence.schemaVersion, 3);
+      assert.equal(inspected.evidence.analysis.runId, dotnet.runId);
+      assert.equal(inspected.evidence.analysis.auditId, dotnet.auditId);
       assert.equal(inspected.evidence.filters.totalUnits, 1);
       assert.equal(inspected.evidence.population.members, 1);
       assert.equal(inspected.evidence.subject.variant, 'Release');
@@ -68,6 +70,8 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       initial = success('--entry-point', 'ui/package.json');
       assert.equal(initial.fresh, true);
       const original = readJson(initial.artifacts.evidence);
+      assert.equal(original.analysis.runId, initial.runId);
+      assert.equal(original.analysis.auditId, initial.auditId);
       assert.ok(original.dimensions.performanceAsync.scope.excludes.includes('general-async'));
       assert.equal(original.dimensions.security.status, 'skipped');
       write('ui/src/App.tsx', "import {useEffect} from 'react'; export function App(){ useEffect(async()=>{},[]); return null; }");
@@ -76,7 +80,38 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       const latest = changed.value.results[0];
       assert.equal(latest.status, 'gate-failed');
       assert.notEqual(latest.artifacts.evidence, initial.artifacts.evidence);
+      assert.notEqual(latest.runId, initial.runId);
+      assert.equal(readJson(latest.artifacts.comparison).currentRun.runId, latest.runId);
       assert.equal(readJson(latest.artifacts.comparison).new.length, 1);
+    });
+    await t.test('a producer returning old findings at the new path is rejected despite exit zero', () => {
+      const tooling = installTools({ cache, 'npm-package': npmPackage }, compatibility);
+      const originalCli = fs.readFileSync(tooling.js);
+      try {
+        fs.writeFileSync(tooling.js, `import fs from 'node:fs'; fs.copyFileSync(${JSON.stringify(initial.artifacts.evidence)}, process.argv[process.argv.indexOf('--scorecard-output') + 1]);`);
+        const stale = invoke('--entry-point', 'ui/package.json');
+        assert.equal(stale.code, 2);
+        const run = stale.value.results[0];
+        assert.equal(run.analyzerExitCode, 0);
+        assert.equal(run.validationExitCode, 2);
+        assert.notEqual(run.runId, initial.runId);
+        assert.equal(readJson(run.artifacts.evidence).analysis.runId, initial.runId);
+        assert.match(stale.error, /analysis.runId/);
+        assert.equal(fs.existsSync(run.artifacts.inspection), false);
+      } finally { fs.writeFileSync(tooling.js, originalCli); }
+    });
+    await t.test('one polyglot audit shares an audit ID but gives each ecosystem its own run ID', () => {
+      write('Audit.slnx', '<Solution><Project Path="src/App/App.csproj"/><Project Path="src/Library/Library.csproj"/></Solution>');
+      const audit = invoke('--skip-dependency-probe');
+      assert.equal(audit.code, 0, audit.error);
+      assert.equal(audit.value.results.length, 2);
+      assert.equal(new Set(audit.value.results.map(run => run.runId)).size, 2);
+      for (const run of audit.value.results) {
+        assert.equal(run.auditId, audit.value.auditId);
+        const evidence = readJson(run.artifacts.evidence);
+        assert.equal(evidence.analysis.auditId, audit.value.auditId);
+        assert.equal(evidence.analysis.runId, run.runId);
+      }
     });
     await t.test('changed configuration is incompatible and partial outputs never recover earlier scores', () => {
       write('ui/tsconfig.json', '{"include":["src/**/*.tsx"]}');
@@ -98,6 +133,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       write('archive/v2.json', JSON.stringify(legacy));
       const imported = success('--entry-point', 'ui/package.json', '--existing', 'archive/v2.json');
       assert.equal(imported.status, 'legacy'); assert.equal(imported.fresh, false);
+      assert.equal(imported.evidenceRunId, null);
       const inspected = readJson(imported.artifacts.inspection);
       assert.equal(inspected.compatibility.analysisStatus, 'unknown');
       assert.equal(inspected.evidence.analysis, undefined);

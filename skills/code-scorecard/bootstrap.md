@@ -53,3 +53,11 @@ node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point App.csproj --
 Local packages must report the manifest's tested versions. Their content hashes isolate caches from published packages and earlier local builds. The local NuGet override uses only that package source. Never fall back to a published package with the same version when testing a local build.
 
 The integration CI checks out the exact CodeMetrics.AI revision in `compatibility.json`, builds and packs both analyzers, and runs `node --test skills/code-scorecard/scripts/tests/integration.test.mjs` with `SCORECARD_NPM_PACKAGE` and `SCORECARD_DOTNET_PACKAGE` pointing to those packages. Canonical schemas and v2 examples come from the npm package, not copies in this skill. Update the source revision and version pins together after the tests pass; release packages before enabling the default pinned install for users.
+
+## Run identity
+
+The helper creates an `auditId` before analysis and a unique `runId` for each ecosystem invocation. These IDs are explicit in stdout, `run.json` and `latest.json`, and are passed to each analyzer. Before using fresh findings or comparing them, the shared validator requires `analysis.runId` and `analysis.auditId` to match the current invocation. Renaming or copying an old findings file into a new run directory cannot satisfy that check. Missing IDs also fail; never backfill an old document with the new IDs.
+
+Keep IDs when saving reports or extracted findings. Comparison artifacts identify current and baseline runs; SARIF preserves the analyzed run IDs. IDs are excluded from finding fingerprints and comparison compatibility. Raw CSV is not sufficient to validate fresh findings.
+
+For an explicit historical `--existing` import, the helper's `runId` identifies the inspection attempt, while `evidenceRunId` and `evidenceAuditId` retain the source document's IDs (null when absent). Such imports always have `fresh: false`; the attempt ID never relabels old evidence as newly analyzed.

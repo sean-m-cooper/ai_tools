@@ -74,12 +74,14 @@ export function execute(options) {
   if (!scopes.length) throw new Error('No supported entry point found. Specify a nested --entry-point or report a qualitative-only audit.');
   if ((options.existing || options.baseline) && scopes.length !== 1) throw new Error('--existing and --baseline require one ecosystem/entry point.');
   if (!options.baseline && (options['fail-on-new'] !== undefined || options['max-score-drop'] !== undefined)) throw new Error('Quality gates require --baseline.');
+  const auditId = randomUUID();
   const results = [];
   for (const scope of scopes) {
-    const directory = path.join(root, '.scorecard', scope.ecosystem, 'runs', randomUUID());
+    const runId = randomUUID();
+    const directory = path.join(root, '.scorecard', scope.ecosystem, 'runs', runId);
     const latest = path.join(root, '.scorecard', scope.ecosystem, 'latest.json');
     const evidence = options.existing ? path.resolve(root, options.existing) : path.join(directory, 'evidence.json');
-    const summary = { ...scope, status: 'running', fresh: !options.existing, artifacts: { evidence, inspection: path.join(directory, 'inspection.json') } };
+    const summary = { ...scope, runId, auditId, status: 'running', fresh: !options.existing, artifacts: { evidence, inspection: path.join(directory, 'inspection.json') } };
     fs.mkdirSync(directory, { recursive: true });
     writeJson(latest, summary);
     try {
@@ -87,7 +89,7 @@ export function execute(options) {
       const variant = scope.ecosystem === 'dotnet' ? options.configuration ?? 'Release' : 'source';
       if (!options.existing) {
         summary.artifacts.metrics = path.join(directory, 'metrics.csv');
-        const args = ['--output', summary.artifacts.metrics, '--scorecard-output', evidence];
+        const args = ['--run-id', runId, '--audit-id', auditId, '--output', summary.artifacts.metrics, '--scorecard-output', evidence];
         if (scope.ecosystem === 'dotnet') {
           args.push('--solution', scope.entryPoint, '--configuration', variant);
           if (options['skip-dependency-probe']) args.push('--skip-dependency-probe');
@@ -103,15 +105,19 @@ export function execute(options) {
         '--expected-ecosystem', scope.ecosystem, '--expected-entry-point', scope.entryPoint, '--expected-variant', variant, '--expected-root', expectedRoot(scope.entryPoint)];
       // Historical imports retain their recorded tool version; an explicit repository pin still takes precedence.
       if (!options.existing || scope.source === 'repository-pin') inspectArgs.push('--expected-version', scope.version);
+      if (!options.existing) inspectArgs.push('--expected-run-id', runId, '--expected-audit-id', auditId);
       summary.validationExitCode = run(process.execPath, inspectArgs, root);
       if (summary.validationExitCode !== 0 || (summary.analyzerExitCode !== undefined && summary.analyzerExitCode !== 0)) throw new Error('Analysis or validation failed. Partial evidence is diagnostic only; CSV must not restore a score.');
       const inspection = readJson(summary.artifacts.inspection);
+      summary.evidenceRunId = inspection.evidence.analysis?.runId ?? null;
+      summary.evidenceAuditId = inspection.evidence.analysis?.auditId ?? null;
       if (!compatibility.supportedEvidenceSchemas.includes(inspection.evidence.schemaVersion)) throw new Error('Unsupported evidence schema.');
       if (!options.existing && inspection.evidence.schemaVersion !== compatibility.preferredEvidenceSchema) throw new Error('Fresh analysis did not emit the preferred schema.');
       summary.status = inspection.compatibility.mode === 'legacy' ? 'legacy' : 'complete';
       if (options.baseline) {
         summary.artifacts.comparison = path.join(directory, 'comparison.json');
         const args = [tooling.evidence, '--input', evidence, '--baseline', path.resolve(root, options.baseline), '--output', summary.artifacts.comparison];
+        if (!options.existing) args.push('--expected-run-id', runId, '--expected-audit-id', auditId);
         for (const key of ['fail-on-new', 'max-score-drop']) if (options[key] !== undefined) args.push('--' + key, options[key]);
         summary.comparisonExitCode = run(process.execPath, args, root);
         if (summary.comparisonExitCode === 1) summary.status = 'gate-failed';
@@ -122,7 +128,7 @@ export function execute(options) {
     writeJson(latest, summary);
     results.push(summary);
   }
-  return { results };
+  return { auditId, results };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {

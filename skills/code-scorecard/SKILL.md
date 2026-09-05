@@ -16,6 +16,7 @@ Use [bootstrap.md](bootstrap.md) and `scripts/run-scorecard.mjs`. The helper dis
 - Honor a requested `.sln`, `.slnx`, `.csproj`, `package.json`, ecosystem, configuration or tsconfig. Otherwise discover both `dotnet` and `javascript-typescript`. A containing solution/workspace takes precedence over its children. Resolve ambiguous candidates with the user before analysis.
 - Produce separate scorecards for each selected ecosystem. No supported entry point means a qualitative-only audit; state the missing deterministic coverage.
 - Read the current helper result and its `artifacts.inspection` path. Runs live under `<repo>/.scorecard/<ecosystem>/runs/<run-id>/`; `latest.json` records the latest attempt, including failure. Old root-level `evidence.json` and CSV files are not fresh evidence.
+- Match `analysis.runId` and `analysis.auditId` to the IDs returned by the current invocation before using findings. Never learn the expected IDs from the findings file itself. The runner enforces this for fresh analysis, including files copied into a new output directory.
 - Use both process status and validated evidence. Helper exit 2 or `status: failed` means deterministic results are unavailable for this audit. Retain partial findings as diagnostics; never recover a score from partial CSV, a previous successful run or a failed probe.
 - `--existing` is an explicit historical import, never an automatic cache. Label it historical and unverified for current source. Version/entry-point matches and mtimes do not prove freshness.
 
@@ -55,7 +56,7 @@ For qualitative dimensions, cite concrete inspected artifacts and apply: 10 exem
 Default output, once per ecosystem:
 
 1. **Scorecard table:** dimension, score, scoring source, scope and concise evidence. Label deterministic, qualitative, historical or unavailable. A scoped deterministic score retains its supplied value.
-2. **Evidence summary:** provenance, freshness, filters, skipped/failed status, calibration and limitations. Link the exact run artifacts.
+2. **Evidence summary:** current `auditId` and per-ecosystem `runId`, provenance, freshness, filters, skipped/failed status, calibration and limitations. Include these IDs in saved scorecards and extracted findings files, retaining the evidence IDs separately for historical imports. Link the exact run artifacts.
 3. **Top three issues:** concrete location, why it matters, recommended action, and basis (`Metrics` or `Current context`). Verify heuristic findings in context before recommending a fix.
 
 An overall score is the unweighted mean of available dimension scores within one ecosystem, rounded to one decimal. Show the denominator and excluded dimensions, and label it partial when coverage is partial. Do not produce an overall for a failed run. Never blend, average or rank scores across ecosystems. For polyglot audits, end with a side-by-side dimension table and separate per-ecosystem overall values.
