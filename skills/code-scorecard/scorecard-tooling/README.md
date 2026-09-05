@@ -1,31 +1,7 @@
-# Scorecard Tooling
+# Optional MSBuild entry point
 
-MSBuild integration for the `code-metrics` global tool. Copy `Directory.Build.targets` to your solution or project root to enable the `Scorecard` target.
+The normal workflow is `node <skill>/scripts/run-scorecard.mjs`; see [bootstrap.md](../bootstrap.md). No build customization is required.
 
-## Prerequisites
+For a repository that explicitly wants an MSBuild `Scorecard` target, import this directory's `Directory.Build.targets` from an existing project/targets file. Merge the import; do not replace the repository's existing `Directory.Build.targets`. Set `ScorecardRunnerPath` to the absolute path of `scripts/run-scorecard.mjs` and `ScorecardRepoRoot` to the audited repository root. `ScorecardEntryPointPath` defaults to the current project, and `ScorecardConfiguration` defaults to the current configuration or Release.
 
-Install the global tool:
-
-```bash
-dotnet tool install -g CodeMetrics.AI
-```
-
-## Usage
-
-```bash
-dotnet build /t:Scorecard
-```
-
-Override the entry point or build configuration:
-
-```bash
-dotnet build .\src\Worker\Worker.csproj /t:Scorecard /p:ScorecardEntryPointPath=".\src\Worker\Worker.csproj"
-dotnet build /t:Scorecard /p:ScorecardConfiguration=Release
-```
-
-## Output
-
-The target produces two files under `.scorecard/dotnet/`:
-
-- `metrics.csv` — VS-compatible raw code metrics
-- `evidence.json` — scored scorecard evidence (schema v2)
+Invoke `dotnet msbuild <project> /t:Scorecard` after restoring it. The target delegates to the same pinned, validated runner. Outputs are the run-specific paths and `latest.json` described in bootstrap.md. It does not invoke or update a global tool. Keep the skill available at the configured runner path, or update the property when moving it.

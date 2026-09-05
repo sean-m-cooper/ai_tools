@@ -1,14 +1,15 @@
 <Project>
   <Target Name="Scorecard">
+    <Error Condition="'$(ScorecardRunnerPath)' == ''" Text="Set ScorecardRunnerPath to the code-scorecard scripts/run-scorecard.mjs path." />
+    <Error Condition="'$(ScorecardRepoRoot)' == ''" Text="Set ScorecardRepoRoot to the audited repository root." />
     <PropertyGroup>
       <ScorecardConfiguration Condition="'$(ScorecardConfiguration)' == ''">$(Configuration)</ScorecardConfiguration>
+      <ScorecardConfiguration Condition="'$(ScorecardConfiguration)' == ''">Release</ScorecardConfiguration>
       <ScorecardSolutionPath Condition="'$(ScorecardSolutionPath)' == ''">$(SolutionPath)</ScorecardSolutionPath>
       <ScorecardEntryPointPath Condition="'$(ScorecardEntryPointPath)' == ''">$(ScorecardSolutionPath)</ScorecardEntryPointPath>
       <ScorecardEntryPointPath Condition="'$(ScorecardEntryPointPath)' == ''">$(MSBuildProjectFullPath)</ScorecardEntryPointPath>
-      <ScorecardOutputDir>$(MSBuildThisFileDirectory).scorecard\dotnet\</ScorecardOutputDir>
     </PropertyGroup>
-    <MakeDir Directories="$(ScorecardOutputDir)" />
-    <Exec Command="code-metrics --solution &quot;$(ScorecardEntryPointPath)&quot; --output &quot;$(ScorecardOutputDir)metrics.csv&quot; --scorecard-output &quot;$(ScorecardOutputDir)evidence.json&quot; --configuration $(ScorecardConfiguration)"
-          WorkingDirectory="$(MSBuildThisFileDirectory)" />
+    <Exec Command="node &quot;$(ScorecardRunnerPath)&quot; --repo &quot;$(ScorecardRepoRoot)&quot; --entry-point &quot;$(ScorecardEntryPointPath)&quot; --configuration &quot;$(ScorecardConfiguration)&quot;"
+          WorkingDirectory="$(ScorecardRepoRoot)" />
   </Target>
 </Project>

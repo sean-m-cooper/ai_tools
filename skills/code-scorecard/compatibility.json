@@ -1,0 +1,13 @@
+{
+  "supportedEvidenceSchemas": [2, 3],
+  "preferredEvidenceSchema": 3,
+  "source": {
+    "repository": "sean-m-cooper/CodeMetrics.AI",
+    "revision": "bb3cb610f51156d8c195b14972891d6c221b5588"
+  },
+  "analyzers": {
+    "dotnet": { "package": "CodeMetrics.AI", "preferredVersion": "2.0.0", "testedVersions": ["2.0.0"] },
+    "javascript-typescript": { "package": "codemetrics-ai", "preferredVersion": "0.2.0", "testedVersions": ["0.2.0"] }
+  },
+  "evidenceToolVersion": "0.2.0"
+}

@@ -1,0 +1,53 @@
+name: Code scorecard integration
+on:
+  pull_request:
+    paths: ['skills/code-scorecard/**', '.github/workflows/code-scorecard-integration.yml']
+  push:
+    branches: [main]
+    paths: ['skills/code-scorecard/**', '.github/workflows/code-scorecard-integration.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  packaged-contract:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - id: contract
+        shell: pwsh
+        run: |
+          $contract = Get-Content skills/code-scorecard/compatibility.json | ConvertFrom-Json
+          "revision=$($contract.source.revision)" >> $env:GITHUB_OUTPUT
+          "repository=$($contract.source.repository)" >> $env:GITHUB_OUTPUT
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.contract.outputs.repository }}
+          ref: ${{ steps.contract.outputs.revision }}
+          path: contract-source
+      - name: Package the pinned analyzers
+        shell: pwsh
+        run: |
+          dotnet pack contract-source/analyzers/dotnet/src/CodeMetrics.AI/CodeMetrics.AI.csproj -c Release -o packages
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm ci --prefix contract-source/analyzers/javascript-typescript
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Push-Location contract-source/analyzers/javascript-typescript
+          npm pack --pack-destination ../../../packages
+          Pop-Location
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify packaged integration
+        shell: pwsh
+        run: |
+          $env:SCORECARD_NPM_PACKAGE = (Get-Item packages/*.tgz).FullName
+          $env:SCORECARD_DOTNET_PACKAGE = (Get-Item packages/*.nupkg).FullName
+          node --test skills/code-scorecard/scripts/tests/integration.test.mjs
+          exit $LASTEXITCODE
