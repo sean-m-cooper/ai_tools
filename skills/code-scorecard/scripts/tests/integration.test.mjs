@@ -124,7 +124,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       for (const entryPoint of ['Legacy.sln', 'Audit.slnx']) {
         const run = success('--entry-point', entryPoint, '--skip-dependency-probe');
         const evidence = readJson(run.artifacts.evidence);
-        assert.equal(evidence.subject.entryPoint, path.join(root, entryPoint));
+        assert.equal(fs.realpathSync.native(evidence.subject.entryPoint), fs.realpathSync.native(path.join(root, entryPoint)));
         assert.equal(evidence.filters.totalUnits, 2);
         assert.equal(evidence.population.members, 2);
         assert.equal(evidence.subject.variant, 'Release');
