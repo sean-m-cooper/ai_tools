@@ -1,92 +1,66 @@
 # Code Scorecard
 
-The `code-scorecard` skill audits a codebase across nine quality dimensions on a 0-10 scale. It uses deterministic analyzer evidence when available and falls back only when a dimension lacks usable deterministic evidence.
+The `code-scorecard` skill audits nine quality dimensions using CodeMetrics.AI's deterministic evidence and targeted qualitative review. It supports .NET solutions (`.sln` and `.slnx`), individual C# projects (`.csproj`), and JavaScript/TypeScript packages or workspaces (`package.json`).
 
-## Output Flags
+## Run an audit
 
-The skill accepts optional flags at invocation, for example: `"run the scorecard against eContract.API.slnx --verbose"`. Flags are additive.
+Ask the agent to use the skill with a specific entry point:
+
+```text
+Use code-scorecard against MyApplication.sln --explain
+Use code-scorecard against MyApplication.slnx --stats
+Use code-scorecard against src/MyApi/MyApi.csproj --verbose
+```
+
+Relative entry points are resolved against the audited repository. Quote paths containing spaces. When no entry point is supplied, the skill discovers nested solutions and packages, preferring a containing solution over individual projects. It asks you to select when several candidates remain.
+
+A solution run scores its production projects. A `.csproj` run scores only the selected project while loading referenced projects for semantic analysis. The .NET analyzer excludes source outside the entry point's directory. Findings are relative to the repository root recorded in the evidence.
+
+Install Node.js 20+ with npm for the shared evidence validator. .NET analysis also needs the .NET 10 SDK and any SDKs/workloads required by the target repository. Restore the chosen solution or project using the repository's normal procedure before the audit. The default configuration is `Release`; request another configuration explicitly when needed.
+
+The skill installs tested tool versions in an isolated cache and honors compatible exact repository pins. It does not modify global installations, dependency manifests or build targets. See the [bootstrap guide](../skills/code-scorecard/bootstrap.md) for direct runner commands, tool versions, coverage input, optional dependency-probe skipping and troubleshooting.
+
+## Output flags
+
+These presentation flags are additive and interpreted by the agent:
 
 | Flag | Output |
-|------|--------|
-| *(none)* | Scorecard table, deterministic evidence summary, and top 3 issues to fix. |
-| `--verbose` | Adds projected score lift, top offenders per metric, and the three-signal breakdown behind deterministic dimensions. |
-| `--stats` | Adds populated formula blocks with actual counts, rates, threshold-derived signal scores, metric scores, dimension scores, and overall-score arithmetic. |
-| `--explain` | Adds a self-contained score-derivation section with filter counts, threshold rows, score arithmetic, metric definitions, and top contributors. |
+|---|---|
+| *(none)* | Scorecard table, evidence summary and top three issues. |
+| `--verbose` | Adds top offenders and available deterministic detail. Projected scores require a measured rerun or supported calculation. |
+| `--stats` | Shows recorded counts, thresholds and score arithmetic; identifies unavailable intermediate values. |
+| `--explain` | Explains the scoring basis, filters, scope, observations, confidence and contributors. |
 
-You can also pass a specific `.sln`/`.slnx` path to scope the audit when a repo contains multiple solutions.
+## Fresh findings and artifacts
 
-## Evidence Paths
+Every ordinary invocation analyzes source afresh. It creates one `auditId` for the invocation and a separate `runId` for each ecosystem. Fresh schema-v3 evidence must contain those exact IDs; copied or renamed stale findings are rejected even if the analyzer exits successfully.
 
-Each individual score is produced from one of three evidence paths, and the output should say which path was used.
-
-| Evidence path | When it is used | How the score is produced |
-|---------------|-----------------|---------------------------|
-| **JSON deterministic evidence** | Preferred path for any ecosystem with `.scorecard/<ecosystem>/evidence.json` | The CodeMetrics.AI analyzer runs static probes, writes schema-v2 evidence, and the skill uses each scored dimension directly from that file after validating schema, ecosystem, entry point, variant, and tool version. |
-| **CSV deterministic fallback** | `.NET` only, for Code Quality and Maintainability when JSON evidence is unavailable or unusable | The skill filters non-production/generated rows from `.scorecard/dotnet/metrics.csv`, derives per-class metrics, scores population/tail/extreme signals against fixed threshold tables, then averages the signal scores. |
-| **Qualitative review** | Dimensions without usable deterministic evidence | The agent inspects targeted files, configs, tests, and docs, then applies the documented scoring anchors literally: 10 = exemplar, 8 = strong, 6 = adequate, 4 = weak, 2 = poor, 0 = absent or harmful. |
-
-## Deterministic Metrics
-
-For the `.NET` CSV fallback, Code Quality combines two metric families:
-
-- **Decomposition ratio**: class cyclomatic complexity divided by member count; high values mean logic is concentrated in large methods.
-- **Max member cyclomatic complexity**: the most complex method in each class; high values identify methods that are hard to test and change safely.
-
-Maintainability uses **Maintainability Index (MI)**, recalibrated around production maintainability rather than Visual Studio's very forgiving default color bands.
-
-Each metric is scored with three signals:
-
-- **Population**: how widespread the smell is across classes.
-- **Tail**: how bad the typical worst slice is (`p90` for complexity metrics, `p10` for MI).
-- **Extreme**: how many catastrophic outliers exist.
-
-## Formulas
-
-The deterministic fallback formulas are:
+Artifacts are written beneath:
 
 ```text
-member_count = count(Member rows belonging to the type)
-decomposition_ratio = class_cyclomatic_complexity / member_count
-max_member_cc = max(member_cyclomatic_complexity for the type)
-
-population_rate = count(classes crossing the smell threshold) / scored_class_count
-extreme_rate = count(classes crossing the catastrophic threshold) / scored_class_count
-tail_value = p90 for decomposition_ratio and max_member_cc; p10 for maintainability_index
-
-signal_score = threshold_lookup(actual signal value)
-
-decomposition_metric_score = mean(population_signal_score, tail_signal_score, extreme_signal_score)
-max_member_cc_metric_score = mean(population_signal_score, tail_signal_score, extreme_signal_score)
-maintainability_metric_score = mean(population_signal_score, tail_signal_score, extreme_signal_score)
-
-code_quality_score = mean(decomposition_metric_score, max_member_cc_metric_score)
-maintainability_score = maintainability_metric_score
-overall_score = mean(applicable_dimension_scores)
+.scorecard/<ecosystem>/runs/<run-id>/
+  metrics.csv
+  evidence.json
+  inspection.json
+  run.json
 ```
 
-`threshold_lookup` means finding the first threshold row the actual signal value satisfies, then using that row's 0/2/4/6/8/10 score. Metric, dimension, and overall scores are rounded to one decimal.
+An optional baseline comparison adds `comparison.json`. The runner returns the exact artifact paths. `.scorecard/<ecosystem>/latest.json` records the latest attempt, including failure; it is not a promise that usable evidence exists. Saved scorecards and extracted findings retain their audit and run IDs.
 
-## `--stats` Example
+Failed or incomplete runs cannot recover scores from an earlier run or leftover CSV. Historical evidence requires an explicit `--existing` import and is labeled historical, never fresh. Schema-v2 imports preserve unknown completeness and provenance fields; they cannot be used for baseline gates through this integration.
 
-When the skill is run with `--stats`, the formulas are emitted with the run's actual numbers filled in, for example:
+## Reading scores
 
-```text
-decomposition_ratio:
-  population_rate = 28 / 412 = 6.8% -> threshold_lookup(6.8%) = 4
-  tail_value = p90(decomposition_ratio) = 3.1 -> threshold_lookup(3.1) = 6
-  extreme_rate = 1 / 412 = 0.2% -> threshold_lookup(0.2%) = 8
-  decomposition_metric_score = mean(4, 6, 8) = 6.0
+Deterministic dimension scores come directly from validated analyzer evidence. Each score is authoritative within its declared scope: for example, a React-hook check covers that subset of Performance & Async. The report identifies skipped dimensions, failed analysis, heuristic findings and coverage limitations.
 
-code_quality_score = mean(6.0, 4.7) = 5.4
-overall_score = mean([7.0, 5.4, 6.0, 8.0, 6.0, 7.0, 8.0, 6.0, 4.7]) = 6.5
-```
+Qualitative review may fill dimensions without implemented or intentionally enabled deterministic coverage when inspected source supports a score. It uses these anchors: 10 exemplary, 8 strong, 6 adequate, 4 weak, 2 poor, 0 absent or harmful. Unsupported judgments are N/A. Qualitative commentary does not replace a supplied deterministic score or erase an analysis failure.
 
-The numbers above are illustrative. Real `--stats` output uses the counts and signal scores from the current scorecard run.
+The overall is the unweighted mean of available dimension scores within one ecosystem, rounded to one decimal. Reports show the denominator and excluded dimensions and label partial coverage. Failed runs have no overall score. Polyglot repositories receive separate ecosystem scorecards; their scores are not averaged or ranked across ecosystems.
 
-## Overall Scores
+Analyzer thresholds and formulas are versioned policies, not universal quality standards. The report includes ruleset, configuration and calibration metadata when available. Baseline fixture calibration verifies regressions; real-project results are needed to assess how useful the thresholds are in practice. Legacy CSV formulas apply only to an explicitly requested, known-complete historical .NET export with verified provenance and no usable JSON; see the [legacy reference](../skills/code-scorecard/csv-fallback.md).
 
-The overall score is the unweighted mean of applicable dimension scores for one ecosystem, rounded to one decimal.
+## Compare runs
 
-Polyglot repositories get separate ecosystem scorecards. Scores are not averaged across ecosystems.
+The runner delegates baseline comparisons and quality gates to CodeMetrics.AI. Use `--baseline <evidence.json>`, optionally with `--fail-on-new warning` or `--max-score-drop 0`. Both evidence files must be complete and compatible in versions, entry point, configuration, ruleset and scope. Run IDs differ by design and do not change stable finding fingerprints.
 
-Use `--stats` when you want compact score arithmetic. Use `--explain` when you need fuller auditability, including filter counts, threshold rows, and top contributors behind the deterministic scores.
+Runner exit 0 means completed execution, exit 1 means a quality gate failed, and exit 2 means setup failure, invalid/incomplete analysis or incompatible evidence. Read the returned status and validated inspection as well as the process exit code.

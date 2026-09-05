@@ -1,3 +1,5 @@
+> Legacy compatibility only: use this method for an explicitly requested, complete, provenance-verified .NET CSV export with no usable JSON. Never use it to recover scores from a failed current analysis. Current JSON scores and their scope take precedence.
+
 # CSV Deterministic Fallback (Dimensions 2 and 9)
 
 > **Ecosystem scope: `dotnet` only.** The filters, archetypes, and thresholds in this file are calibrated for Roslyn metrics on C# code. Never apply them to another ecosystem's CSV; for non-dotnet ecosystems, score dimensions 2 and 9 qualitatively until that ecosystem completes the calibration procedure in the CodeMetrics.AI shared contract (`shared/scorecard-schema/calibration.md`).
