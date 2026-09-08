@@ -33,6 +33,8 @@ The inspection contains the original `evidence` plus compatibility information. 
 5. Cite finding locations relative to `subject.root`, including member when supplied. Use `confidence` and `observations` to distinguish direct evidence from heuristic leads. Treat suppression `status: declared` as a declaration, not proof that a rule was suppressed.
 6. Show tool version, schema, entry point, variant, source freshness, analysis status, ruleset, configuration fingerprint, calibration and population/filter counts when available. `baseline` calibration describes regression fixtures; it does not establish comparability across ecosystems.
 
+For .NET 2.0.1+, `analysis.diagnostics` may contain nonblocking `workspaceWarning` entries on a complete, usable run. Surface these warnings alongside findings. They do not by themselves invalidate scores; actual load/compiler failures still do. Preserve the shared validator's status decision.
+
 Legacy .NET CSV scoring is available only when explicitly requested for a known complete, provenance-verified legacy export with no usable JSON, and only for Code Quality and Maintainability. Read [csv-fallback.md](csv-fallback.md) then. It is never a recovery path for a failed current run. [metrics-glossary.md](metrics-glossary.md) explains that legacy method; its formulas do not replace current analyzer policies.
 
 ## Nine dimensions and qualitative anchors

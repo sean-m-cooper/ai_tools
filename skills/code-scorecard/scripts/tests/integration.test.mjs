@@ -46,7 +46,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
     });
     let dotnet;
     await t.test('project entry points load references but score only the selected project and honor repository pins', () => {
-      write('.config/dotnet-tools.json', '{"version":1,"isRoot":true,"tools":{"codemetrics.ai":{"version":"2.0.0","commands":["code-metrics"]}}}');
+      write('.config/dotnet-tools.json', JSON.stringify({ version: 1, isRoot: true, tools: { 'codemetrics.ai': { version: compatibility.analyzers.dotnet.preferredVersion, commands: ['code-metrics'] } } }));
       const restore = spawnSync('dotnet', ['restore', 'src/App/App.csproj', '--ignore-failed-sources'], { cwd: root, encoding: 'utf8', timeout: 90_000, windowsHide: true });
       assert.equal(restore.status, 0, restore.stdout + restore.stderr);
       dotnet = success('--entry-point', 'src/App/App.csproj', '--skip-dependency-probe');
@@ -64,6 +64,19 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(readJson(debug.artifacts.evidence).population.members, 2);
       const mismatch = invoke('--entry-point', 'src/App/App.csproj', '--configuration', 'Debug', '--skip-dependency-probe', '--baseline', dotnet.artifacts.evidence);
       assert.equal(mismatch.code, 2); assert.equal(mismatch.value.results[0].comparisonExitCode, 2);
+    });
+    await t.test('MSBuild advisory warnings remain visible without invalidating complete evidence', () => {
+      const project = path.join(root, 'src/App/App.csproj');
+      fs.writeFileSync(project, fs.readFileSync(project, 'utf8').replace('</Project>',
+        '<Target Name="AuditWarning" BeforeTargets="CoreCompile"><Warning Code="NU1903" Text="Package advisory fixture" /></Target></Project>'));
+      const run = success('--entry-point', 'src/App/App.csproj', '--skip-dependency-probe');
+      const inspection = readJson(run.artifacts.inspection);
+      assert.equal(run.analyzerExitCode, 0);
+      assert.equal(run.validationExitCode, 0);
+      assert.equal(inspection.usable, true);
+      assert.equal(inspection.evidence.analysis.status, 'complete');
+      assert.ok(inspection.evidence.analysis.diagnostics.some(d => d.kind === 'workspaceWarning' && d.message.includes('Package advisory fixture')));
+      assert.equal(inspection.evidence.dimensions.codeQuality.status, 'scored');
     });
     let initial;
     await t.test('fresh JS runs expose scope and shared gates detect a new warning', () => {
