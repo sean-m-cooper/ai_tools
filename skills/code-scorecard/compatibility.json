@@ -3,10 +3,10 @@
   "preferredEvidenceSchema": 3,
   "source": {
     "repository": "sean-m-cooper/CodeMetrics.AI",
-    "revision": "b7772a846ea5eef918ab1478a55424304a7b11a0"
+    "revision": "f30c8a0a474b7301de774abe2069d1a47aa92bcc"
   },
   "analyzers": {
-    "dotnet": { "package": "CodeMetrics.AI", "preferredVersion": "2.0.1", "testedVersions": ["2.0.0", "2.0.1"] },
+    "dotnet": { "package": "CodeMetrics.AI", "preferredVersion": "2.1.0", "testedVersions": ["2.0.0", "2.0.1", "2.1.0"] },
     "javascript-typescript": { "package": "codemetrics-ai", "preferredVersion": "0.2.0", "testedVersions": ["0.2.0"] }
   },
   "evidenceToolVersion": "0.2.0"

@@ -35,6 +35,10 @@ The inspection contains the original `evidence` plus compatibility information. 
 
 For .NET 2.0.1+, `analysis.diagnostics` may contain nonblocking `workspaceWarning` entries on a complete, usable run. Surface these warnings alongside findings. They do not by themselves invalidate scores; actual load/compiler failures still do. Preserve the shared validator's status decision.
 
+For .NET 2.1.0+, use `architectureMetrics` to explain the recorded eligible populations, hotspot rates, severity penalties and graph/layering cap. A high-confidence coupling measurement is a design-review lead, not proof of a responsibility or boundary defect. Older runs may use a different policy; do not retrofit current arithmetic or infer a denominator from the sampled hotspots or coupling provenance.
+
+For dependency findings, report package, project, target framework and resolved version, plus the available latest version, deprecation reasons, suggested alternative or vulnerability advisory details in `observations`. Counts are package occurrences per project/TFM, not unique package IDs. Distinguish scored outdated candidates from exclusions and unknown framework compatibility; compatible framework assets do not prove an upgrade is safe. If older evidence supplies only aggregate counts, state that package detail is unavailable rather than inventing it.
+
 Legacy .NET CSV scoring is available only when explicitly requested for a known complete, provenance-verified legacy export with no usable JSON, and only for Code Quality and Maintainability. Read [csv-fallback.md](csv-fallback.md) then. It is never a recovery path for a failed current run. [metrics-glossary.md](metrics-glossary.md) explains that legacy method; its formulas do not replace current analyzer policies.
 
 ## Nine dimensions and qualitative anchors

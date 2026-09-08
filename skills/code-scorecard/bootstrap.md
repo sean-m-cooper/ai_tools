@@ -49,7 +49,7 @@ Comparison/gates run in CodeMetrics.AI's shared evidence CLI. Preserve the origi
 ## Coordinated development before publication
 
 ```sh
-node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point App.csproj --skip-dependency-probe --npm-package /path/codemetrics-ai-0.2.0.tgz --dotnet-package /path/CodeMetrics.AI.2.0.1.nupkg --cache /path/test-cache
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point App.csproj --skip-dependency-probe --npm-package /path/codemetrics-ai-0.2.0.tgz --dotnet-package /path/CodeMetrics.AI.2.1.0.nupkg --cache /path/test-cache
 ```
 
 Local packages must report the manifest's tested versions. Their content hashes isolate caches from published packages and earlier local builds. The local NuGet override uses only that package source. Never fall back to a published package with the same version when testing a local build.
