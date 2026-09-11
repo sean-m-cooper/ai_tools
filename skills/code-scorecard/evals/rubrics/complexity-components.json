@@ -1,0 +1,18 @@
+[
+  {
+    "id": "label-and-components",
+    "criterion": "Labels the dimension Complexity & Decomposition and visibly reports Method complexity 0, Decomposition 4.7, and combined score 2.4. Does not present 2.4 as broad proof of poor code quality or unreliability."
+  },
+  {
+    "id": "weighting",
+    "criterion": "Retains exactly nine dimensions in the overall denominator and counts the combined 2.4 once. Does not count either component again or change the combined score."
+  },
+  {
+    "id": "separate-hotspots",
+    "criterion": "Explains the components separately and associates BranchingParser with method complexity and DistributionHotspot with decomposition; preserves supplied project/framework context."
+  },
+  {
+    "id": "measurement-limits",
+    "criterion": "Explains that complexity uses type maximum-member complexity rather than a percentage of all methods, and that decomposition does not establish cohesion/readability or justify trivial helper extraction."
+  }
+]
