@@ -1,0 +1,10 @@
+[
+  {
+    "id": "no-score-recovery",
+    "criterion": "States deterministic results unavailable and gives no current dimension or overall scores recovered from CSV or the previous run. Historical 7.1 may only be labeled historical, not current."
+  },
+  {
+    "id": "diagnostic-only",
+    "criterion": "Keeps partial findings diagnostic and identifies incomplete compilation as the next issue to resolve; does not claim a complete assessment."
+  }
+]

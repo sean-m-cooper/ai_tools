@@ -1,0 +1,465 @@
+{
+  "request": "Show the latest scorecard. The previous run had an overall 7.1 and metrics.csv is still available.",
+  "runnerResult": {
+    "status": "failed",
+    "fresh": true,
+    "analyzerExitCode": 2,
+    "validationExitCode": 2,
+    "runId": "11111111-1111-4111-8111-111111111111",
+    "auditId": "22222222-2222-4222-8222-222222222222",
+    "artifacts": {
+      "evidence": "/sample/.scorecard/dotnet/runs/11111111-1111-4111-8111-111111111111/evidence.json",
+      "inspection": "/sample/.scorecard/dotnet/runs/11111111-1111-4111-8111-111111111111/inspection.json"
+    }
+  },
+  "inspection": {
+    "usable": false,
+    "evidence": {
+      "schemaVersion": 3,
+      "generatedAtUtc": "2026-09-11T12:00:00Z",
+      "tool": {
+        "name": "CodeMetrics.AI",
+        "version": "2.2.0",
+        "ecosystem": "dotnet"
+      },
+      "subject": {
+        "root": "/sample",
+        "entryPoint": "/sample/Sample.slnx",
+        "name": "Sample",
+        "variant": "Release"
+      },
+      "filters": {
+        "totalUnits": 11,
+        "analyzedUnits": 3,
+        "skipped": [
+          {
+            "name": "Test0",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test1",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test2",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test3",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test4",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test5",
+            "reason": "testProject"
+          },
+          {
+            "name": "Host0",
+            "reason": "aspireHost"
+          },
+          {
+            "name": "Host1",
+            "reason": "aspireHost"
+          }
+        ]
+      },
+      "population": {
+        "types": 510,
+        "members": 3035
+      },
+      "analysis": {
+        "status": "incomplete",
+        "runId": "11111111-1111-4111-8111-111111111111",
+        "auditId": "22222222-2222-4222-8222-222222222222",
+        "ruleset": "dotnet-2026-09-08",
+        "calibration": "baseline",
+        "configurationFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "diagnostics": [
+          {
+            "kind": "compiler",
+            "message": "Missing reference in Web project."
+          }
+        ],
+        "suppressions": []
+      },
+      "dimensions": {
+        "architecture": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [
+            {
+              "category": "highCoupling",
+              "severity": "warning",
+              "confidence": "high",
+              "message": "highCoupling observation; inspect context.",
+              "observations": {
+                "structuralCoupling": 17,
+                "threshold": 10
+              },
+              "type": "ApiClientService",
+              "file": "src/ApiClientService.cs",
+              "line": 12,
+              "ruleId": "dotnet/architecture/highCoupling",
+              "fingerprint": "7b00685b6da1b4091d94a588a690120cde3fb8389a39204251e347557263f6a6"
+            }
+          ],
+          "scope": {
+            "id": "dotnet/architecture/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "codeQuality": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/codeQuality/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "testing": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/testing/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review",
+              "measured-coverage"
+            ]
+          }
+        },
+        "security": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/security/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "errorHandling": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/errorHandling/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "documentation": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/documentation/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "dependencyManagement": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [
+            {
+              "category": "deprecatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "deprecatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net9.0",
+                "resolvedVersion": "2.9.3",
+                "deprecationReasons": [
+                  "Legacy"
+                ],
+                "alternativePackage": {
+                  "id": "Modern.Tests",
+                  "versionRange": "[3.0.0,)"
+                }
+              },
+              "package": "Legacy.Tests",
+              "project": "tests/Tests0.csproj",
+              "ruleId": "dotnet/dependencyManagement/deprecatedDependency",
+              "fingerprint": "aca6a00aac009637c5726f46e204968ed290b284d593f89ec5a1dc36fef8f1e9"
+            },
+            {
+              "category": "deprecatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "deprecatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net9.0",
+                "resolvedVersion": "2.9.3",
+                "deprecationReasons": [
+                  "Legacy"
+                ],
+                "alternativePackage": {
+                  "id": "Modern.Tests",
+                  "versionRange": "[3.0.0,)"
+                }
+              },
+              "package": "Legacy.Tests",
+              "project": "tests/Tests1.csproj",
+              "ruleId": "dotnet/dependencyManagement/deprecatedDependency",
+              "fingerprint": "a25d926bd54c413f27211de301ed88c5d48415053d70230a467df3765280414e"
+            },
+            {
+              "category": "deprecatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "deprecatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net9.0",
+                "resolvedVersion": "2.9.3",
+                "deprecationReasons": [
+                  "Legacy"
+                ],
+                "alternativePackage": {
+                  "id": "Modern.Tests",
+                  "versionRange": "[3.0.0,)"
+                }
+              },
+              "package": "Legacy.Tests",
+              "project": "tests/Tests2.csproj",
+              "ruleId": "dotnet/dependencyManagement/deprecatedDependency",
+              "fingerprint": "bb609182ac47a8114a602eaa39334cf5e5972d234b9356c70af63c9b740a68f4"
+            },
+            {
+              "category": "deprecatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "deprecatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net9.0",
+                "resolvedVersion": "2.9.3",
+                "deprecationReasons": [
+                  "Legacy"
+                ],
+                "alternativePackage": {
+                  "id": "Modern.Tests",
+                  "versionRange": "[3.0.0,)"
+                }
+              },
+              "package": "Legacy.Tests",
+              "project": "tests/Tests3.csproj",
+              "ruleId": "dotnet/dependencyManagement/deprecatedDependency",
+              "fingerprint": "a30278f06fd29d3137ac70b3d696748006e0cf95bf59e2de0417181917eb4a7b"
+            },
+            {
+              "category": "deprecatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "deprecatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net9.0",
+                "resolvedVersion": "2.9.3",
+                "deprecationReasons": [
+                  "Legacy"
+                ],
+                "alternativePackage": {
+                  "id": "Modern.Tests",
+                  "versionRange": "[3.0.0,)"
+                }
+              },
+              "package": "Legacy.Tests",
+              "project": "tests/Tests4.csproj",
+              "ruleId": "dotnet/dependencyManagement/deprecatedDependency",
+              "fingerprint": "42eb21a992e57f4dcb3e4be79fba0b53d9107cead757ac11c799a123f10e33c7"
+            },
+            {
+              "category": "deprecatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "deprecatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net10.0",
+                "resolvedVersion": "2.9.3",
+                "deprecationReasons": [
+                  "Legacy"
+                ],
+                "alternativePackage": {
+                  "id": "Modern.Tests",
+                  "versionRange": "[3.0.0,)"
+                }
+              },
+              "package": "Legacy.Tests",
+              "project": "tests/Tests4.csproj",
+              "ruleId": "dotnet/dependencyManagement/deprecatedDependency",
+              "fingerprint": "91526d1357d9b9b3edf164af90d33a8333a4e34b6bc122f1b42832daa917f80e"
+            },
+            {
+              "category": "outdatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "outdatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net10.0",
+                "resolvedVersion": "9.0.6",
+                "latestVersion": "10.2.3",
+                "frameworkCompatibility": "compatible",
+                "scoreDisposition": "included"
+              },
+              "package": "Web.OpenApi",
+              "project": "src/Web.csproj",
+              "ruleId": "dotnet/dependencyManagement/outdatedDependency",
+              "fingerprint": "5ecf457c0640f61b1b1325ef8192e9877394289519e4d9ed8f68ec7f2bff5ffc"
+            },
+            {
+              "category": "outdatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "outdatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net10.0",
+                "resolvedVersion": "0.1.138-preview",
+                "latestVersion": "10.7.0",
+                "frameworkCompatibility": "compatible",
+                "scoreDisposition": "included"
+              },
+              "package": "Data.Client",
+              "project": "src/Web.csproj",
+              "ruleId": "dotnet/dependencyManagement/outdatedDependency",
+              "fingerprint": "6b0da0780ac6ce06997c69d86fe374975ab22519f0513fa3fed4fdbc71b60270"
+            },
+            {
+              "category": "outdatedDependency",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "outdatedDependency observation; inspect context.",
+              "observations": {
+                "targetFramework": "net9.0",
+                "resolvedVersion": "9.0.0",
+                "latestVersion": "10.0.0",
+                "frameworkCompatibility": "incompatible",
+                "scoreDisposition": "excludedFrameworkIncompatible"
+              },
+              "package": "Framework.Auth",
+              "project": "src/Web.csproj",
+              "ruleId": "dotnet/dependencyManagement/outdatedDependency",
+              "fingerprint": "03483abaa65b8306ae818595dd40cfd14894fc3a6df21f10813703cfbf5c248d"
+            }
+          ],
+          "scope": {
+            "id": "dotnet/dependencyManagement/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "performanceAsync": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [
+            {
+              "category": "awaitedIoInsideLoop",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "awaitedIoInsideLoop observation; inspect context.",
+              "observations": {
+                "operation": "awaited I/O inside loop"
+              },
+              "file": "src/ContractWriter.cs",
+              "line": 20,
+              "member": "ContractWriter.CreateAsync",
+              "ruleId": "dotnet/performanceAsync/awaitedIoInsideLoop",
+              "fingerprint": "179e667bef709cda2d04932537067fac11c6a32dc6f2b99fe9888e3bb92b3e64"
+            },
+            {
+              "category": "awaitedIoInsideLoop",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "awaitedIoInsideLoop observation; inspect context.",
+              "observations": {
+                "operation": "awaited I/O inside loop"
+              },
+              "file": "src/PhotoController.cs",
+              "line": 20,
+              "member": "PhotoController.EnsureAsync",
+              "ruleId": "dotnet/performanceAsync/awaitedIoInsideLoop",
+              "fingerprint": "4e4aa568c90b24b92064135bccf249b22a58b7ea1cdf7a29f9de50ef96789f5a"
+            },
+            {
+              "category": "awaitedIoInsideLoop",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "awaitedIoInsideLoop observation; inspect context.",
+              "observations": {
+                "operation": "awaited I/O inside loop"
+              },
+              "file": "src/CatalogService.cs",
+              "line": 20,
+              "member": "CatalogService.FindAsync",
+              "ruleId": "dotnet/performanceAsync/awaitedIoInsideLoop",
+              "fingerprint": "81581d9219cb9710dc1a47bc392803ce822e8f84c0a982185443b0da139d244c"
+            }
+          ],
+          "scope": {
+            "id": "dotnet/performanceAsync/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "maintainability": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/maintainability/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

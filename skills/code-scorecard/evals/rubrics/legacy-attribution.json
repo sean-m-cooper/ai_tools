@@ -1,0 +1,14 @@
+[
+  {
+    "id": "unknown-attribution",
+    "criterion": "Keeps dependency score 4 authoritative but does not identify deprecation or outdated findings as the selected trigger, claim combined deductions, or invent score lifts; acknowledges missing attribution."
+  },
+  {
+    "id": "policy-change",
+    "criterion": "Distinguishes current 2.1.0 architecture population policy from the earlier warning-count policy; does not claim source improvement, unchanged source or a valid baseline gate from these incompatible scores."
+  },
+  {
+    "id": "version-accuracy",
+    "criterion": "Uses recorded tool version 2.1.0 and does not silently upgrade or relabel evidence."
+  }
+]

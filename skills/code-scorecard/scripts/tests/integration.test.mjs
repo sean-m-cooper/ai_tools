@@ -53,6 +53,10 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(dotnet.source, 'repository-pin');
       const inspected = readJson(dotnet.artifacts.inspection);
       assert.equal(inspected.evidence.schemaVersion, 3);
+      for (const dimension of Object.values(inspected.evidence.dimensions)) {
+        if (dimension.status === 'scored') assert.equal(dimension.scoringDecision.finalScore, dimension.score);
+        else assert.equal(dimension.scoringDecision, undefined);
+      }
       assert.equal(inspected.evidence.analysis.runId, dotnet.runId);
       assert.equal(inspected.evidence.analysis.auditId, dotnet.auditId);
       assert.equal(inspected.evidence.filters.totalUnits, 1);
@@ -155,6 +159,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       const run = broken.value.results[0];
       assert.equal(run.status, 'failed'); assert.equal(run.analyzerExitCode, 2);
       assert.equal(readJson(run.artifacts.evidence).dimensions.codeQuality.score, undefined);
+      assert.equal(readJson(run.artifacts.evidence).dimensions.codeQuality.scoringDecision, undefined);
       assert.equal(readJson(path.join(root, '.scorecard/javascript-typescript/latest.json')).status, 'failed');
       assert.ok(fs.existsSync(initial.artifacts.metrics));
     });

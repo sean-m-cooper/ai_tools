@@ -1,0 +1,22 @@
+[
+  {
+    "id": "dependency-cause",
+    "criterion": "Attributes dependency score 4 to the selected deprecation condition; explicitly separates the two included outdated occurrences as not further reducing this run score. Does not sum independent deductions or promise a score lift."
+  },
+  {
+    "id": "package-grouping",
+    "criterion": "Groups Legacy.Tests as one distinct deprecated package with six project/TFM occurrences across five projects, retains net9.0/net10.0 and version 2.9.3, and treats Modern.Tests as a review candidate."
+  },
+  {
+    "id": "upgrade-limits",
+    "criterion": "Keeps Framework.Auth excluded and treats compatible Web.OpenApi/Data.Client versions as candidates, not proven safe or required upgrades."
+  },
+  {
+    "id": "partial-overall",
+    "criterion": "Reports overall 7.1 with 9/9 dimensions scored and labels every overall presentation as a partial assessment; does not equate Testing 10 with measured coverage."
+  },
+  {
+    "id": "architecture-cap",
+    "criterion": "Reports coupling as limiting architecture at 7.3 and graph cap 10 as nonbinding, without prescribing a split from coupling alone."
+  }
+]
