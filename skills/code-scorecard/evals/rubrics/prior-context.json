@@ -1,0 +1,18 @@
+[
+  {
+    "id": "prior-freshness",
+    "criterion": "If prior intent or safety conclusions are reused, explicitly identifies them as prior context not reverified this run; fresh metrics do not count as rechecking intent."
+  },
+  {
+    "id": "no-dismissal",
+    "criterion": "Does not dismiss CatalogService finding as resolved, safe or intentional based on unverified prior context."
+  },
+  {
+    "id": "concurrency-review",
+    "criterion": "Recommends inspecting ordering, side effects and shared state before batching/concurrency; does not assert HTTP loop independence or prescribe Task.WhenAll."
+  },
+  {
+    "id": "coupling-review",
+    "criterion": "Presents coupling as a responsibility/dependency review lead, not proof of an SRP defect or a requirement to split types."
+  }
+]

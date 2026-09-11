@@ -1,0 +1,201 @@
+{
+  "notes": [
+    "Synthetic cases; generated reports and a separate model judge, not wording tests.",
+    "Initial attribution evaluation caught a repeated overall calculation missing its partial-scope qualification. The skill was corrected and all five cases were regenerated.",
+    "Both judge controls matched their expected outcomes. Model-judged success is evidence, not proof."
+  ],
+  "generation": {
+    "startedAtUtc": "2026-09-11T20:32:13.177Z",
+    "skillSha256": "fe4c3c5c9509f0e497c53fe89dc418a220aa232fb2158e25f6a1f333db2ff678",
+    "adapter": "codex exec, fresh ephemeral read-only processes, CLI default model, user config ignored",
+    "controls": false,
+    "cases": [
+      {
+        "id": "attribution",
+        "inputSha256": "aa2e726d4bdd3ebac57e0c966e3a888ca65e53b467975f71d035a7b24359b03a",
+        "criteriaSha256": "df5b2e88032b0601babfa1922f0547dd5eff827944f8a2ed9476e4202104d890",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 55379,
+            "judgmentMs": 21674,
+            "generator": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "judge": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "reportSha256": "6615ca12a06c27a183b04c5db8971622e6479be4a288aa76024cd8b7e8cefbda"
+          }
+        ]
+      },
+      {
+        "id": "prior-context",
+        "inputSha256": "272cdce32705aa1143badaacb6fe6c72eaeae83d4ac4916badebd76f4fe7e3e7",
+        "criteriaSha256": "e86757092afd6ad282692a564c0f0efb89d9865de92397bf7e99b320ebc928aa",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 50633,
+            "judgmentMs": 18471,
+            "generator": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "judge": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "reportSha256": "9fef7d4fe1a379c637b3b7adf957367e51f902da5aa090ebe0b432fdc957564d"
+          }
+        ]
+      },
+      {
+        "id": "legacy-attribution",
+        "inputSha256": "44c36761971d4770dfa8dca36d63c1e1bd60bab1511a05b19c6a69f7f5643850",
+        "criteriaSha256": "8470d421b2ba7dd2d822348d55365a2fd8bed3cd3bba8760c5f4c4a9ab81fde8",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 58577,
+            "judgmentMs": 11323,
+            "generator": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "judge": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "reportSha256": "574800592336968f8cf98e29e7b2433dff12f4c93e85ba20e5ff08a10effcbb2"
+          }
+        ]
+      },
+      {
+        "id": "failed-run",
+        "inputSha256": "510a7a5802e29dc5462e3d14a0f2fa560637b24cb312d9016e404014d4183af1",
+        "criteriaSha256": "9f116cb789a7d87d9f494953c3dea5ed34e21a0b1e0848d54049ed47078f28ef",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 41086,
+            "judgmentMs": 12669,
+            "generator": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "judge": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "reportSha256": "0a2aba9a88c97daa054066f518b21db5fea3ee75b6914647302bd5ba0cda2e51"
+          }
+        ]
+      },
+      {
+        "id": "rechecked-context",
+        "inputSha256": "22348971a3af7f9673f4136ede7cf2691d94c4b99e8b3c7cc12746de92f6c8c2",
+        "criteriaSha256": "00dfecc05209af10e4abd935782e7c9954449b62e6c01123dfbcc257de51a8d0",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 47781,
+            "judgmentMs": 15502,
+            "generator": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "judge": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.153.4"
+            },
+            "reportSha256": "f679b5181c6b98733a74aeb2c7805746b968ef1cb72ef27e3fa3b4158df7b823"
+          }
+        ]
+      }
+    ]
+  },
+  "controls": {
+    "startedAtUtc": "2026-09-11T20:25:26.637Z",
+    "skillSha256": "2be9151fdb5ef41e7aff55909917525d1f7142ee71a8b2553600d7558d365569",
+    "adapter": "codex exec, fresh ephemeral read-only processes, configured default model",
+    "controls": true,
+    "cases": [
+      {
+        "id": "attribution",
+        "inputSha256": "aa2e726d4bdd3ebac57e0c966e3a888ca65e53b467975f71d035a7b24359b03a",
+        "criteriaSha256": "df5b2e88032b0601babfa1922f0547dd5eff827944f8a2ed9476e4202104d890",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "accurate",
+            "passed": true,
+            "failures": [],
+            "generationMs": null,
+            "judgmentMs": 20784
+          },
+          {
+            "name": "inaccurate",
+            "passed": true,
+            "failures": [
+              "architecture-cap",
+              "dependency-cause",
+              "package-grouping",
+              "partial-overall",
+              "upgrade-limits"
+            ],
+            "generationMs": null,
+            "judgmentMs": 19094
+          }
+        ]
+      }
+    ]
+  }
+}

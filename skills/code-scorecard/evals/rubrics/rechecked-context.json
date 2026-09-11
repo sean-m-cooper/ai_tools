@@ -1,0 +1,14 @@
+[
+  {
+    "id": "current-evidence",
+    "criterion": "Uses current CatalogService source and supplied behavior requirement to recheck the earlier hypothesis and cites the current source or lines. Does not label all context unverified when actual current evidence was supplied."
+  },
+  {
+    "id": "preserve-behavior",
+    "criterion": "Explains why naive parallelization changes early-exit behavior or violates shared DbContext constraints; keeps deterministic finding/score rather than erasing them."
+  },
+  {
+    "id": "other-loops",
+    "criterion": "Does not extend this verified conclusion to ContractWriter/PhotoController whose current source is absent."
+  }
+]

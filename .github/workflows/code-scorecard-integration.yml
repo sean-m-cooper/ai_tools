@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - name: Verify behavioral evaluation harness
+        run: node --test skills/code-scorecard/evals/run.test.mjs
       - id: contract
         shell: pwsh
         run: |

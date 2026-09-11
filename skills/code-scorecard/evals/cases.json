@@ -1,0 +1,45 @@
+[
+  {
+    "id": "attribution",
+    "input": "fixtures/attribution.json",
+    "criteria": "rubrics/attribution.json",
+    "controls": [
+      {
+        "report": "controls/accurate.md",
+        "expectedFailures": [],
+        "name": "accurate"
+      },
+      {
+        "report": "controls/inaccurate.md",
+        "expectedFailures": [
+          "dependency-cause",
+          "package-grouping",
+          "upgrade-limits",
+          "partial-overall",
+          "architecture-cap"
+        ],
+        "name": "inaccurate"
+      }
+    ]
+  },
+  {
+    "id": "prior-context",
+    "input": "fixtures/prior-context.json",
+    "criteria": "rubrics/prior-context.json"
+  },
+  {
+    "id": "legacy-attribution",
+    "input": "fixtures/legacy-attribution.json",
+    "criteria": "rubrics/legacy-attribution.json"
+  },
+  {
+    "id": "failed-run",
+    "input": "fixtures/failed-run.json",
+    "criteria": "rubrics/failed-run.json"
+  },
+  {
+    "id": "rechecked-context",
+    "input": "fixtures/rechecked-context.json",
+    "criteria": "rubrics/rechecked-context.json"
+  }
+]
