@@ -101,8 +101,8 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(readJson(latest.artifacts.comparison).currentRun.runId, latest.runId);
       assert.equal(readJson(latest.artifacts.comparison).new.length, 1);
     });
-    await t.test('a producer returning old findings at the new path is rejected despite exit zero', () => {
-      const tooling = installTools({ cache, 'npm-package': npmPackage }, compatibility);
+    await t.test('a producer returning old findings at the new path is rejected despite exit zero', async () => {
+      const tooling = await installTools({ cache, 'npm-package': npmPackage }, compatibility);
       const originalCli = fs.readFileSync(tooling.js);
       try {
         fs.writeFileSync(tooling.js, `import fs from 'node:fs'; fs.copyFileSync(${JSON.stringify(initial.artifacts.evidence)}, process.argv[process.argv.indexOf('--scorecard-output') + 1]);`);
@@ -163,8 +163,8 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(readJson(path.join(root, '.scorecard/javascript-typescript/latest.json')).status, 'failed');
       assert.ok(fs.existsSync(initial.artifacts.metrics));
     });
-    await t.test('canonical v2 is explicitly historical, has unknown provenance fields and cannot be gated', () => {
-      const tooling = installTools({ cache, 'npm-package': npmPackage }, compatibility);
+    await t.test('canonical v2 is explicitly historical, has unknown provenance fields and cannot be gated', async () => {
+      const tooling = await installTools({ cache, 'npm-package': npmPackage }, compatibility);
       const legacy = readJson(path.join(tooling.packageRoot, 'dist/contract-examples/javascript-typescript-evidence.json'));
       legacy.subject = { root, entryPoint: path.join(root, 'ui/package.json'), name: 'ui', variant: 'source' };
       write('archive/v2.json', JSON.stringify(legacy));
