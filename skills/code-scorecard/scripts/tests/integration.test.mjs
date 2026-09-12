@@ -53,6 +53,11 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(dotnet.source, 'repository-pin');
       const inspected = readJson(dotnet.artifacts.inspection);
       assert.equal(inspected.evidence.schemaVersion, 3);
+      assert.equal(dotnet.ruleCatalog.status, 'available');
+      const catalog = readJson(dotnet.artifacts.ruleCatalog);
+      assert.equal(catalog.tool.version, inspected.evidence.tool.version);
+      assert.equal(catalog.rules.find(rule => rule.code === 'CMAI5001').ruleId, 'dotnet/errorHandling/emptyCatch');
+      assert.equal(catalog.rules.find(rule => rule.code === 'CMAI1001').annotation.supported, false);
       for (const dimension of Object.values(inspected.evidence.dimensions)) {
         if (dimension.status === 'scored') assert.equal(dimension.scoringDecision.finalScore, dimension.score);
         else assert.equal(dimension.scoringDecision, undefined);

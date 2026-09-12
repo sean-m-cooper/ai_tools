@@ -62,6 +62,8 @@ The integration CI checks out the exact CodeMetrics.AI revision in `compatibilit
 
 ## Run identity
 
+For fresh .NET runs whose evidence advertises a packaged rule catalog, the helper runs `code-metrics rules --format json` using the same isolated executable and saves validated definitions as `artifacts.ruleCatalog`. It matches package version, catalog version and rule references before exposing annotation guidance. If catalog retrieval fails, `ruleCatalog.status` is `unavailable` with a reason; validated analysis scores remain available. Older packages and historical imports do not use another version's catalog. Read supported scopes and examples from that artifact instead of maintaining a skill-local list of CMAI codes.
+
 The helper creates an `auditId` before analysis and a unique `runId` for each ecosystem invocation. These IDs are explicit in stdout, `run.json` and `latest.json`, and are passed to each analyzer. Before using fresh findings or comparing them, the shared validator requires `analysis.runId` and `analysis.auditId` to match the current invocation. Renaming or copying an old findings file into a new run directory cannot satisfy that check. Missing IDs also fail; never backfill an old document with the new IDs.
 
 Keep IDs when saving reports or extracted findings. Comparison artifacts identify current and baseline runs; SARIF preserves the analyzed run IDs. IDs are excluded from finding fingerprints and comparison compatibility. Raw CSV is not sufficient to validate fresh findings.

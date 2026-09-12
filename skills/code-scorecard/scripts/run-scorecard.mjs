@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { readJson, writeJson, run, installTools } from './runtime.mjs';
+import { readPackagedRuleCatalog } from './rule-catalog.mjs';
 
 export const compatibility = readJson(new URL('../compatibility.json', import.meta.url));
 const excluded = new Set(['.git', '.scorecard', '.worktrees', 'node_modules', 'bin', 'obj', 'dist', 'build', 'vendor', '.next', 'coverage', '.venv', 'venv', 'TestResults', 'fixtures', '__fixtures__', 'testdata']);
@@ -116,6 +117,20 @@ export async function execute(options) {
       if (!compatibility.supportedEvidenceSchemas.includes(inspection.evidence.schemaVersion)) throw new Error('Unsupported evidence schema.');
       if (!options.existing && inspection.evidence.schemaVersion !== compatibility.preferredEvidenceSchema) throw new Error('Fresh analysis did not emit the preferred schema.');
       summary.status = inspection.compatibility.mode === 'legacy' ? 'legacy' : 'complete';
+      if (scope.ecosystem === 'dotnet') {
+        summary.ruleCatalog = { status: 'unavailable', reason: options.existing ? 'Historical import; no catalog loaded from another package.' : 'Analyzer evidence does not advertise a packaged rule catalog.' };
+        if (!options.existing && Object.values(inspection.evidence.dimensions).some(dimension => dimension.ruleCatalog)) {
+          try {
+            const catalogPath = path.join(directory, 'rules.json');
+            const catalog = await readPackagedRuleCatalog(tooling.dotnet, inspection.evidence, catalogPath, root);
+            summary.artifacts.ruleCatalog = catalogPath;
+            summary.ruleCatalog = { status: 'available', catalogVersion: catalog.catalogVersion, toolVersion: catalog.tool.version };
+          } catch (error) {
+            // Catalog guidance is optional; its failure cannot change validated analysis scores.
+            summary.ruleCatalog.reason = error.message;
+          }
+        }
+      }
       if (options.baseline) {
         summary.artifacts.comparison = path.join(directory, 'comparison.json');
         const args = [tooling.evidence, '--input', evidence, '--baseline', path.resolve(root, options.baseline), '--output', summary.artifacts.comparison];

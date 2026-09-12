@@ -3,7 +3,7 @@
   "preferredEvidenceSchema": 3,
   "source": {
     "repository": "sean-m-cooper/CodeMetrics.AI",
-    "revision": "fb5e3438b999b56320dc8189a737429c2f4e8312"
+    "revision": "674338e735520104502f5531a5593f801daf52a8"
   },
   "analyzers": {
     "dotnet": { "package": "CodeMetrics.AI", "preferredVersion": "2.3.0", "testedVersions": ["2.0.0", "2.0.1", "2.1.0", "2.2.0", "2.3.0"] },
