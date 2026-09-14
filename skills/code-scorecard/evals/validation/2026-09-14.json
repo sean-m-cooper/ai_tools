@@ -1,0 +1,48 @@
+{
+  "startedAtUtc": "2026-09-14T15:56:29.204Z",
+  "skillSha256": "50c8dc16cc484a38811daeac11e3ab441e0ccc5f5df8f5f917aaa5cc1a994dc7",
+  "adapter": "codex exec, fresh ephemeral read-only processes, CLI default model, user config ignored",
+  "controls": false,
+  "cases": [
+    {
+      "id": "dependency-unavailable",
+      "inputSha256": "dce696b37fbc773f3bfd1f833f0d2bac8824ac5ad29898c73fc41160cca581b8",
+      "criteriaSha256": "7b948feb59f1eb567a51143327aa94e1e5efb8b326e667e6b6470127edfe06e3",
+      "status": "passed",
+      "samples": [
+        {
+          "name": "generated",
+          "passed": true,
+          "failures": [],
+          "generationMs": 40850,
+          "judgmentMs": 12944,
+          "generator": {
+            "model": "gpt-6-astra",
+            "provider": "openai",
+            "sandbox": "read-only",
+            "reasoning effort": "none",
+            "cliVersion": "0.153.4"
+          },
+          "judge": {
+            "model": "gpt-6-astra",
+            "provider": "openai",
+            "sandbox": "read-only",
+            "reasoning effort": "none",
+            "cliVersion": "0.153.4"
+          },
+          "reportSha256": "ab8cba7c7ad8ad7011215f03165c358af74dd0773b63cd33b0b8b2df786ce71f"
+        }
+      ]
+    }
+  ],
+  "packagedIntegration": {
+    "testsPassed": 12,
+    "dotnetVersion": "2.3.0",
+    "analyzerRevision": "2ef5851f4a33287f58cee229975808dac90894e1",
+    "nugetSha256": "2e1c989a2b3ddf3aad707dd0546485627deca346e32f982f34d61390d8b59bbe",
+    "inspectorVersion": "0.3.0",
+    "inspectorSource": "published npm tarball",
+    "offlineHarnessTestsPassed": 3
+  },
+  "scope": "One new generated dependency-unavailable report and independent judgment; earlier cases retain their separately recorded validation. Packaged integration covers all 11 subcases plus the parent test."
+}

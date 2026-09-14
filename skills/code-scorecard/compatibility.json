@@ -1,13 +1,33 @@
 {
-  "supportedEvidenceSchemas": [2, 3],
+  "supportedEvidenceSchemas": [
+    2,
+    3
+  ],
   "preferredEvidenceSchema": 3,
   "source": {
     "repository": "sean-m-cooper/CodeMetrics.AI",
-    "revision": "d0f214ed573affebbbb00bd509eaf750109fdb4f"
+    "revision": "2ef5851f4a33287f58cee229975808dac90894e1"
   },
   "analyzers": {
-    "dotnet": { "package": "CodeMetrics.AI", "preferredVersion": "2.2.0", "testedVersions": ["2.0.0", "2.0.1", "2.1.0", "2.2.0"] },
-    "javascript-typescript": { "package": "codemetrics-ai", "preferredVersion": "0.3.0", "testedVersions": ["0.2.0", "0.3.0"] }
+    "dotnet": {
+      "package": "CodeMetrics.AI",
+      "preferredVersion": "2.3.0",
+      "testedVersions": [
+        "2.0.0",
+        "2.0.1",
+        "2.1.0",
+        "2.2.0",
+        "2.3.0"
+      ]
+    },
+    "javascript-typescript": {
+      "package": "codemetrics-ai",
+      "preferredVersion": "0.3.0",
+      "testedVersions": [
+        "0.2.0",
+        "0.3.0"
+      ]
+    }
   },
   "evidenceToolVersion": "0.3.0"
 }

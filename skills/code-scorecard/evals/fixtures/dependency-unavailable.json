@@ -1,0 +1,325 @@
+{
+  "request": "Report this scorecard. Explain whether the dependency lookup failures are code defects and whether you can calculate a score. Preserve independently verified findings.",
+  "runnerResult": {
+    "status": "failed",
+    "fresh": true,
+    "analyzerExitCode": 2,
+    "validationExitCode": 2,
+    "runId": "11111111-1111-4111-8111-111111111111",
+    "auditId": "22222222-2222-4222-8222-222222222222",
+    "artifacts": {
+      "evidence": "/sample/.scorecard/dotnet/runs/11111111-1111-4111-8111-111111111111/evidence.json",
+      "inspection": "/sample/.scorecard/dotnet/runs/11111111-1111-4111-8111-111111111111/inspection.json"
+    }
+  },
+  "inspection": {
+    "usable": false,
+    "evidence": {
+      "schemaVersion": 3,
+      "generatedAtUtc": "2026-09-11T12:00:00Z",
+      "tool": {
+        "name": "CodeMetrics.AI",
+        "version": "2.3.0",
+        "ecosystem": "dotnet"
+      },
+      "subject": {
+        "root": "/sample",
+        "entryPoint": "/sample/Sample.slnx",
+        "name": "Sample",
+        "variant": "Release"
+      },
+      "filters": {
+        "totalUnits": 11,
+        "analyzedUnits": 3,
+        "skipped": [
+          {
+            "name": "Test0",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test1",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test2",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test3",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test4",
+            "reason": "testProject"
+          },
+          {
+            "name": "Test5",
+            "reason": "testProject"
+          },
+          {
+            "name": "Host0",
+            "reason": "aspireHost"
+          },
+          {
+            "name": "Host1",
+            "reason": "aspireHost"
+          }
+        ]
+      },
+      "population": {
+        "types": 510,
+        "members": 3035
+      },
+      "analysis": {
+        "status": "incomplete",
+        "runId": "11111111-1111-4111-8111-111111111111",
+        "auditId": "22222222-2222-4222-8222-222222222222",
+        "ruleset": "dotnet-2026-09-08",
+        "calibration": "baseline",
+        "configurationFingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "diagnostics": [],
+        "suppressions": []
+      },
+      "dimensions": {
+        "architecture": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [
+            {
+              "category": "highCoupling",
+              "severity": "warning",
+              "confidence": "high",
+              "message": "highCoupling observation; inspect context.",
+              "observations": {
+                "structuralCoupling": 17,
+                "threshold": 10
+              },
+              "type": "ApiClientService",
+              "file": "src/ApiClientService.cs",
+              "line": 12,
+              "ruleId": "dotnet/architecture/highCoupling",
+              "fingerprint": "7b00685b6da1b4091d94a588a690120cde3fb8389a39204251e347557263f6a6"
+            }
+          ],
+          "scope": {
+            "id": "dotnet/architecture/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "codeQuality": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/codeQuality/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "testing": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/testing/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review",
+              "measured-coverage"
+            ]
+          }
+        },
+        "security": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/security/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "errorHandling": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/errorHandling/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "documentation": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/documentation/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "dependencyManagement": {
+          "status": "failed",
+          "basis": "Dependency compatibility assessment unavailable; no dependency score is assigned.",
+          "findings": [
+            {
+              "category": "vulnerableDirectDependency",
+              "severity": "error",
+              "package": "Verified.Risk",
+              "message": "Confirmed High advisory from successful vulnerability query.",
+              "observations": {
+                "vulnerabilities": [
+                  {
+                    "severity": "High",
+                    "advisoryurl": "https://example.test/advisory"
+                  }
+                ]
+              }
+            },
+            {
+              "category": "outdatedDependency",
+              "severity": "info",
+              "package": "Example.Library",
+              "message": "Framework compatibility could not be assessed.",
+              "observations": {
+                "frameworkCompatibility": "unknown",
+                "scoreDisposition": "unavailable",
+                "latestVersion": "2.0.0"
+              }
+            }
+          ],
+          "scope": {
+            "id": "dotnet/dependencyManagement/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          },
+          "dependencyCompatibility": {
+            "status": "failed",
+            "uniquePackageVersions": 2,
+            "totalObservations": 21,
+            "knownObservations": 1,
+            "failures": [
+              {
+                "package": "Example.Library",
+                "latestVersion": "2.0.0",
+                "affectedObservations": 20,
+                "reasons": [
+                  "noPackageBaseAddress"
+                ]
+              }
+            ]
+          },
+          "vulnerabilityAssessmentAvailable": true
+        },
+        "performanceAsync": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [
+            {
+              "category": "awaitedIoInsideLoop",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "awaitedIoInsideLoop observation; inspect context.",
+              "observations": {
+                "operation": "awaited I/O inside loop"
+              },
+              "file": "src/ContractWriter.cs",
+              "line": 20,
+              "member": "ContractWriter.CreateAsync",
+              "ruleId": "dotnet/performanceAsync/awaitedIoInsideLoop",
+              "fingerprint": "179e667bef709cda2d04932537067fac11c6a32dc6f2b99fe9888e3bb92b3e64"
+            },
+            {
+              "category": "awaitedIoInsideLoop",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "awaitedIoInsideLoop observation; inspect context.",
+              "observations": {
+                "operation": "awaited I/O inside loop"
+              },
+              "file": "src/PhotoController.cs",
+              "line": 20,
+              "member": "PhotoController.EnsureAsync",
+              "ruleId": "dotnet/performanceAsync/awaitedIoInsideLoop",
+              "fingerprint": "4e4aa568c90b24b92064135bccf249b22a58b7ea1cdf7a29f9de50ef96789f5a"
+            },
+            {
+              "category": "awaitedIoInsideLoop",
+              "severity": "warning",
+              "confidence": "medium",
+              "message": "awaitedIoInsideLoop observation; inspect context.",
+              "observations": {
+                "operation": "awaited I/O inside loop"
+              },
+              "file": "src/CatalogService.cs",
+              "line": 20,
+              "member": "CatalogService.FindAsync",
+              "ruleId": "dotnet/performanceAsync/awaitedIoInsideLoop",
+              "fingerprint": "81581d9219cb9710dc1a47bc392803ce822e8f84c0a982185443b0da139d244c"
+            }
+          ],
+          "scope": {
+            "id": "dotnet/performanceAsync/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        },
+        "maintainability": {
+          "status": "failed",
+          "basis": "Incomplete analysis; diagnostic findings only.",
+          "findings": [],
+          "scope": {
+            "id": "dotnet/maintainability/v1",
+            "coverage": "partial",
+            "includes": [
+              "static-signals"
+            ],
+            "excludes": [
+              "comprehensive-review"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

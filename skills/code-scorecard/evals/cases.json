@@ -41,5 +41,10 @@
     "id": "rechecked-context",
     "input": "fixtures/rechecked-context.json",
     "criteria": "rubrics/rechecked-context.json"
+  },
+  {
+    "id": "dependency-unavailable",
+    "input": "fixtures/dependency-unavailable.json",
+    "criteria": "rubrics/dependency-unavailable.json"
   }
 ]
