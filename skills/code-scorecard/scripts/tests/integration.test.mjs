@@ -82,6 +82,33 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.ok(inspection.evidence.analysis.diagnostics.some(d => d.kind === 'workspaceWarning' && d.message.includes('Package advisory fixture')));
       assert.equal(inspection.evidence.dimensions.codeQuality.status, 'scored');
     });
+    await t.test('failed dependency assessment exposes diagnostics without restoring scores', () => {
+      const failed = readJson(dotnet.artifacts.evidence);
+      failed.analysis.status = 'incomplete';
+      const dimension = failed.dimensions.dependencyManagement;
+      dimension.status = 'failed';
+      dimension.basis = 'Dependency compatibility assessment unavailable; no dependency score is assigned.';
+      delete dimension.score; delete dimension.scoringDecision; delete dimension.scoring;
+      dimension.dependencyCompatibility = { status: 'failed', uniquePackageVersions: 1,
+        totalObservations: 20, knownObservations: 0, elapsedMilliseconds: 10,
+        failures: [{ package: 'Example.Library', latestVersion: '2.0.0', affectedObservations: 20,
+          reasons: ['sourceIndex:HttpRequestException', 'noPackageBaseAddress'] }] };
+      write('archive/dependency-failed.json', JSON.stringify(failed));
+      const result = invoke('--entry-point', 'src/App/App.csproj', '--existing', 'archive/dependency-failed.json');
+      assert.equal(result.code, 2, result.error);
+      const run = result.value.results[0];
+      assert.equal(run.status, 'failed');
+      assert.equal(run.validationExitCode, 2);
+      assert.equal(run.fresh, false);
+      assert.match(run.error, /Assessment unavailable: dependencyManagement/);
+      assert.equal(run.assessmentFailures.length, 1);
+      assert.equal(run.assessmentFailures[0].dependencyCompatibility.failures[0].affectedObservations, 20);
+      const inspected = readJson(run.artifacts.inspection);
+      assert.equal(inspected.usable, false);
+      assert.equal(inspected.evidence.dimensions.dependencyManagement.score, undefined);
+      assert.equal(inspected.evidence.dimensions.dependencyManagement.scoringDecision, undefined);
+      assert.equal(readJson(path.join(root, '.scorecard/dotnet/latest.json')).status, 'failed');
+    });
     let initial;
     await t.test('fresh JS runs expose scope and shared gates detect a new warning', () => {
       initial = success('--entry-point', 'ui/package.json');

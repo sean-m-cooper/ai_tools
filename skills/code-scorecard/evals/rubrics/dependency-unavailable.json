@@ -1,0 +1,18 @@
+[
+  {
+    "id": "assessment-limitation",
+    "criterion": "Identifies unavailable dependency compatibility metadata as an assessment limitation, not a code defect or proven incompatible upgrade. Does not invent the specific network failure behind noPackageBaseAddress."
+  },
+  {
+    "id": "no-score-recovery",
+    "criterion": "Gives no current dependency score or overall and does not restore scores from CSV, prior runs, zero or ten."
+  },
+  {
+    "id": "preserve-verified",
+    "criterion": "Preserves the independently confirmed Verified.Risk vulnerability, distinguishing it from Example.Library unknown compatibility. Does not recommend upgrading Example.Library on this evidence alone."
+  },
+  {
+    "id": "lookup-counts",
+    "criterion": "Distinguishes the one failed package lookup from its 20 affected observations; does not claim 20 distinct defective dependencies."
+  }
+]
