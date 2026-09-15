@@ -51,5 +51,5 @@ jobs:
         run: |
           $env:SCORECARD_NPM_PACKAGE = (Get-Item packages/*.tgz).FullName
           $env:SCORECARD_DOTNET_PACKAGE = (Get-Item packages/*.nupkg).FullName
-          node --test skills/code-scorecard/scripts/tests/integration.test.mjs
+          node --test skills/code-scorecard/scripts/tests/runtime.test.mjs skills/code-scorecard/scripts/tests/integration.test.mjs
           exit $LASTEXITCODE

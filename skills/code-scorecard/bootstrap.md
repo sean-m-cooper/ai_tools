@@ -16,13 +16,17 @@ With no entry point, the helper runs each unambiguous detected ecosystem. `--eco
 
 A `.csproj` run scores that project only, with project references loaded for semantic resolution. A solution run scores its production projects. The .NET analyzer excludes source outside the entry point's directory. Findings use `subject.root` as their path base, which may differ from the audited subdirectory.
 
+From CodeMetrics.AI 2.3.0, solution scope honors projects excluded from the selected build configuration (Any CPU). Those exclusions also apply to package checks. Tests, test support, samples and benchmarks are excluded from production metrics; test signals count unique source sites across target frameworks. Review the recorded skip reasons and population rather than assuming every loaded project was scored. Repository documentation may live above a nested solution; its presence does not imply documentation coverage for every selected API.
+
 ## Tool versions and output
 
 `compatibility.json` is the single skill-owned compatibility manifest. The helper prefers an exact compatible `CodeMetrics.AI` pin in the nearest `.config/dotnet-tools.json` or `codemetrics-ai` dependency/devDependency in an ancestor package manifest. It uses that version in an isolated cache without editing the manifest or a global installation. Untested versions and ranges stop with a concrete error; test and deliberately update compatibility before upgrading.
 
-Absent a repository pin, use the tested preferred versions. The shared evidence CLI has its own tested npm version. Tools are cached under `~/.cache/code-scorecard`; `--cache <directory>` isolates a test or CI run. No `Directory.Build.targets` is copied or overwritten.
+Absent a repository pin, use the tested preferred versions. The shared evidence CLI has its own tested npm version. Tools are cached under `~/.cache/code-scorecard`; `--cache <directory>` isolates a test or CI run. Concurrent installers serialize per cache entry. If an installer is forcibly terminated, a later attempt reports the abandoned empty `.install-lock` directory after a bounded wait; confirm no installer is active before removing that directory. No `Directory.Build.targets` is copied or overwritten.
 
 Each attempt writes `<repo>/.scorecard/<ecosystem>/runs/<run-id>/run.json` and updates `latest.json`. On success the run records CSV, evidence, validated inspection and optional comparison paths. Stdout is one JSON result; command logs go to stderr. Consume only that invocation's result and artifact paths. Every ordinary invocation analyzes source anew; matching version, entry point or timestamps does not establish freshness.
+
+Command progress streams to stderr while analysis runs. Analysis has a 30-minute default timeout; use `--timeout-seconds 3600` for a larger solution. The limit must be a whole number from 1 through 86400 and is recorded in the run result. A timeout terminates the command's process tree and leaves the attempt failed. Tool setup and evidence validation retain separate 10-minute limits. Increase the option for a justified retry instead of copying or patching the runner.
 
 Exit 0 means completed execution, exit 1 means a quality gate failed, and exit 2 means invalid/incomplete analysis, incompatible evidence or setup failure. Read the run status as well. A failed attempt never permits CSV fallback or reuse of prior evidence. Add `.scorecard/` to the repository's ignore policy if desired; the helper does not edit it.
 
@@ -57,6 +61,8 @@ Local packages must report the manifest's tested versions. Their content hashes 
 The integration CI checks out the exact CodeMetrics.AI revision in `compatibility.json`, builds and packs both analyzers, and runs `node --test skills/code-scorecard/scripts/tests/integration.test.mjs` with `SCORECARD_NPM_PACKAGE` and `SCORECARD_DOTNET_PACKAGE` pointing to those packages. Canonical schemas and v2 examples come from the npm package, not copies in this skill. Update the source revision and version pins together after the tests pass; release packages before enabling the default pinned install for users.
 
 ## Run identity
+
+For fresh .NET runs whose evidence advertises a packaged rule catalog, the helper runs `code-metrics rules --format json` using the same isolated executable and saves validated definitions as `artifacts.ruleCatalog`. It matches package version, catalog version and rule references before exposing annotation guidance. If catalog retrieval fails, `ruleCatalog.status` is `unavailable` with a reason; validated analysis scores remain available. Older packages and historical imports do not use another version's catalog. Read supported scopes and examples from that artifact instead of maintaining a skill-local list of CMAI codes.
 
 The helper creates an `auditId` before analysis and a unique `runId` for each ecosystem invocation. These IDs are explicit in stdout, `run.json` and `latest.json`, and are passed to each analyzer. Before using fresh findings or comparing them, the shared validator requires `analysis.runId` and `analysis.auditId` to match the current invocation. Renaming or copying an old findings file into a new run directory cannot satisfy that check. Missing IDs also fail; never backfill an old document with the new IDs.
 

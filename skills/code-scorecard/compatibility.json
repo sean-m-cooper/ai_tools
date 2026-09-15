@@ -6,18 +6,19 @@
   "preferredEvidenceSchema": 3,
   "source": {
     "repository": "sean-m-cooper/CodeMetrics.AI",
-    "revision": "2ef5851f4a33287f58cee229975808dac90894e1"
+    "revision": "880f3ec47c636f7039b37650c16a0987ee1f495f"
   },
   "analyzers": {
     "dotnet": {
       "package": "CodeMetrics.AI",
-      "preferredVersion": "2.3.0",
+      "preferredVersion": "2.3.1",
       "testedVersions": [
         "2.0.0",
         "2.0.1",
         "2.1.0",
         "2.2.0",
-        "2.3.0"
+        "2.3.0",
+        "2.3.1"
       ]
     },
     "javascript-typescript": {

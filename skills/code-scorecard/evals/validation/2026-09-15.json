@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-15",
+  "analyzerVersion": "2.3.1",
+  "analyzerRevision": "880f3ec47c636f7039b37650c16a0987ee1f495f",
+  "ruleset": "dotnet-2026-09-15-declared-async-boundaries",
+  "dotnetTestsPassed": 1151,
+  "formatPassed": true,
+  "calibrationFixtures": 6,
+  "calibrationScoresFindingsPopulationsUnchanged": true,
+  "calibrationMetadataChange": "package version only",
+  "packageSha256": "e1012572887779069de2c7607cbf080f52ee2122dbe7391cbff5081a49929df7",
+  "packageAssemblyMatchesBuiltAssembly": true,
+  "packagedCatalogRules": 44,
+  "npmInspectorVersion": "0.3.0",
+  "npmPackageSha256": "8d8c66fbf0cd3d807763d0649c2109c13a7b574597204ee94c93b5e96943d670",
+  "skillUnitAndOfflineHarnessTestsPassed": 16,
+  "packagedSkillIntegrationTestsPassed": 12,
+  "experimentalAsyncPopulationLadderIncluded": false,
+  "liveModelEvaluationsRepeated": false,
+  "logs": "E:\\repos\\CodeMetrics.AI\\TestResults\\release-2.3.1",
+  "gitGuardianFalsePositive": {
+    "checkRun": 104602584813,
+    "incident": 37303170,
+    "reportedFile": "shared/scorecard-schema/calibration-runs/dotnet-public-corpus-wave2-scope-intent.json",
+    "reportedLine": 18,
+    "valueKind": "SHA-256 of ControllerAuthorizationAnalysis.cs",
+    "recomputedDigestMatches": true,
+    "credential": false
+  },
+  "publicationStatus": "candidate validated; publication tracked by release workflow and PRs"
+}

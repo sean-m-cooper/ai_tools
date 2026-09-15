@@ -43,6 +43,11 @@
     "criteria": "rubrics/rechecked-context.json"
   },
   {
+    "id": "complexity-components",
+    "input": "fixtures/complexity-components.json",
+    "criteria": "rubrics/complexity-components.json"
+  },
+  {
     "id": "dependency-unavailable",
     "input": "fixtures/dependency-unavailable.json",
     "criteria": "rubrics/dependency-unavailable.json"
