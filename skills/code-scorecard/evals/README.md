@@ -1,6 +1,6 @@
 # Behavioral report evaluations
 
-These tests exercise the agent's report, separately from the packaged runner integration tests. Six synthetic fixtures cover selected versus nonbinding score conditions, repeated dependency occurrences, partial assessment scope, prior conclusions, absent attribution in older evidence, failed runs, conclusions rechecked against supplied current source, and separate complexity/decomposition component reporting without changing overall weighting. They contain no private repository artifacts.
+These tests exercise the agent's report, separately from the packaged runner integration tests. Seven synthetic fixtures cover selected versus nonbinding score conditions, repeated dependency occurrences, partial assessment scope, prior conclusions, absent attribution in older evidence, failed runs, conclusions rechecked against supplied current source, separate complexity/decomposition component reporting without changing overall weighting, and unavailable dependency metadata with independently verified vulnerabilities. They contain no private repository artifacts.
 
 Each case runs two fresh Codex processes: a generator receives the actual skill, user request and evidence; a judge receives the evidence, generated report and a private factual rubric. The generator never receives the rubric or control reports. The judge evaluates meaning and omissions, accepting paraphrases and different layouts. Quotes are checked against the actual report. Missing criteria, invented quotes and process errors fail closed.
 
@@ -27,3 +27,5 @@ Exit codes: 0 all cases pass, 1 a factual criterion or control expectation fails
 The [2026-09-11 validation record](validation/2026-09-11.json) records five passing generated-report cases and two successful judge controls. The first pass caught an unqualified repetition of the overall calculation; after a narrow skill correction, all five cases were generated and judged again. This is a recorded run, not a guarantee about future model behavior.
 
 The later `complexity-components` case is not covered by that historical live-validation record. Its fixture and rubric are checked by the offline harness; use `--case complexity-components` for a live report evaluation.
+
+The [2026-09-14 validation record](validation/2026-09-14.json) covers the new dependency-unavailable generated report and its independent judgment, the offline harness, and packaged .NET 2.3.0 integration using the published npm 0.3.0 inspector. It does not claim a new live-model run of the five earlier cases.

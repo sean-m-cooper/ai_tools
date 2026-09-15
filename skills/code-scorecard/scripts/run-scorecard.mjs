@@ -110,8 +110,22 @@ export async function execute(options) {
       if (!options.existing || scope.source === 'repository-pin') inspectArgs.push('--expected-version', scope.version);
       if (!options.existing) inspectArgs.push('--expected-run-id', runId, '--expected-audit-id', auditId);
       summary.validationExitCode = await run(process.execPath, inspectArgs, root);
-      if (summary.validationExitCode !== 0 || (summary.analyzerExitCode !== undefined && summary.analyzerExitCode !== 0)) throw new Error('Analysis or validation failed. Partial evidence is diagnostic only; CSV must not restore a score.');
-      const inspection = readJson(summary.artifacts.inspection);
+      // Inspection is written only after canonical schema and requested provenance validation.
+      const inspection = fs.existsSync(summary.artifacts.inspection) ? readJson(summary.artifacts.inspection) : null;
+      if (inspection) {
+        summary.evidenceRunId = inspection.evidence.analysis?.runId ?? null;
+        summary.evidenceAuditId = inspection.evidence.analysis?.auditId ?? null;
+        summary.assessmentFailures = Object.entries(inspection.evidence.dimensions)
+          .filter(([, dimension]) => dimension.status === 'failed')
+          .map(([dimension, result]) => ({ dimension, basis: result.basis,
+            ...(result.dependencyCompatibility ? { dependencyCompatibility: result.dependencyCompatibility } : {}) }));
+      }
+      if (summary.validationExitCode !== 0 || (summary.analyzerExitCode !== undefined && summary.analyzerExitCode !== 0)) {
+        const failed = summary.assessmentFailures?.map(item => item.dimension).join(', ');
+        throw new Error(failed
+          ? `Assessment unavailable: ${failed}. See assessmentFailures and this run's inspection. Missing evidence is not a code defect; do not calculate an overall or restore scores from CSV.`
+          : 'Analysis or validation failed. Partial evidence is diagnostic only; CSV must not restore a score.');
+      }
       summary.evidenceRunId = inspection.evidence.analysis?.runId ?? null;
       summary.evidenceAuditId = inspection.evidence.analysis?.auditId ?? null;
       if (!compatibility.supportedEvidenceSchemas.includes(inspection.evidence.schemaVersion)) throw new Error('Unsupported evidence schema.');
