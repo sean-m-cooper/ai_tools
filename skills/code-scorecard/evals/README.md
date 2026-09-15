@@ -29,3 +29,5 @@ The [2026-09-11 validation record](validation/2026-09-11.json) records five pass
 The later `complexity-components` case is not covered by that historical live-validation record. Its fixture and rubric are checked by the offline harness; use `--case complexity-components` for a live report evaluation.
 
 The [2026-09-14 validation record](validation/2026-09-14.json) covers the new dependency-unavailable generated report and its independent judgment, the offline harness, and packaged .NET 2.3.0 integration using the published npm 0.3.0 inspector. It does not claim a new live-model run of the five earlier cases.
+
+The [2026-09-15 validation record](validation/2026-09-15.json) covers the reconciled skill with .NET 2.3.1: 16 runtime/catalog/offline-harness checks and 12 packaged integration checks passed. It records package provenance, 1,151 analyzer tests and six unchanged calibration fixtures. No live-model evaluations were repeated, and the experimental async population ladder is not included.
