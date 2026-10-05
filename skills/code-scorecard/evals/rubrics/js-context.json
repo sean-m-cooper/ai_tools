@@ -1,0 +1,22 @@
+[
+  {
+    "id": "scored-scope",
+    "criterion": "Preserves Method Complexity 10, Maintainability 10, and Async/Blocking Usage 0. Leaves the six remaining dimensions unavailable/unscored; if an overall is shown, it is explicitly partial over only 3/9 scored dimensions (6.7 rounded). Does not infer complete codebase health or compare with .NET scores."
+  },
+  {
+    "id": "async-population",
+    "criterion": "Explains the async score using one affected owner out of four eligible owners (25%), rather than independent finding deductions. Describes bounded async/blocking usage, not runtime speed or I/O throughput, and treats the async Promise executor as a review lead rather than an inspected confirmed defect."
+  },
+  {
+    "id": "statement-evidence",
+    "criterion": "Explains that decomposition v2 measures owned executable statements, including the concise function implicit return; keeps it unscored and outside overall weighting, with no experimental ladder or line-based size score."
+  },
+  {
+    "id": "handler-bodies",
+    "criterion": "Distinguishes one shared documented-empty handler body from its two reference/use sites. Honors documented intent without a penalty or judging the rationale. Discloses the one unresolved callback (unresolvedSymbol) as an inspection gap, not an empty handler or proof of recovery."
+  },
+  {
+    "id": "architecture-gaps",
+    "criterion": "Keeps architecture unscored and identifies a dynamic dependency-resolution gap without diagnosing a missing runtime dependency or claiming that complete execution means complete graph coverage."
+  }
+]

@@ -1,0 +1,1896 @@
+{
+  "request": "Show the full scorecard and explain the most useful next review steps from this fresh synthetic JS/TS run. No current source review has been supplied.",
+  "fixtureProvenance": "Generated and validated with the 0.4.0 package candidate. Only local path prefixes were normalized. Synthetic source is preserved in fixtures/js-context-source/.",
+  "runnerResult": {
+    "status": "complete",
+    "fresh": true,
+    "analyzerExitCode": 0,
+    "validationExitCode": 0,
+    "runId": "616fc7eb-d4fc-4a97-8bd2-8c9a74b0ea94",
+    "auditId": "616fc7eb-d4fc-4a97-8bd2-8c9a74b0ea94",
+    "ecosystem": "javascript-typescript",
+    "version": "0.4.0",
+    "source": "compatibility-manifest",
+    "artifacts": {
+      "evidence": "/sample/.scorecard/javascript-typescript/runs/616fc7eb-d4fc-4a97-8bd2-8c9a74b0ea94/evidence.json",
+      "inspection": "/sample/.scorecard/javascript-typescript/runs/616fc7eb-d4fc-4a97-8bd2-8c9a74b0ea94/inspection.json"
+    }
+  },
+  "inspection": {
+    "evidence": {
+      "schemaVersion": 3,
+      "generatedAtUtc": "2026-10-05T17:28:29.740Z",
+      "tool": {
+        "name": "codemetrics-ai",
+        "version": "0.4.0",
+        "ecosystem": "javascript-typescript"
+      },
+      "subject": {
+        "root": "E:\\repos\\CodeMetrics.AI",
+        "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\js-0.4.0-release\\report-fixture\\package.json",
+        "name": "js-report-fixture",
+        "variant": "source"
+      },
+      "filters": {
+        "totalUnits": 2,
+        "analyzedUnits": 2,
+        "skipped": []
+      },
+      "population": {
+        "types": 4,
+        "members": 5
+      },
+      "dimensions": {
+        "codeQuality": {
+          "status": "scored",
+          "score": 10,
+          "basis": "Method complexity: one worst function receives 40%; remaining functions receive 60%. Single-function scopes use their own score. JS/TS remains uncalibrated across ecosystems.",
+          "scoringDecision": {
+            "version": 1,
+            "policy": "javascript-typescript/codeQuality/owned-functions-v2",
+            "operation": "deductions",
+            "finalScore": 10,
+            "inputs": {
+              "baseline": 10,
+              "eligibleFunctions": 5,
+              "weakCount": 1,
+              "restCount": 4,
+              "anchors": [
+                [
+                  3,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ],
+                [
+                  10,
+                  6
+                ],
+                [
+                  20,
+                  4
+                ],
+                [
+                  40,
+                  0
+                ]
+              ],
+              "aggregation": "worst-40-remainder-60",
+              "rounding": "decimal-rational-half-up-one-decimal",
+              "unroundedScore": 10
+            },
+            "steps": [
+              {
+                "id": "weakest",
+                "kind": "component",
+                "score": 0,
+                "disposition": "applied",
+                "inputs": {
+                  "weightedScoreLoss": 0,
+                  "functionCount": 1
+                },
+                "findingCategories": [
+                  "highFunctionComplexity"
+                ]
+              },
+              {
+                "id": "remainder",
+                "kind": "component",
+                "score": 0,
+                "disposition": "applied",
+                "inputs": {
+                  "weightedScoreLoss": 0,
+                  "functionCount": 4
+                },
+                "findingCategories": [
+                  "highFunctionComplexity"
+                ]
+              }
+            ],
+            "findingEffects": []
+          },
+          "findings": [],
+          "scoring": {
+            "algorithm": "dimension-policy",
+            "finalScore": 10,
+            "aggregateScoreLoss": 0,
+            "contributionMode": "aggregate; findings are not independent deductions",
+            "observations": {
+              "baseline": 10,
+              "eligibleFunctions": 5,
+              "weakCount": 1,
+              "restCount": 4,
+              "anchors": [
+                [
+                  3,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ],
+                [
+                  10,
+                  6
+                ],
+                [
+                  20,
+                  4
+                ],
+                [
+                  40,
+                  0
+                ]
+              ],
+              "aggregation": "worst-40-remainder-60",
+              "rounding": "decimal-rational-half-up-one-decimal",
+              "unroundedScore": 10,
+              "measurement": "owned-function-body-v2-type-erasure",
+              "functionContributions": [
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "sourceSpanStart": 172,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 8,
+                  "ownMaintainabilityIndex": 93.54204911302038,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "weakest",
+                  "individualScore": 10,
+                  "weightNumerator": 2,
+                  "weightDenominator": 5,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "concise",
+                  "sourceSpanStart": 60,
+                  "line": 2,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 0,
+                  "ownMaintainabilityIndex": 99.86549707602339,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "sourceSpanStart": 69,
+                  "line": 3,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 33.219280948873624,
+                  "ownMaintainabilityIndex": 89.21270269831399,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture",
+                  "member": "ignore",
+                  "sourceSpanStart": 0,
+                  "line": 1,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 0,
+                  "ownHalsteadVolume": 2,
+                  "ownMaintainabilityIndex": 100,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "sourceSpanStart": 128,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 19.651484454403228,
+                  "ownMaintainabilityIndex": 90.80912574437467,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                }
+              ],
+              "topOffenders": [
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "sourceSpanStart": 172,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 8,
+                  "ownMaintainabilityIndex": 93.54204911302038,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "weakest",
+                  "individualScore": 10,
+                  "weightNumerator": 2,
+                  "weightDenominator": 5,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "concise",
+                  "sourceSpanStart": 60,
+                  "line": 2,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 0,
+                  "ownMaintainabilityIndex": 99.86549707602339,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "sourceSpanStart": 69,
+                  "line": 3,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 33.219280948873624,
+                  "ownMaintainabilityIndex": 89.21270269831399,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture",
+                  "member": "ignore",
+                  "sourceSpanStart": 0,
+                  "line": 1,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 0,
+                  "ownHalsteadVolume": 2,
+                  "ownMaintainabilityIndex": 100,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "sourceSpanStart": 128,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 19.651484454403228,
+                  "ownMaintainabilityIndex": 90.80912574437467,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                }
+              ]
+            }
+          },
+          "scope": {
+            "id": "javascript-typescript/codeQuality/v2",
+            "coverage": "partial",
+            "includes": [
+              "owned-function-cyclomatic-complexity"
+            ],
+            "excludes": [
+              "module-and-field-initializers",
+              "parameter-initializers",
+              "runtime-behavior",
+              "decomposition"
+            ]
+          },
+          "displayName": "Method Complexity",
+          "componentDetails": {
+            "methodComplexity": {
+              "score": 10,
+              "eligibleFunctions": 5,
+              "topOffenders": [
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "sourceSpanStart": 172,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 8,
+                  "ownMaintainabilityIndex": 93.54204911302038,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "weakest",
+                  "individualScore": 10,
+                  "weightNumerator": 2,
+                  "weightDenominator": 5,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "concise",
+                  "sourceSpanStart": 60,
+                  "line": 2,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 0,
+                  "ownMaintainabilityIndex": 99.86549707602339,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "sourceSpanStart": 69,
+                  "line": 3,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 33.219280948873624,
+                  "ownMaintainabilityIndex": 89.21270269831399,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture",
+                  "member": "ignore",
+                  "sourceSpanStart": 0,
+                  "line": 1,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 0,
+                  "ownHalsteadVolume": 2,
+                  "ownMaintainabilityIndex": 100,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "sourceSpanStart": 128,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 19.651484454403228,
+                  "ownMaintainabilityIndex": 90.80912574437467,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                }
+              ]
+            },
+            "decomposition": {
+              "version": 2,
+              "status": "unscored",
+              "score": null,
+              "measurement": "owned-executable-statements-v2",
+              "primaryMeasure": "ownedStatements",
+              "basis": "Descriptive size evidence; no responsibility inference, threshold, finding or score contribution.",
+              "exclusions": [
+                "nested-function-double-counting",
+                "class-and-enum-initializers",
+                "parameter-initializers",
+                "semantic-responsibility"
+              ],
+              "population": {
+                "modules": 2,
+                "functions": 5,
+                "sumOwnedFunctionLines": 4,
+                "sumOwnedFunctionStatements": 4,
+                "medianFunctionStatements": 1,
+                "p90FunctionStatements": 1,
+                "medianFunctionLines": 1,
+                "p90FunctionLines": 1
+              },
+              "modules": [
+                {
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "implementedFunctions": 4,
+                  "sumOwnedFunctionLines": 4,
+                  "sumOwnedFunctionStatements": 4,
+                  "initializer": {
+                    "ownedStatements": 5,
+                    "dataLiteralEntries": 0
+                  },
+                  "directReExports": 0,
+                  "typeDeclarations": 0,
+                  "enums": 0,
+                  "functions": [
+                    {
+                      "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                      "member": "concise",
+                      "line": 2,
+                      "ownedSourceLines": 1,
+                      "ownedStatements": 1,
+                      "dataLiteralEntries": 0
+                    },
+                    {
+                      "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                      "member": "work",
+                      "line": 3,
+                      "ownedSourceLines": 1,
+                      "ownedStatements": 1,
+                      "dataLiteralEntries": 0
+                    },
+                    {
+                      "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                      "member": "risky",
+                      "line": 4,
+                      "ownedSourceLines": 1,
+                      "ownedStatements": 1,
+                      "dataLiteralEntries": 0
+                    },
+                    {
+                      "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                      "member": "risky/anonymous",
+                      "line": 4,
+                      "ownedSourceLines": 1,
+                      "ownedStatements": 1,
+                      "dataLiteralEntries": 0
+                    }
+                  ]
+                },
+                {
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture",
+                  "implementedFunctions": 1,
+                  "sumOwnedFunctionLines": 0,
+                  "sumOwnedFunctionStatements": 0,
+                  "initializer": {
+                    "ownedStatements": 0,
+                    "dataLiteralEntries": 0
+                  },
+                  "directReExports": 0,
+                  "typeDeclarations": 0,
+                  "enums": 0,
+                  "functions": [
+                    {
+                      "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                      "member": "ignore",
+                      "line": 1,
+                      "ownedSourceLines": 0,
+                      "ownedStatements": 0,
+                      "dataLiteralEntries": 0
+                    }
+                  ]
+                }
+              ],
+              "largestFunctions": [
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "member": "risky/anonymous",
+                  "line": 4,
+                  "ownedSourceLines": 1,
+                  "ownedStatements": 1,
+                  "dataLiteralEntries": 0,
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture"
+                },
+                {
+                  "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                  "member": "concise",
+                  "line": 2,
+                  "ownedSourceLines": 1,
+                  "ownedStatements": 1,
+                  "dataLiteralEntries": 0,
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture"
+                },
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "member": "work",
+                  "line": 3,
+                  "ownedSourceLines": 1,
+                  "ownedStatements": 1,
+                  "dataLiteralEntries": 0,
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture"
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "member": "risky",
+                  "line": 4,
+                  "ownedSourceLines": 1,
+                  "ownedStatements": 1,
+                  "dataLiteralEntries": 0,
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture"
+                },
+                {
+                  "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                  "member": "ignore",
+                  "line": 1,
+                  "ownedSourceLines": 0,
+                  "ownedStatements": 0,
+                  "dataLiteralEntries": 0,
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture"
+                }
+              ],
+              "largestFunctionContainers": [
+                {
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "implementedFunctions": 4,
+                  "sumOwnedFunctionLines": 4,
+                  "sumOwnedFunctionStatements": 4,
+                  "initializer": {
+                    "ownedStatements": 5,
+                    "dataLiteralEntries": 0
+                  },
+                  "directReExports": 0,
+                  "typeDeclarations": 0,
+                  "enums": 0,
+                  "shareOfOwnedFunctionStatements": 1,
+                  "shareOfOwnedFunctionLines": 1
+                }
+              ]
+            }
+          }
+        },
+        "maintainability": {
+          "status": "scored",
+          "score": 10,
+          "basis": "Maintainability: weakest ceil(N/5) functions receives 40%; remaining functions receive 60%. Single-function scopes use their own score. JS/TS remains uncalibrated across ecosystems.",
+          "scoringDecision": {
+            "version": 1,
+            "policy": "javascript-typescript/maintainability/owned-functions-v2",
+            "operation": "deductions",
+            "finalScore": 10,
+            "inputs": {
+              "baseline": 10,
+              "eligibleFunctions": 5,
+              "weakCount": 1,
+              "restCount": 4,
+              "anchors": [
+                [
+                  40,
+                  0
+                ],
+                [
+                  52,
+                  2
+                ],
+                [
+                  58,
+                  4
+                ],
+                [
+                  65,
+                  6
+                ],
+                [
+                  70,
+                  8
+                ],
+                [
+                  75,
+                  10
+                ]
+              ],
+              "aggregation": "weakest-quintile-40-remainder-60",
+              "rounding": "decimal-rational-half-up-one-decimal",
+              "unroundedScore": 10
+            },
+            "steps": [
+              {
+                "id": "weakest",
+                "kind": "component",
+                "score": 0,
+                "disposition": "applied",
+                "inputs": {
+                  "weightedScoreLoss": 0,
+                  "functionCount": 1
+                },
+                "findingCategories": []
+              },
+              {
+                "id": "remainder",
+                "kind": "component",
+                "score": 0,
+                "disposition": "applied",
+                "inputs": {
+                  "weightedScoreLoss": 0,
+                  "functionCount": 4
+                },
+                "findingCategories": []
+              }
+            ],
+            "findingEffects": []
+          },
+          "findings": [],
+          "scoring": {
+            "algorithm": "dimension-policy",
+            "finalScore": 10,
+            "aggregateScoreLoss": 0,
+            "contributionMode": "aggregate; findings are not independent deductions",
+            "observations": {
+              "baseline": 10,
+              "eligibleFunctions": 5,
+              "weakCount": 1,
+              "restCount": 4,
+              "anchors": [
+                [
+                  40,
+                  0
+                ],
+                [
+                  52,
+                  2
+                ],
+                [
+                  58,
+                  4
+                ],
+                [
+                  65,
+                  6
+                ],
+                [
+                  70,
+                  8
+                ],
+                [
+                  75,
+                  10
+                ]
+              ],
+              "aggregation": "weakest-quintile-40-remainder-60",
+              "rounding": "decimal-rational-half-up-one-decimal",
+              "unroundedScore": 10,
+              "measurement": "owned-function-body-v2-type-erasure",
+              "functionContributions": [
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "sourceSpanStart": 69,
+                  "line": 3,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 33.219280948873624,
+                  "ownMaintainabilityIndex": 89.21270269831399,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "weakest",
+                  "individualScore": 10,
+                  "weightNumerator": 2,
+                  "weightDenominator": 5,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "sourceSpanStart": 128,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 19.651484454403228,
+                  "ownMaintainabilityIndex": 90.80912574437467,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "sourceSpanStart": 172,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 8,
+                  "ownMaintainabilityIndex": 93.54204911302038,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "concise",
+                  "sourceSpanStart": 60,
+                  "line": 2,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 0,
+                  "ownMaintainabilityIndex": 99.86549707602339,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture",
+                  "member": "ignore",
+                  "sourceSpanStart": 0,
+                  "line": 1,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 0,
+                  "ownHalsteadVolume": 2,
+                  "ownMaintainabilityIndex": 100,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                }
+              ],
+              "topOffenders": [
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "sourceSpanStart": 69,
+                  "line": 3,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 33.219280948873624,
+                  "ownMaintainabilityIndex": 89.21270269831399,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "weakest",
+                  "individualScore": 10,
+                  "weightNumerator": 2,
+                  "weightDenominator": 5,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "sourceSpanStart": 128,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 19.651484454403228,
+                  "ownMaintainabilityIndex": 90.80912574437467,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "sourceSpanStart": 172,
+                  "line": 4,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 8,
+                  "ownMaintainabilityIndex": 93.54204911302038,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "5eac6d30421502ce4232188ab18924c12de225a934714e2ddbfc1604958d57ef",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "concise",
+                  "sourceSpanStart": 60,
+                  "line": 2,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 1,
+                  "ownHalsteadVolume": 0,
+                  "ownMaintainabilityIndex": 99.86549707602339,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "cc43fcb92cf564bea51ad4e9b7b126fdcdbefd6f977c80bc024bbfc18e2ea9ca",
+                  "file": "src/handlers.ts",
+                  "project": "js-report-fixture",
+                  "member": "ignore",
+                  "sourceSpanStart": 0,
+                  "line": 1,
+                  "ownComplexity": 1,
+                  "ownSourceLines": 0,
+                  "ownHalsteadVolume": 2,
+                  "ownMaintainabilityIndex": 100,
+                  "complexityBreakdown": {
+                    "version": 1,
+                    "baseline": 1,
+                    "counts": {
+                      "ifStatements": 0,
+                      "switchCases": 0,
+                      "loops": 0,
+                      "catchClauses": 0,
+                      "ternaryExpressions": 0,
+                      "logicalAnd": 0,
+                      "logicalOr": 0,
+                      "nullishCoalescing": 0
+                    },
+                    "decisionIncrements": 0,
+                    "total": 1
+                  },
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 20,
+                  "weightedScoreLoss": 0
+                }
+              ]
+            }
+          },
+          "scope": {
+            "id": "javascript-typescript/maintainability/v2",
+            "coverage": "partial",
+            "includes": [
+              "owned-function-maintainability-index"
+            ],
+            "excludes": [
+              "module-and-field-initializers",
+              "parameter-initializers",
+              "runtime-behavior",
+              "change-cost"
+            ]
+          }
+        },
+        "errorHandling": {
+          "status": "skipped",
+          "basis": "Handler syntax and documented intent are observed; error-handling scoring is not calibrated. Code presence is not proof of recovery.",
+          "scope": {
+            "id": "javascript-typescript/errorHandling/handler-evidence-v2",
+            "coverage": "partial",
+            "includes": [
+              "catch-clauses",
+              "inline-standard-promise-rejection-handlers",
+              "body-comments",
+              "selected-source-referenced-handlers"
+            ],
+            "excludes": [
+              "error-handling-score",
+              "general-exception-flow",
+              "arbitrary-callback-value-flow",
+              "correctness-of-recovery",
+              "semantic-rationale-judgment"
+            ]
+          },
+          "findings": [],
+          "handlerEvidence": {
+            "version": 2,
+            "countingUnit": "distinctHandlerBody",
+            "totalHandlers": 1,
+            "unexplainedEmptyHandlers": 0,
+            "documentedEmptyHandlers": 1,
+            "handlersContainingCode": 0,
+            "unexplainedEmptyPercent": 0,
+            "handlerUseSites": 2,
+            "referencedCallbackUseSites": 2,
+            "uninspectedRejectionCallbacks": 1,
+            "uninspectedCallbacks": [
+              {
+                "file": "src/app.ts",
+                "line": 7,
+                "kind": "promiseCatch",
+                "reason": "unresolvedSymbol"
+              }
+            ],
+            "handlers": [
+              {
+                "id": "32420a15984690a34e9adb6fb58d6905fff4e84fd1591fe829f944e9e18fb263",
+                "file": "src/handlers.ts",
+                "project": "js-report-fixture",
+                "line": 1,
+                "kind": "promiseRejection",
+                "classification": "documentedEmpty",
+                "comments": [
+                  "Best effort telemetry; the caller deliberately ignores delivery failures."
+                ],
+                "uses": [
+                  {
+                    "file": "src/app.ts",
+                    "line": 5,
+                    "kind": "promiseCatch",
+                    "resolution": "reference"
+                  },
+                  {
+                    "file": "src/app.ts",
+                    "line": 6,
+                    "kind": "promiseThenRejection",
+                    "resolution": "reference"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "performanceAsync": {
+          "status": "scored",
+          "score": 0,
+          "basis": "Partial Async/Blocking Usage: affected eligible owners divided by all eligible owners. Each owner counts once; review leads add no penalty. Product-policy ladder, not runtime performance.",
+          "scoringDecision": {
+            "version": 1,
+            "policy": "javascript-typescript/performanceAsync/owner-rate-v3",
+            "operation": "firstMatch",
+            "finalScore": 0,
+            "inputs": {
+              "eligibleOwners": 4,
+              "affectedOwners": 1,
+              "affectedPercent": 25,
+              "actionableFindings": 1,
+              "advisoryFindings": 0,
+              "countingUnit": "distinct-function-or-module-owner",
+              "owners": [
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "line": 4,
+                  "reasons": [
+                    "asyncFunction"
+                  ],
+                  "affected": false
+                },
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "line": 3,
+                  "reasons": [
+                    "asyncFunction",
+                    "await",
+                    "standardPromiseCall"
+                  ],
+                  "affected": false
+                },
+                {
+                  "id": "d0ca217564dc600d8a72f50ad564a3a417760ac7ad9e176ba3b564f33f2f4971",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "<module>",
+                  "line": 1,
+                  "reasons": [
+                    "standardPromiseCall"
+                  ],
+                  "affected": false
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "line": 4,
+                  "reasons": [
+                    "asyncFunction",
+                    "recognizedUsageSignal",
+                    "standardPromiseConstruction"
+                  ],
+                  "affected": true
+                }
+              ]
+            },
+            "findingEffects": [
+              {
+                "fingerprint": "06329a6a9d1e646e251e66367179849aacbbc5c7351de7cf11db82afa3bfa605",
+                "category": "asyncPromiseExecutor",
+                "effect": "policyInput",
+                "stepIds": [
+                  "overTwenty",
+                  "throughFifteen",
+                  "throughTen",
+                  "throughTwenty",
+                  "underFive",
+                  "underOne",
+                  "underTwo"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "underOne",
+                "kind": "rule",
+                "condition": "affectedOwners = 0 or rate < 1%",
+                "matched": false,
+                "score": 10,
+                "disposition": "notMatched",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              },
+              {
+                "id": "underTwo",
+                "kind": "rule",
+                "condition": "rate < 2%",
+                "matched": false,
+                "score": 9,
+                "disposition": "notMatched",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              },
+              {
+                "id": "underFive",
+                "kind": "rule",
+                "condition": "rate < 5%",
+                "matched": false,
+                "score": 8,
+                "disposition": "notMatched",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              },
+              {
+                "id": "throughTen",
+                "kind": "rule",
+                "condition": "rate <= 10%",
+                "matched": false,
+                "score": 6,
+                "disposition": "notMatched",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              },
+              {
+                "id": "throughFifteen",
+                "kind": "rule",
+                "condition": "rate <= 15%",
+                "matched": false,
+                "score": 4,
+                "disposition": "notMatched",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              },
+              {
+                "id": "throughTwenty",
+                "kind": "rule",
+                "condition": "rate <= 20%",
+                "matched": false,
+                "score": 2,
+                "disposition": "notMatched",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              },
+              {
+                "id": "overTwenty",
+                "kind": "rule",
+                "condition": "otherwise",
+                "matched": true,
+                "score": 0,
+                "disposition": "selected",
+                "inputs": {},
+                "findingCategories": [
+                  "asyncPromiseExecutor"
+                ]
+              }
+            ]
+          },
+          "findings": [
+            {
+              "category": "asyncPromiseExecutor",
+              "ruleId": "javascript-typescript/performanceAsync/asyncPromiseExecutor",
+              "fingerprint": "06329a6a9d1e646e251e66367179849aacbbc5c7351de7cf11db82afa3bfa605",
+              "severity": "warning",
+              "confidence": "high",
+              "file": "src/app.ts",
+              "line": 4,
+              "project": "js-report-fixture",
+              "member": "risky",
+              "message": "The Promise constructor ignores its async executor's returned Promise; a rejection there does not automatically reject the constructed Promise.",
+              "observations": {
+                "classification": "actionableSignal",
+                "classificationReason": "standardPromiseIgnoresExecutorReturn",
+                "scoreDisposition": "scored",
+                "sourceSpanStart": 160,
+                "sourceSpanLength": 40,
+                "asyncOwnerId": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3"
+              }
+            }
+          ],
+          "scoring": {
+            "algorithm": "dimension-policy",
+            "finalScore": 0,
+            "aggregateScoreLoss": 10,
+            "contributionMode": "aggregate; findings are not independent deductions",
+            "observations": {
+              "eligibleOwners": 4,
+              "affectedOwners": 1,
+              "affectedPercent": 25,
+              "actionableFindings": 1,
+              "advisoryFindings": 0,
+              "countingUnit": "distinct-function-or-module-owner",
+              "owners": [
+                {
+                  "id": "1ab718408bcdddbd5efebd2c4ef4d5722f4d1cb18fa64ac9231adecfa9656f13",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky/anonymous",
+                  "line": 4,
+                  "reasons": [
+                    "asyncFunction"
+                  ],
+                  "affected": false
+                },
+                {
+                  "id": "c9ad1147936b613f032ae33ff6a796196e9433f4d26ebd4ea8f1cad1d23cc8ff",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "work",
+                  "line": 3,
+                  "reasons": [
+                    "asyncFunction",
+                    "await",
+                    "standardPromiseCall"
+                  ],
+                  "affected": false
+                },
+                {
+                  "id": "d0ca217564dc600d8a72f50ad564a3a417760ac7ad9e176ba3b564f33f2f4971",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "<module>",
+                  "line": 1,
+                  "reasons": [
+                    "standardPromiseCall"
+                  ],
+                  "affected": false
+                },
+                {
+                  "id": "d1a3cd2807faec7ba4613145e2f4b27c81c8df1939e50be7fd5a5ace243e32c3",
+                  "file": "src/app.ts",
+                  "project": "js-report-fixture",
+                  "member": "risky",
+                  "line": 4,
+                  "reasons": [
+                    "asyncFunction",
+                    "recognizedUsageSignal",
+                    "standardPromiseConstruction"
+                  ],
+                  "affected": true
+                }
+              ]
+            }
+          },
+          "scope": {
+            "id": "javascript-typescript/performanceAsync/owner-population-v3",
+            "coverage": "partial",
+            "includes": [
+              "react-hook-placement",
+              "react-effect-callbacks",
+              "standard-promise-executors",
+              "array-async-callback-review",
+              "eligible-owner-population"
+            ],
+            "excludes": [
+              "general-promise-flow",
+              "exhaustive-hook-rules",
+              "concurrency-safety",
+              "runtime-performance"
+            ]
+          }
+        },
+        "security": {
+          "status": "skipped",
+          "basis": "Not implemented by this analyzer version.",
+          "findings": [],
+          "scope": {
+            "id": "javascript-typescript/security/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "security"
+            ]
+          }
+        },
+        "testing": {
+          "status": "skipped",
+          "basis": "Not implemented by this analyzer version.",
+          "findings": [],
+          "scope": {
+            "id": "javascript-typescript/testing/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "testing"
+            ]
+          }
+        },
+        "documentation": {
+          "status": "skipped",
+          "basis": "Not implemented by this analyzer version.",
+          "findings": [],
+          "scope": {
+            "id": "javascript-typescript/documentation/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "documentation"
+            ]
+          }
+        },
+        "dependencyManagement": {
+          "status": "skipped",
+          "basis": "Not implemented by this analyzer version.",
+          "findings": [],
+          "scope": {
+            "id": "javascript-typescript/dependencyManagement/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "dependencyManagement"
+            ]
+          }
+        },
+        "architecture": {
+          "status": "skipped",
+          "basis": "Module dependency evidence collected; architecture scoring is not calibrated.",
+          "findings": [],
+          "scope": {
+            "id": "javascript-typescript/architecture/module-graph-v1",
+            "coverage": "partial",
+            "includes": [
+              "source-module-references",
+              "explicit-type-only-dependencies",
+              "internal-value-cycles",
+              "internal-value-fan-in-out"
+            ],
+            "excludes": [
+              "architecture-score",
+              "runtime-loading-order",
+              "comprehensive-dynamic-resolution",
+              "cohesion",
+              "solid-compliance"
+            ]
+          },
+          "dependencyGraph": {
+            "version": 1,
+            "graphKind": "source-value-dependencies",
+            "coverage": {
+              "status": "gaps",
+              "selectedModules": 2,
+              "analyzedModules": 2,
+              "dependencyOccurrences": 2,
+              "literalOccurrences": 1,
+              "resolvedLiteralOccurrences": 1,
+              "literalResolutionPercent": 100,
+              "occurrencesByResolution": {
+                "internal": 1,
+                "external": 0,
+                "builtin": 0,
+                "outOfScope": 0,
+                "unavailableSource": 0,
+                "unresolved": 0,
+                "dynamic": 1
+              },
+              "explicitTypeOnlyOccurrences": 0
+            },
+            "resolutionEnvironment": {
+              "typescriptVersion": "5.8.3",
+              "nodeVersion": "24.18.0"
+            },
+            "limitations": [
+              "Value/mixed references are source syntax, not proof of emitted runtime imports.",
+              "Graph scope contains selected source modules only; external and excluded targets are not traversed.",
+              "Literal calls contribute dependency edges without establishing when or whether they execute.",
+              "Require aliases, custom loaders, evaluated strings and bundler-specific resolution are not inferred.",
+              "TypeScript resolution may select declarations; declarationTarget identifies these observations.",
+              "Ranked fan-in/out lists are observations, not calibrated defects or score deductions."
+            ],
+            "nodes": [
+              {
+                "id": "src/app.ts",
+                "project": "js-report-fixture",
+                "analyzed": true,
+                "reExportOnly": false,
+                "internalValueFanOut": 1,
+                "internalValueFanIn": 0
+              },
+              {
+                "id": "src/handlers.ts",
+                "project": "js-report-fixture",
+                "analyzed": true,
+                "reExportOnly": false,
+                "internalValueFanOut": 0,
+                "internalValueFanIn": 1
+              }
+            ],
+            "dependencies": [
+              {
+                "from": "src/app.ts",
+                "project": "js-report-fixture",
+                "line": 1,
+                "sourceSpanStart": 0,
+                "form": "import",
+                "usage": "value",
+                "roles": [
+                  "implementation"
+                ],
+                "specifier": "./handlers",
+                "resolution": "internal",
+                "via": "typescript",
+                "declarationTarget": false,
+                "targetFile": "src/handlers.ts",
+                "target": "src/handlers.ts"
+              },
+              {
+                "from": "src/app.ts",
+                "project": "js-report-fixture",
+                "line": 8,
+                "sourceSpanStart": 321,
+                "form": "dynamicImport",
+                "usage": "value",
+                "roles": [
+                  "implementation"
+                ],
+                "specifier": null,
+                "resolution": "dynamic",
+                "via": "nonLiteralSpecifier"
+              }
+            ],
+            "cycles": [],
+            "dependencyViews": {
+              "version": 2,
+              "classification": "explicit-forwarding-v2",
+              "implementation": {
+                "basis": "Imports/loads with local uses or no recognized forwarding; unsupported alias flow remains here.",
+                "modules": [
+                  {
+                    "id": "src/app.ts",
+                    "internalValueFanOut": 1,
+                    "internalValueFanIn": 0
+                  },
+                  {
+                    "id": "src/handlers.ts",
+                    "internalValueFanOut": 0,
+                    "internalValueFanIn": 1
+                  }
+                ],
+                "internalValueEdgeCount": 1,
+                "highestFanOut": [
+                  {
+                    "id": "src/app.ts",
+                    "internalValueFanOut": 1,
+                    "internalValueFanIn": 0
+                  }
+                ],
+                "highestFanIn": [
+                  {
+                    "id": "src/handlers.ts",
+                    "internalValueFanOut": 0,
+                    "internalValueFanIn": 1
+                  }
+                ]
+              },
+              "reExports": {
+                "basis": "Direct re-exports and explicit forwarding through an unmodified local import/require binding or direct require call.",
+                "modules": [
+                  {
+                    "id": "src/app.ts",
+                    "internalValueFanOut": 0,
+                    "internalValueFanIn": 0
+                  },
+                  {
+                    "id": "src/handlers.ts",
+                    "internalValueFanOut": 0,
+                    "internalValueFanIn": 0
+                  }
+                ],
+                "internalValueEdgeCount": 0,
+                "highestFanOut": [],
+                "highestFanIn": []
+              },
+              "totalInternalValueEdgeCount": 1,
+              "sharedInternalValueEdgeCount": 0
+            },
+            "highestFanOut": [
+              {
+                "id": "src/app.ts",
+                "internalValueFanOut": 1,
+                "internalValueFanIn": 0
+              }
+            ],
+            "highestFanIn": [
+              {
+                "id": "src/handlers.ts",
+                "internalValueFanOut": 0,
+                "internalValueFanIn": 1
+              }
+            ]
+          }
+        }
+      },
+      "analysis": {
+        "runId": "616fc7eb-d4fc-4a97-8bd2-8c9a74b0ea94",
+        "auditId": "616fc7eb-d4fc-4a97-8bd2-8c9a74b0ea94",
+        "status": "complete",
+        "ruleset": "javascript-typescript-2026-10-04-local-handlers",
+        "calibration": "uncalibrated",
+        "configurationFingerprint": "6beb8c25d3d3eef8a2f5d5aaa162da95b680fbec32ccdd394ebbc4704758176c",
+        "diagnostics": [],
+        "suppressions": []
+      }
+    },
+    "compatibility": {
+      "mode": "native",
+      "comparisonAvailable": true,
+      "analysisStatus": "complete",
+      "scopeAvailable": true
+    },
+    "usable": true
+  }
+}

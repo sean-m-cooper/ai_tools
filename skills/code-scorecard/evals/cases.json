@@ -51,5 +51,10 @@
     "id": "dependency-unavailable",
     "input": "fixtures/dependency-unavailable.json",
     "criteria": "rubrics/dependency-unavailable.json"
+  },
+  {
+    "id": "js-context",
+    "input": "fixtures/js-context.json",
+    "criteria": "rubrics/js-context.json"
   }
 ]
