@@ -6,7 +6,7 @@
   "preferredEvidenceSchema": 3,
   "source": {
     "repository": "sean-m-cooper/CodeMetrics.AI",
-    "revision": "880f3ec47c636f7039b37650c16a0987ee1f495f"
+    "revision": "cf4edbfc9cbf9653377ddaf728b5be96e201d6ca"
   },
   "analyzers": {
     "dotnet": {
@@ -23,12 +23,13 @@
     },
     "javascript-typescript": {
       "package": "codemetrics-ai",
-      "preferredVersion": "0.3.0",
+      "preferredVersion": "0.4.0",
       "testedVersions": [
         "0.2.0",
-        "0.3.0"
+        "0.3.0",
+        "0.4.0"
       ]
     }
   },
-  "evidenceToolVersion": "0.3.0"
+  "evidenceToolVersion": "0.4.0"
 }

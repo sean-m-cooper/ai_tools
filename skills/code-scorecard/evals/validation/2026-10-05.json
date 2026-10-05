@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-05",
+  "npmVersion": "0.4.0",
+  "dotnetVersion": "2.3.1",
+  "analyzerRevision": "cf4edbfc9cbf9653377ddaf728b5be96e201d6ca",
+  "ruleset": "javascript-typescript-2026-10-04-local-handlers",
+  "analyzerTestsPassed": 184,
+  "architectureContextCasesPassed": 11,
+  "installedPackageSmokePassed": true,
+  "offlinePackageResolutionPassed": true,
+  "calibrationFixturesPassed": 6,
+  "calibrationChange": "Package version metadata only",
+  "skillOfflineTestsPassed": 16,
+  "packagedSkillIntegrationTestsPassed": 13,
+  "quickValidatePassed": true,
+  "liveEvaluation": {
+    "startedAtUtc": "2026-10-05T17:29:52.784Z",
+    "skillSha256": "e6f035859385b8c244830359f8bcb0cce7416ebbb03611249dad940222034edb",
+    "adapter": "codex exec, fresh ephemeral read-only processes, CLI default model, user config ignored",
+    "controls": false,
+    "cases": [
+      {
+        "id": "js-context",
+        "inputSha256": "a982c2e8804c96b0d4bb0a7e31f47d1c119735b2772a667bdeedebf0a5f36faf",
+        "criteriaSha256": "943c2a620cda7e46aa790d26faa347bd8c593f10e5c3959f6cc8671479007487",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 58951,
+            "judgmentMs": 15085,
+            "generator": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.155.0-alpha.9.2"
+            },
+            "judge": {
+              "model": "gpt-6-astra",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.155.0-alpha.9.2"
+            },
+            "reportSha256": "93748fc37ef4cc6f3cc8092ad1ada93790d491b5bdfd4a4081164d2cebd8cb07"
+          }
+        ]
+      }
+    ]
+  },
+  "earlierLiveCasesRepeated": false,
+  "publicationStatus": "Candidate validated; publication tracked by release workflow and PRs",
+  "logs": "E:\\repos\\CodeMetrics.AI\\TestResults\\js-0.4.0-release",
+  "packages": {
+    "codemetrics-ai-0.4.0.tgz": "f5c99146b4e8137e25ed19204f48164ade2a6a695fb232668fd2ef597028aa41",
+    "CodeMetrics.AI.2.3.1.nupkg": "239c79f8d3f64f2a6d7df867c0d85fde0e4316f7c3d8bfb37ba29faffca241b7"
+  }
+}

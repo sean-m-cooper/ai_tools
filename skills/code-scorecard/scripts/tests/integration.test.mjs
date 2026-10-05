@@ -31,8 +31,8 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
     write('src/Library/Library.csproj', '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>');
     write('src/Library/Library.cs', 'public class Library { public int Value() => 1; }');
     write('ui/package.json', '{"name":"ui"}');
-    write('ui/tsconfig.json', '{"include":["src/*.tsx"]}');
-    write('ui/src/App.tsx', "import {useEffect} from 'react'; export function App(){ return null; }");
+    write('ui/tsconfig.json', '{"compilerOptions":{"target":"ES2022"},"include":["src/*.tsx"]}');
+    write('ui/src/App.tsx', "import {useEffect} from 'react'; export function App(){ useEffect(()=>{},[]); return null; }");
     write('vendor/ignored/package.json', '{}');
     write('shared/fixtures/calibration/package.json', '{}');
     write('shared/fixtures/calibration/Fixture.csproj', '<Project/>');
@@ -121,7 +121,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       const original = readJson(initial.artifacts.evidence);
       assert.equal(original.analysis.runId, initial.runId);
       assert.equal(original.analysis.auditId, initial.auditId);
-      assert.ok(original.dimensions.performanceAsync.scope.excludes.includes('general-async'));
+      assert.ok(original.dimensions.performanceAsync.scope.excludes.includes('general-promise-flow'));
       assert.equal(original.dimensions.security.status, 'skipped');
       write('ui/src/App.tsx', "import {useEffect} from 'react'; export function App(){ useEffect(async()=>{},[]); return null; }");
       const changed = invoke('--entry-point', 'ui/package.json', '--baseline', initial.artifacts.evidence, '--fail-on-new', 'warning', '--max-score-drop', '0');
@@ -180,6 +180,34 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
         assert.equal(evidence.analysis.runId, run.runId);
         assert.equal(evidence.analysis.auditId, run.auditId);
       }
+    });
+    await t.test('JS 0.4 evidence preserves populations, statement ranking, shared handlers and graph gaps', () => {
+      write('ui/src/App.tsx', `import {useEffect} from 'react'; import {ignore} from './handlers';
+        export function App(){useEffect(()=>{},[]); return null;}
+        export const concise=()=>1;
+        export async function work(){await Promise.resolve(1)}
+        Promise.reject(1).catch(ignore); Promise.reject(2).then(undefined,ignore);
+        import(unknownModule);`);
+      write('ui/src/handlers.tsx','export function ignore(){ /* Best effort; failure is intentionally ignored. */ }');
+      const run=success('--entry-point','ui/package.json');
+      const inspection=readJson(run.artifacts.inspection);
+      const dimensions=inspection.evidence.dimensions;
+      assert.equal(inspection.usable,true);
+      assert.equal(inspection.evidence.tool.version,'0.4.0');
+      const usage=dimensions.performanceAsync.scoring.observations;
+      assert.equal(usage.eligibleOwners,3); assert.equal(usage.affectedOwners,0);
+      const decomposition=dimensions.codeQuality.componentDetails.decomposition;
+      assert.equal(decomposition.version,2); assert.equal(decomposition.primaryMeasure,'ownedStatements');
+      assert.equal(decomposition.score,null);
+      assert.equal(decomposition.modules.flatMap(m=>m.functions).find(f=>f.member==='concise').ownedStatements,1);
+      const handlers=dimensions.errorHandling.handlerEvidence;
+      assert.equal(handlers.totalHandlers,1); assert.equal(handlers.documentedEmptyHandlers,1);
+      assert.equal(handlers.referencedCallbackUseSites,2); assert.equal(handlers.handlerUseSites,2);
+      assert.equal(dimensions.errorHandling.score,undefined);
+      assert.equal(dimensions.architecture.score,undefined);
+      assert.equal(dimensions.architecture.dependencyGraph.coverage.status,'gaps');
+      assert.equal(dimensions.architecture.dependencyGraph.coverage.occurrencesByResolution.dynamic,1);
+      fs.unlinkSync(path.join(root,'ui/src/handlers.tsx'));
     });
     await t.test('changed configuration is incompatible and partial outputs never recover earlier scores', () => {
       write('ui/tsconfig.json', '{"include":["src/**/*.tsx"]}');
