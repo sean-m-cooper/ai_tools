@@ -181,7 +181,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
         assert.equal(evidence.analysis.auditId, run.auditId);
       }
     });
-    await t.test('JS 0.4 evidence preserves populations, statement ranking, shared handlers and graph gaps', () => {
+    await t.test('JS 0.5 evidence preserves populations and honors scored and unavailable handler dispositions', () => {
       write('ui/src/App.tsx', `import {useEffect} from 'react'; import {ignore} from './handlers';
         export function App(){useEffect(()=>{},[]); return null;}
         export const concise=()=>1;
@@ -193,7 +193,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       const inspection=readJson(run.artifacts.inspection);
       const dimensions=inspection.evidence.dimensions;
       assert.equal(inspection.usable,true);
-      assert.equal(inspection.evidence.tool.version,'0.4.0');
+      assert.equal(inspection.evidence.tool.version,'0.5.0');
       const usage=dimensions.performanceAsync.scoring.observations;
       assert.equal(usage.eligibleOwners,3); assert.equal(usage.affectedOwners,0);
       const decomposition=dimensions.codeQuality.componentDetails.decomposition;
@@ -203,7 +203,15 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       const handlers=dimensions.errorHandling.handlerEvidence;
       assert.equal(handlers.totalHandlers,1); assert.equal(handlers.documentedEmptyHandlers,1);
       assert.equal(handlers.referencedCallbackUseSites,2); assert.equal(handlers.handlerUseSites,2);
-      assert.equal(dimensions.errorHandling.score,undefined);
+      assert.equal(dimensions.errorHandling.status,'scored');
+      assert.equal(dimensions.errorHandling.score,10);
+      assert.equal(dimensions.errorHandling.dispositionEvidence.assessedHandlers,1);
+      write('ui/src/handlers.tsx','export function ignore(){ customHandling(); }');
+      const unavailable=success('--entry-point','ui/package.json');
+      const limited=readJson(unavailable.artifacts.inspection).evidence.dimensions.errorHandling;
+      assert.equal(limited.status,'skipped'); assert.equal(limited.score,undefined);
+      assert.equal(limited.dispositionEvidence.unknownHandlers,1);
+      assert.ok(limited.findings.every(f=>f.severity==='info'));
       assert.equal(dimensions.architecture.score,undefined);
       assert.equal(dimensions.architecture.dependencyGraph.coverage.status,'gaps');
       assert.equal(dimensions.architecture.dependencyGraph.coverage.occurrencesByResolution.dynamic,1);
