@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-09",
+  "npmVersion": "0.5.0",
+  "dotnetVersion": "2.3.1",
+  "analyzerRevision": "eac39c610d95490d96fda2a90b8bd3315546ff48",
+  "ruleset": "javascript-typescript-2026-10-09-handler-contracts",
+  "errorHandlingPolicy": "javascript-typescript/errorHandling/failure-disposition-v2",
+  "analyzerTestsPassed": 210,
+  "architectureContextCasesPassed": 11,
+  "installedPackageSmokePassed": true,
+  "offlinePackageResolutionPassed": true,
+  "calibrationFixturesPassed": 6,
+  "calibrationChange": "JS/TS version/ruleset metadata; frozen dimension distributions unchanged",
+  "publicSourceSelectionsPassed": 6,
+  "retainedSourceReviewsPassed": 18,
+  "handlerRecognition": {
+    "assessedBodies": 220,
+    "totalBodies": 426,
+    "unknownBodies": 206,
+    "unresolvedCallbackUses": 1
+  },
+  "skillOfflineTestsPassed": 16,
+  "packagedSkillIntegrationTestsPassed": 13,
+  "quickValidatePassed": true,
+  "liveEvaluation": {
+    "status": "not-run",
+    "reason": "This release validates deterministic runner/inspection contracts; no live-model report evaluation was repeated."
+  },
+  "publicationStatus": "Release candidate; publication and cross-platform checks are tracked by release workflow and coordinated PRs",
+  "logs": "E:/repos/CodeMetrics.AI/TestResults/js-ts-0.5-release",
+  "packages": {
+    "codemetrics-ai-0.5.0.tgz": "182c71f020b478c1b70f1ce280ca659f2cea3466d25f5878eeb6dd95c138f5a2",
+    "CodeMetrics.AI.2.3.1.nupkg": "a603da504e2dfc3dbca8dd11a3f80b4e6a88f6d984ed537214bf7fb6698fda15"
+  },
+  "packagedConsumer": {
+    "sample": "express",
+    "packageVersion": "0.5.0",
+    "packageSha256": "182c71f020b478c1b70f1ce280ca659f2cea3466d25f5878eeb6dd95c138f5a2",
+    "runId": "0457b2de-8cec-4b5d-9b0a-6e4f22d0f525",
+    "auditId": "2c873e8b-35a2-4a4c-a5c1-7c6d8b43d71e",
+    "fresh": true,
+    "inspectionUsable": true,
+    "errorHandlingScore": 10,
+    "scope": "Local release-candidate tarball installed by the updated scorecard skill; not a registry installation."
+  }
+}
