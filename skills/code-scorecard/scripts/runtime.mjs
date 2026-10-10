@@ -82,7 +82,7 @@ export async function installTools(options, compatibility, dotnetVersion) {
     }
   });
   if (readJson(path.join(packageRoot, 'package.json')).version !== version) throw new Error('Local npm package does not match the tested evidence-tool version.');
-  const result = { js: path.join(packageRoot, 'dist', 'cli.js'), evidence: path.join(packageRoot, 'dist', 'evidence-cli.js'), packageRoot };
+  const result = { js: path.join(packageRoot, 'dist', 'cli.js'), python: path.join(packageRoot, 'dist', 'python-cli.js'), evidence: path.join(packageRoot, 'dist', 'evidence-cli.js'), packageRoot };
   if (dotnetVersion) {
     const localPackage = options['dotnet-package'] && path.resolve(options['dotnet-package']);
     const toolRoot = path.join(cache, 'dotnet', cacheKey(dotnetVersion, localPackage));

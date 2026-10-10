@@ -21,6 +21,12 @@
         "2.3.1"
       ]
     },
+    "python": {
+      "package": "codemetrics-ai (bundled codemetrics-python)",
+      "preferredVersion": "0.2.0-experimental",
+      "testedVersions": ["0.2.0-experimental"],
+      "requiresLocalPackage": true
+    },
     "javascript-typescript": {
       "package": "codemetrics-ai",
       "preferredVersion": "0.5.0",

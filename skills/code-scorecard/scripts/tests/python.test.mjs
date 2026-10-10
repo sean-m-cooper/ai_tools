@@ -1,0 +1,96 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { discover, compatibility } from '../run-scorecard.mjs';
+import { installTools, readJson } from '../runtime.mjs';
+
+const runner = fileURLToPath(new URL('../run-scorecard.mjs', import.meta.url));
+test('experimental Python installed package integrates with scope, freshness and failure controls', { timeout: 300_000 }, async t => {
+  const npmPackage = process.env.SCORECARD_NPM_PACKAGE;
+  assert.ok(npmPackage, 'Set SCORECARD_NPM_PACKAGE to the freshly packed development archive.');
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'python skill '));
+  t.after(() => fs.rmSync(temporary, { recursive: true, force: true }));
+  const root = path.join(temporary, 'repository'); fs.mkdirSync(root);
+  const cache = path.join(temporary, 'cache');
+  const write = (file, text) => { const full = path.join(root, file); fs.mkdirSync(path.dirname(full), { recursive: true }); fs.writeFileSync(full, text); };
+  const invoke = (...args) => {
+    const result = spawnSync(process.execPath, [runner, '--repo', root, '--cache', cache, '--npm-package', npmPackage, ...args],
+      { encoding: 'utf8', windowsHide: true, timeout: 180_000 });
+    assert.ifError(result.error);
+    return { code: result.status, value: result.stdout.trim() ? JSON.parse(result.stdout) : null, error: result.stderr };
+  };
+  const success = (...args) => { const result = invoke(...args); assert.equal(result.code, 0, result.error + JSON.stringify(result.value)); return result.value.results[0]; };
+  write('.git', 'gitdir: test');
+  write('app/pyproject.toml', '[project]\nname="app"\n');
+  write('app/src/work.py', 'def work(x):\n    if x: return 1\n    return 0\n');
+  write('app/tests/test_work.py', 'def test_work(): pass\n');
+  write('vendor/pyproject.toml', '');
+  write('app/nested/pyproject.toml', '');
+  write('.venv/pyproject.toml', '');
+  await t.test('discovery selects containing manifests and excludes dependencies', () => {
+    assert.deepEqual(discover(root, 'python'), [path.join(root, 'app/pyproject.toml')]);
+    const discovered = invoke('--discover'); assert.equal(discovered.code, 0);
+    assert.deepEqual(discovered.value.candidates.python, [path.join(root, 'app/pyproject.toml')]);
+  });
+  let initial;
+  await t.test('manifest routing emits usable unscored evidence without a CSV artifact', () => {
+    initial = success('--ecosystem', 'python');
+    const inspection = readJson(initial.artifacts.inspection);
+    assert.equal(initial.status, 'complete'); assert.equal(initial.fresh, true);
+    assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
+    assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
+    assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
+    assert.ok(Object.values(inspection.evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+  });
+  await t.test('explicit directory and source scopes work without manifests and preserve selection flags', () => {
+    const run = success('--ecosystem', 'python', '--entry-point', 'app', '--python-include-tests');
+    const evidence = readJson(run.artifacts.evidence); assert.equal(evidence.population.members, 2);
+    const single = success('--entry-point', 'app/src/work.py');
+    assert.equal(readJson(single.artifacts.evidence).population.members, 1);
+    const selected = success('--ecosystem', 'python', '--entry-point', 'app', '--python-include', 'src/**', '--python-exclude', '**/unused.py');
+    assert.deepEqual(readJson(selected.artifacts.evidence).dimensions.codeQuality.sourceFacts.selection.options.include, ['src/**']);
+  });
+  await t.test('parse failure updates latest attempt and does not reuse prior successful evidence', () => {
+    write('app/src/broken.py', 'def broken(:');
+    const result = invoke('--ecosystem', 'python'); assert.equal(result.code, 2);
+    const run = result.value.results[0]; assert.equal(run.status, 'failed');
+    assert.equal(run.analyzerExitCode, 2); assert.equal(run.validationExitCode, 2);
+    assert.notEqual(run.runId, initial.runId); assert.equal(readJson(run.artifacts.inspection).usable, false);
+    assert.equal(readJson(path.join(root, '.scorecard/python/latest.json')).runId, run.runId);
+    assert.equal(readJson(run.artifacts.evidence).dimensions.codeQuality.experimentalPreview.population, null);
+    fs.unlinkSync(path.join(root, 'app/src/broken.py'));
+  });
+  await t.test('historical evidence retains its identities and is explicitly not fresh', () => {
+    const imported = success('--ecosystem', 'python', '--existing', initial.artifacts.evidence);
+    assert.equal(imported.fresh, false); assert.equal(imported.evidenceRunId, initial.runId); assert.notEqual(imported.runId, initial.runId);
+  });
+  await t.test('stale producer output is rejected even after a zero exit', async () => {
+    const tooling = await installTools({ cache, 'npm-package': npmPackage }, compatibility);
+    const before = fs.readFileSync(tooling.python);
+    try {
+      fs.writeFileSync(tooling.python, `import fs from 'node:fs'; fs.copyFileSync(${JSON.stringify(initial.artifacts.evidence)}, process.argv[process.argv.indexOf('--scorecard-output') + 1]);`);
+      const result = invoke('--ecosystem', 'python'); assert.equal(result.code, 2);
+      assert.equal(result.value.results[0].analyzerExitCode, 0); assert.equal(result.value.results[0].validationExitCode, 2);
+      assert.match(result.error, /analysis.runId/);
+    } finally { fs.writeFileSync(tooling.python, before); }
+  });
+  await t.test('no score gates or silent download of an unpublished Python package', () => {
+    const result = invoke('--ecosystem', 'python', '--baseline', initial.artifacts.evidence); assert.equal(result.code, 2);
+    assert.match(result.error, /previews are uncalibrated/);
+    const missing = spawnSync(process.execPath, [runner, '--repo', root, '--ecosystem', 'python'], { encoding: 'utf8', windowsHide: true });
+    assert.equal(missing.status, 2); assert.match(missing.stderr, /not published/);
+  });
+  await t.test('polyglot audit preserves separate runs and a shared audit identity', () => {
+    write('ui/package.json', '{"name":"fixture"}'); write('ui/app.js', 'export function app(){return 1;}');
+    const result = invoke(); assert.equal(result.code, 0, result.error);
+    assert.deepEqual(result.value.results.map(item => item.ecosystem).sort(), ['javascript-typescript', 'python']);
+    assert.equal(new Set(result.value.results.map(item => item.runId)).size, 2);
+    assert.ok(result.value.results.every(item => item.auditId === result.value.auditId));
+    const misplaced = invoke('--ecosystem', 'javascript-typescript', '--python-include-tests');
+    assert.equal(misplaced.code, 2); assert.match(misplaced.error, /Python options require/);
+  });
+});

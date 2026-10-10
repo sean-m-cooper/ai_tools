@@ -18,7 +18,8 @@ export function discover(root, ecosystem) {
     const entries = fs.readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name, 'en'));
     const files = entries.filter(entry => entry.isFile()).map(entry => path.join(directory, entry.name));
     const solutions = files.filter(file => /\.slnx?$/i.test(file));
-    const candidates = ecosystem === 'dotnet' ? (solutions.length ? solutions : files.filter(file => /\.csproj$/i.test(file))) : files.filter(file => path.basename(file) === 'package.json');
+    const candidates = ecosystem === 'dotnet' ? (solutions.length ? solutions : files.filter(file => /\.csproj$/i.test(file)))
+      : files.filter(file => path.basename(file) === (ecosystem === 'python' ? 'pyproject.toml' : 'package.json'));
     if (candidates.length) return candidates;
     return entries.filter(entry => entry.isDirectory() && !excluded.has(entry.name) && !fs.existsSync(path.join(directory, entry.name, '.git')))
       .flatMap(entry => visit(path.join(directory, entry.name)));
@@ -35,6 +36,9 @@ function ancestors(directory, root) {
 }
 function pinnedVersion(root, entryPoint, ecosystem) {
   const policy = compatibility.analyzers[ecosystem];
+  // Python's experimental adapter is bundled in an explicitly supplied npm archive.
+  // Do not mistake application dependency pins for an analyzer pin or execute pyproject build backends.
+  if (ecosystem === 'python') return { version: policy.preferredVersion, source: 'compatibility-manifest-local-package' };
   let pin;
   for (const directory of ancestors(path.dirname(entryPoint), root)) {
     const file = path.join(directory, ecosystem === 'dotnet' ? '.config/dotnet-tools.json' : 'package.json');
@@ -65,7 +69,8 @@ export async function execute(options) {
   if (options['entry-point']) {
     explicit = fs.realpathSync(path.resolve(root, options['entry-point']));
     if (!within(root, explicit)) throw new Error('Entry point must be inside --repo.');
-    const ecosystem = /\.csproj$|\.slnx?$/i.test(explicit) ? 'dotnet' : path.basename(explicit) === 'package.json' ? 'javascript-typescript' : undefined;
+    const ecosystem = /\.csproj$|\.slnx?$/i.test(explicit) ? 'dotnet' : path.basename(explicit) === 'package.json' ? 'javascript-typescript'
+      : path.basename(explicit) === 'pyproject.toml' || /\.pyi?$/.test(explicit) || (options.ecosystem === 'python' && fs.statSync(explicit).isDirectory()) ? 'python' : undefined;
     if (!ecosystem || !selected.includes(ecosystem)) throw new Error('Entry point does not match the requested ecosystem.');
     selected = [ecosystem];
   }
@@ -75,6 +80,12 @@ export async function execute(options) {
     if (entries.length > 1) throw new Error(`Ambiguous ${ecosystem} scope; pass --entry-point. Candidates: ${entries.join(', ')}`);
   const scopes = Object.entries(candidates).filter(([, entries]) => entries.length).map(([ecosystem, [entryPoint]]) => ({ ecosystem, entryPoint, ...pinnedVersion(root, entryPoint, ecosystem) }));
   if (!scopes.length) throw new Error('No supported entry point found. Specify a nested --entry-point or report a qualitative-only audit.');
+  if (scopes.some(scope => scope.ecosystem === 'python')) {
+    if (!options['npm-package'] && compatibility.analyzers.python.requiresLocalPackage)
+      throw new Error('Python integration is experimental and not published. Supply --npm-package with a locally built codemetrics-ai archive containing codemetrics-python.');
+    if (options.baseline) throw new Error('Python previews are uncalibrated; baseline comparisons and score gates are not supported.');
+  } else if (Object.keys(options).some(key => key === 'python' || key.startsWith('python-')))
+    throw new Error('Python options require a selected Python entry point.');
   if ((options.existing || options.baseline) && scopes.length !== 1) throw new Error('--existing and --baseline require one ecosystem/entry point.');
   if (!options.baseline && (options['fail-on-new'] !== undefined || options['max-score-drop'] !== undefined)) throw new Error('Quality gates require --baseline.');
   const auditId = randomUUID();
@@ -91,13 +102,25 @@ export async function execute(options) {
       const tooling = await installTools(options, compatibility, scope.ecosystem === 'dotnet' && !options.existing ? scope.version : undefined);
       const variant = scope.ecosystem === 'dotnet' ? options.configuration ?? 'Release' : 'source';
       if (!options.existing) {
-        summary.artifacts.metrics = path.join(directory, 'metrics.csv');
-        const args = ['--run-id', runId, '--audit-id', auditId, '--output', summary.artifacts.metrics, '--scorecard-output', evidence];
+        const args = ['--run-id', runId, '--audit-id', auditId, '--scorecard-output', evidence];
+        if (scope.ecosystem !== 'python') {
+          summary.artifacts.metrics = path.join(directory, 'metrics.csv');
+          args.push('--output', summary.artifacts.metrics);
+        }
         if (scope.ecosystem === 'dotnet') {
           args.push('--solution', scope.entryPoint, '--configuration', variant);
           if (options['skip-dependency-probe']) args.push('--skip-dependency-probe');
           if (options.coverage) args.push('--coverage', path.resolve(root, options.coverage));
           summary.analyzerExitCode = await run(tooling.dotnet, args, root, {}, timeoutSeconds * 1000);
+        } else if (scope.ecosystem === 'python') {
+          if (!fs.existsSync(tooling.python)) throw new Error('The supplied npm archive does not contain codemetrics-python. Build the current development package.');
+          args.push('--project', scope.entryPoint);
+          if (options.python) args.push('--python', path.resolve(root, options.python));
+          for (const flag of ['include', 'exclude', 'test-path', 'production-path'])
+            for (const value of options['python-' + flag] ?? []) args.push('--' + flag, value);
+          for (const flag of ['include-tests', 'include-generated', 'include-support'])
+            if (options['python-' + flag]) args.push('--' + flag);
+          summary.analyzerExitCode = await run(process.execPath, [tooling.python, ...args], root, {}, timeoutSeconds * 1000);
         } else {
           args.push('--project', scope.entryPoint);
           if (options.tsconfig) args.push('--tsconfig', path.resolve(root, options.tsconfig));
@@ -106,7 +129,8 @@ export async function execute(options) {
         }
       }
       const inspectArgs = [tooling.evidence, '--input', evidence, '--inspect-output', summary.artifacts.inspection,
-        '--expected-ecosystem', scope.ecosystem, '--expected-entry-point', scope.entryPoint, '--expected-variant', variant, '--expected-root', expectedRoot(scope.entryPoint)];
+        '--expected-ecosystem', scope.ecosystem, '--expected-entry-point', scope.entryPoint, '--expected-variant', variant, '--expected-root',
+        scope.ecosystem === 'python' ? (fs.statSync(scope.entryPoint).isDirectory() ? scope.entryPoint : path.dirname(scope.entryPoint)) : expectedRoot(scope.entryPoint)];
       // Historical imports retain their recorded tool version; an explicit repository pin still takes precedence.
       if (!options.existing || scope.source === 'repository-pin') inspectArgs.push('--expected-version', scope.version);
       if (!options.existing) inspectArgs.push('--expected-run-id', runId, '--expected-audit-id', auditId);
@@ -164,8 +188,11 @@ export async function execute(options) {
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds'];
-    const { values } = parseArgs({ options: { ...Object.fromEntries(strings.map(key => [key, { type: 'string' }])), discover: { type: 'boolean' }, 'skip-dependency-probe': { type: 'boolean' }, 'dependency-metadata': { type: 'boolean' }, help: { type: 'boolean' } } });
+    const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds', 'python'];
+    const { values } = parseArgs({ options: { ...Object.fromEntries(strings.map(key => [key, { type: 'string' }])),
+      ...Object.fromEntries(['include', 'exclude', 'test-path', 'production-path'].map(key => ['python-' + key, { type: 'string', multiple: true }])),
+      ...Object.fromEntries(['include-tests', 'include-generated', 'include-support'].map(key => ['python-' + key, { type: 'boolean' }])),
+      discover: { type: 'boolean' }, 'skip-dependency-probe': { type: 'boolean' }, 'dependency-metadata': { type: 'boolean' }, help: { type: 'boolean' } } });
     if (values.help) console.log('run-scorecard.mjs --repo <root> [--entry-point <path> | --ecosystem <id>] [--discover]\nFresh analysis is the default. See bootstrap.md for pinned tools, local packages, imports and gates.');
     else {
       const result = await execute(values);

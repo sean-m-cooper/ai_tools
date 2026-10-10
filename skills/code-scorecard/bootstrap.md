@@ -1,6 +1,6 @@
 # Generate and validate scorecard evidence
 
-Requires Node.js 20+ with npm for the shared evidence tooling. .NET analysis additionally requires the .NET 10 SDK plus SDKs/workloads required by the target project. Restore the selected .NET entry point before analysis using its repository's normal restore procedure. JavaScript analysis does not run the target package's scripts.
+Requires Node.js 20+ with npm for the shared evidence tooling. .NET analysis additionally requires the .NET 10 SDK plus SDKs/workloads required by the target project. Restore the selected .NET entry point before analysis using its repository's normal restore procedure. JavaScript analysis does not run the target package's scripts. Experimental Python additionally requires Python 3.12 and a local development package; read [python.md](python.md).
 
 Resolve `<skill>` to this skill directory and `<repo>` to the audited repository. Use argument arrays or normal shell quoting for paths with spaces.
 
@@ -12,7 +12,7 @@ node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point src/App/App.c
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point packages/ui/package.json
 ```
 
-With no entry point, the helper runs each unambiguous detected ecosystem. `--ecosystem dotnet` or `--ecosystem javascript-typescript` restricts detection. Discovery searches nested layouts, skips build/dependency outputs and other Git repositories, and stops below a containing entry point for that ecosystem. A root `package.json` is a package/workspace boundary; independently nested packages outside its workspace need an explicit run. Pass an explicit entry point for layouts discovery cannot distinguish.
+With no entry point, the helper runs each unambiguous detected ecosystem. `--ecosystem dotnet`, `--ecosystem javascript-typescript`, or `--ecosystem python` restricts detection. Discovery searches nested layouts, skips build/dependency outputs and other Git repositories, and stops below a containing entry point for that ecosystem. A root `package.json` is a package/workspace boundary; independently nested packages outside its workspace need an explicit run. Pass an explicit entry point for layouts discovery cannot distinguish.
 
 A `.csproj` run scores that project only, with project references loaded for semantic resolution. A solution run scores its production projects. The .NET analyzer excludes source outside the entry point's directory. Findings use `subject.root` as their path base, which may differ from the audited subdirectory.
 
@@ -24,7 +24,7 @@ From CodeMetrics.AI 2.3.0, solution scope honors projects excluded from the sele
 
 Absent a repository pin, use the tested preferred versions. The shared evidence CLI has its own tested npm version. Tools are cached under `~/.cache/code-scorecard`; `--cache <directory>` isolates a test or CI run. Concurrent installers serialize per cache entry. If an installer is forcibly terminated, a later attempt reports the abandoned empty `.install-lock` directory after a bounded wait; confirm no installer is active before removing that directory. No `Directory.Build.targets` is copied or overwritten.
 
-Each attempt writes `<repo>/.scorecard/<ecosystem>/runs/<run-id>/run.json` and updates `latest.json`. On success the run records CSV, evidence, validated inspection and optional comparison paths. Stdout is one JSON result; command logs go to stderr. Consume only that invocation's result and artifact paths. Every ordinary invocation analyzes source anew; matching version, entry point or timestamps does not establish freshness.
+Each attempt writes `<repo>/.scorecard/<ecosystem>/runs/<run-id>/run.json` and updates `latest.json`. On success the run records evidence and validated inspection paths, plus CSV and optional comparison paths when supported. Python emits no CSV or gated comparison. Stdout is one JSON result; command logs go to stderr. Consume only that invocation's result and artifact paths. Every ordinary invocation analyzes source anew; matching version, entry point or timestamps does not establish freshness.
 
 Command progress streams to stderr while analysis runs. Analysis has a 30-minute default timeout; use `--timeout-seconds 3600` for a larger solution. The limit must be a whole number from 1 through 86400 and is recorded in the run result. A timeout terminates the command's process tree and leaves the attempt failed. Tool setup and evidence validation retain separate 10-minute limits. Increase the option for a justified retry instead of copying or patching the runner.
 
@@ -71,3 +71,7 @@ The helper creates an `auditId` before analysis and a unique `runId` for each ec
 Keep IDs when saving reports or extracted findings. Comparison artifacts identify current and baseline runs; SARIF preserves the analyzed run IDs. IDs are excluded from finding fingerprints and comparison compatibility. Raw CSV is not sufficient to validate fresh findings.
 
 For an explicit historical `--existing` import, the helper's `runId` identifies the inspection attempt, while `evidenceRunId` and `evidenceAuditId` retain the source document's IDs (null when absent). Such imports always have `fresh: false`; the attempt ID never relabels old evidence as newly analyzed.
+
+## Python development verification
+
+Build the local CodeMetrics.AI npm archive and set `SCORECARD_NPM_PACKAGE` to its absolute path, then run `node --test skills/code-scorecard/scripts/tests/python.test.mjs` with Python 3.12 installed. This checks packaged execution, explicit scopes, selection overrides, parse failure, historical imports, stale IDs, polyglot identity, and the unpublished-package restriction. The default source revision remains the released integration pin until the coordinated changes are committed and available remotely; do not present the older pinned CI run as Python verification.

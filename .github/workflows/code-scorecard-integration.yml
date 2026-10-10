@@ -22,6 +22,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Verify behavioral evaluation harness
         run: node --test skills/code-scorecard/evals/run.test.mjs
       - id: contract
@@ -52,4 +55,14 @@ jobs:
           $env:SCORECARD_NPM_PACKAGE = (Get-Item packages/*.tgz).FullName
           $env:SCORECARD_DOTNET_PACKAGE = (Get-Item packages/*.nupkg).FullName
           node --test skills/code-scorecard/scripts/tests/runtime.test.mjs skills/code-scorecard/scripts/tests/integration.test.mjs
+          exit $LASTEXITCODE
+      - name: Verify experimental Python when the pinned source includes it
+        shell: pwsh
+        run: |
+          if (!(Test-Path contract-source/analyzers/javascript-typescript/src/python-cli.ts)) {
+            Write-Host 'Python integration is not verified by this older source pin. Run the local-package Python suite before advancing the coordinated pin.'
+            exit 0
+          }
+          $env:SCORECARD_NPM_PACKAGE = (Get-Item packages/*.tgz).FullName
+          node --test skills/code-scorecard/scripts/tests/python.test.mjs
           exit $LASTEXITCODE
