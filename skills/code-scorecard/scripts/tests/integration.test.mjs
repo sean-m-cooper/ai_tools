@@ -217,6 +217,42 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       assert.equal(dimensions.architecture.dependencyGraph.coverage.occurrencesByResolution.dynamic,1);
       fs.unlinkSync(path.join(root,'ui/src/handlers.tsx'));
     });
+    await t.test('dependency evidence remains unscored and explicit metadata preserves unavailable private-source assessments', t => {
+      const probe=success('--entry-point','ui/package.json');
+      const supported=!!readJson(probe.artifacts.inspection).evidence.dimensions.dependencyManagement.dependencyInventory;
+      if(process.env.SCORECARD_REQUIRE_DEPENDENCY_EVIDENCE==='1') assert.ok(supported,'Local dependency development build is required');
+      if(!supported) {t.skip('Pinned released analyzer predates development dependency evidence');return;}
+      write('ui/package.json',JSON.stringify({name:'ui',dependencies:{private:'1.0.0'}}));
+      write('ui/package-lock.json',JSON.stringify({lockfileVersion:3,packages:{'':{name:'ui',dependencies:{private:'1.0.0'}},'node_modules/private':{version:'1.0.0',resolved:'https://private.example/package.tgz'}}}));
+      const offline=success('--entry-point','ui/package.json');
+      const local=readJson(offline.artifacts.inspection).evidence.dimensions.dependencyManagement;
+      assert.equal(local.dependencyInventory.packages.length,1);assert.equal(local.dependencyMetadata.status,'notRequested');
+      const queried=success('--entry-point','ui/package.json','--dependency-metadata');
+      const evidence=readJson(queried.artifacts.inspection).evidence;
+      assert.equal(evidence.analysis.status,'complete');assert.equal(evidence.dimensions.dependencyManagement.score,undefined);
+      assert.equal(evidence.dimensions.dependencyManagement.dependencyMetadata.status,'unavailable');
+      assert.equal(evidence.dimensions.dependencyManagement.dependencyMetadata.observations[0].vulnerabilities.status,'unavailable');
+      const incompatible=invoke('--entry-point','ui/package.json','--dependency-metadata','--baseline',offline.artifacts.evidence);
+      assert.equal(incompatible.code,2);assert.match(incompatible.error,/configurationFingerprint/);
+      write('ui/package.json','{"name":"ui"}');fs.unlinkSync(path.join(root,'ui/package-lock.json'));
+    });
+    await t.test('pnpm project evidence survives inspection without scoring implicit registry provenance', t => {
+      const probe=success('--entry-point','ui/package.json');
+      const supported=readJson(probe.artifacts.inspection).evidence.dimensions.dependencyManagement.scope?.includes?.includes('pnpm-lockfile-v9')===true;
+      if(process.env.SCORECARD_REQUIRE_DEPENDENCY_EVIDENCE==='1') assert.ok(supported,'Local pnpm development build is required');
+      if(!supported) {t.skip('Pinned released analyzer predates pnpm inventory');return;}
+      write('ui/package.json',JSON.stringify({name:'ui',packageManager:'pnpm@12.4.2',dependencies:{a:'catalog:'}}));
+      write('ui/pnpm-workspace.yaml','catalog:\n  a: ^1\n');
+      write('ui/pnpm-lock.yaml','---\nlockfileVersion: "9.0"\nimporters:\n  .:\n    packageManagerDependencies: {}\n---\nlockfileVersion: "9.0"\ncatalogs:\n  default:\n    a: {specifier: ^1, version: 1.0.0}\nimporters:\n  .:\n    dependencies:\n      a: {specifier: "catalog:", version: 1.0.0}\npackages:\n  a@1.0.0:\n    resolution: {integrity: sha512-fixture}\nsnapshots:\n  a@1.0.0: {}\n');
+      const run=success('--entry-point','ui/package.json','--dependency-metadata');
+      const inspected=readJson(run.artifacts.inspection),dimension=inspected.evidence.dimensions.dependencyManagement;
+      assert.equal(inspected.usable,true);assert.equal(dimension.status,'skipped');assert.equal(dimension.score,undefined);
+      assert.equal(dimension.dependencyInventory.status,'complete');assert.equal(dimension.dependencyInventory.packages.length,1);
+      assert.equal(dimension.dependencyInventory.lockfiles[0].projectDocument,2);assert.equal(dimension.dependencyInventory.lockfiles[0].environmentDocument,'excluded');
+      assert.equal(dimension.dependencyInventory.packages[0].uses[0].resolvedRange,'^1');assert.equal(dimension.dependencyMetadata.status,'unavailable');
+      assert.equal(dimension.dependencyMetadata.observations[0].vulnerabilities.status,'unavailable');
+      write('ui/package.json','{"name":"ui"}');fs.unlinkSync(path.join(root,'ui/pnpm-lock.yaml'));fs.unlinkSync(path.join(root,'ui/pnpm-workspace.yaml'));
+    });
     await t.test('changed configuration is incompatible and partial outputs never recover earlier scores', () => {
       write('ui/tsconfig.json', '{"include":["src/**/*.tsx"]}');
       const changed = invoke('--entry-point', 'ui/package.json', '--baseline', initial.artifacts.evidence);

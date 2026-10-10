@@ -1,5 +1,14 @@
 # Behavioral report evaluations
 
+The [pnpm development validation](validation/2026-10-09-pnpm.json) extends the
+[earlier npm dependency validation](validation/2026-10-09-dependencies.json).
+It records 16 offline checks and 15 packaged integration checks, including the
+required pnpm project-document/catalog case. The default compatibility pin still
+targets released 0.5.0; CI against that older package skips the two new
+capability-dependent cases. Set `SCORECARD_REQUIRE_DEPENDENCY_EVIDENCE=1` when
+validating the local development tarball so that missing dependency/pnpm support
+fails. No live-model report evaluation is claimed for these updates.
+
 These tests exercise the agent's report, separately from the packaged runner integration tests. Eight synthetic fixtures cover selected versus nonbinding score conditions, repeated dependency occurrences, partial assessment scope, prior conclusions, absent attribution in older evidence, failed runs, conclusions rechecked against supplied current source, separate complexity/decomposition component reporting without changing overall weighting, unavailable dependency metadata with independently verified vulnerabilities, and JS/TS scored populations versus unscored contextual evidence. They contain no private repository artifacts.
 
 Each case runs two fresh Codex processes: a generator receives the actual skill, user request and evidence; a judge receives the evidence, generated report and a private factual rubric. The generator never receives the rubric or control reports. The judge evaluates meaning and omissions, accepting paraphrases and different layouts. Quotes are checked against the actual report. Missing criteria, invented quotes and process errors fail closed.

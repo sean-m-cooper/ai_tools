@@ -101,6 +101,7 @@ export async function execute(options) {
         } else {
           args.push('--project', scope.entryPoint);
           if (options.tsconfig) args.push('--tsconfig', path.resolve(root, options.tsconfig));
+          if (options['dependency-metadata']) args.push('--dependency-metadata');
           summary.analyzerExitCode = await run(process.execPath, [tooling.js, ...args], root, {}, timeoutSeconds * 1000);
         }
       }
@@ -164,7 +165,7 @@ export async function execute(options) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds'];
-    const { values } = parseArgs({ options: { ...Object.fromEntries(strings.map(key => [key, { type: 'string' }])), discover: { type: 'boolean' }, 'skip-dependency-probe': { type: 'boolean' }, help: { type: 'boolean' } } });
+    const { values } = parseArgs({ options: { ...Object.fromEntries(strings.map(key => [key, { type: 'string' }])), discover: { type: 'boolean' }, 'skip-dependency-probe': { type: 'boolean' }, 'dependency-metadata': { type: 'boolean' }, help: { type: 'boolean' } } });
     if (values.help) console.log('run-scorecard.mjs --repo <root> [--entry-point <path> | --ecosystem <id>] [--discover]\nFresh analysis is the default. See bootstrap.md for pinned tools, local packages, imports and gates.');
     else {
       const result = await execute(values);
