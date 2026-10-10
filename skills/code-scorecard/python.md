@@ -1,10 +1,10 @@
 # Experimental Python workflow
 
-Python support measures selected implementation bodies using Python 3.12's native AST. It is a source-only complexity assessment, not a nine-dimension scoring implementation. Node.js 20+ and Python 3.12 are required. No target installation, build backend, import, or test execution is needed.
+Python support measures selected implementation bodies using Python 3.12's native AST. It measures source-only complexity and exact-body duplication, not a nine-dimension scoring implementation. Node.js 20+ and Python 3.12 are required. No target installation, build backend, import, or test execution is needed.
 
 ## Local package and scope
 
-This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The preferred Python adapter identifies itself as `0.3.0-experimental`; the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
+This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The preferred Python adapter identifies itself as `0.4.0-experimental`; the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
 
 ```sh
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --npm-package <archive.tgz> --cache <cache>
@@ -39,3 +39,13 @@ For a complete run:
 - Do not give an overall or compare these previews as equivalent to JS/TS or .NET scores. Contextual qualitative observations can accompany the measurements but do not supply missing dimension grades in this experimental workflow.
 
 For incomplete runs, use diagnostics only: no preview, overall, or recovery from old files. The shared validator checks the embedded population and recomputes the experimental result; stale IDs are still rejected even if another process reports exit zero. Explicit `--existing` imports remain historical, never fresh. Baseline comparisons and score gates are disabled for this experimental policy; the shared CLI can export informational findings to SARIF.
+
+## Exact-body duplication (0.4.0-experimental+)
+
+Read `dimensions.codeQuality.duplication` from the validated evidence. Its run/audit IDs must match the enclosing analysis, and it uses the same selected source population. It is review evidence, not a score or an additional dimension. Older evidence without this extension has no duplication assessment; do not report zero matches for it.
+
+- Report the supplied group count, matched-function count, eligible-body count, and five-statement minimum. A group with three occurrences is one group involving three bodies. Do not sum pairwise matches, infer duplicated-line percentages, or turn the count into a deduction or grade. No eligible bodies means this search is unmeasured; zero groups among eligible bodies means no matches under this policy, not "duplication-free."
+- For useful groups, show the member/file/line occurrences, statement count, and recorded policy `python/exact-function-body-v1`. `exactBodyDuplicationReview` findings are informational; high confidence applies to structural equality, not to a refactoring recommendation. The full occurrences are available in each group's evidence and finding observations.
+- Explain the boundary when it affects interpretation: whole AST bodies only; names and literal values retained; comments, leading docstrings, function signatures, decorators, and surrounding class context excluded. Renamed or partial-block copies are not detected. Lambdas and parents containing nested definitions are excluded, while independently eligible nested functions remain measured. Populations and async/synchronous bodies are compared separately.
+- Read the source before recommending extraction. Matching bodies may intentionally implement the same protocol in separate backends, preserve class boundaries, use different bindings or closures, or protect permissions. Honor documented reasons and do not infer semantic equivalence or safe interchangeability from a match.
+- An incomplete duplication assessment makes the combined analysis incomplete and withholds groups, summary, complexity preview, and all findings. Report the diagnostic; never restore an older duplication report or describe missing results as zero. Historical imports remain historical even if their embedded IDs match their own evidence.

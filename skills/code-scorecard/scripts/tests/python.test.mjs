@@ -44,8 +44,8 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.3.0-experimental');
-    assert.equal(inspection.evidence.tool.version, '0.3.0-experimental');
+    assert.equal(initial.version, '0.4.0-experimental');
+    assert.equal(inspection.evidence.tool.version, '0.4.0-experimental');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -72,6 +72,23 @@ test('experimental Python installed package integrates with scope, freshness and
   await t.test('historical evidence retains its identities and is explicitly not fresh', () => {
     const imported = success('--ecosystem', 'python', '--existing', initial.artifacts.evidence);
     assert.equal(imported.fresh, false); assert.equal(imported.evidenceRunId, initial.runId); assert.notEqual(imported.runId, initial.runId);
+  });
+  await t.test('duplication groups retain current identities, population and review-only meaning', () => {
+    const body = '    value = items[0]\n    value += 1\n    value *= 2\n    result = str(value)\n    return result\n';
+    write('app/src/duplicates.py', ['one', 'two', 'three'].map(name => `def ${name}(items):\n${body}`).join('\n'));
+    const run = success('--ecosystem', 'python');
+    const evidence = readJson(run.artifacts.evidence), cq = evidence.dimensions.codeQuality, report = cq.duplication;
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.equal(report.summary.duplicateGroups, 1); assert.equal(report.summary.matchedFunctions, 3);
+    assert.equal(report.summary.eligibleFunctions, 3); assert.equal(report.summary.selectedFunctions, 4);
+    assert.equal(cq.findings[0].category, 'exactBodyDuplicationReview'); assert.equal(cq.findings[0].severity, 'info');
+    assert.equal(cq.findings[0].observations.scoringDisposition, 'unscored');
+    assert.equal(cq.findings[0].observations.occurrences.length, 3);
+    assert.ok(Object.values(evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    const stale = structuredClone(evidence); stale.dimensions.codeQuality.duplication.runId = initial.runId;
+    const staleFile = path.join(temporary, 'stale-duplication.json'); fs.writeFileSync(staleFile, JSON.stringify(stale));
+    assert.equal(invoke('--ecosystem', 'python', '--existing', staleFile).code, 2);
+    fs.unlinkSync(path.join(root, 'app/src/duplicates.py'));
   });
   await t.test('stale producer output is rejected even after a zero exit', async () => {
     const tooling = await installTools({ cache, 'npm-package': npmPackage }, compatibility);
