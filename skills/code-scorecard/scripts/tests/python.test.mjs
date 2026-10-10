@@ -26,7 +26,7 @@ test('experimental Python installed package integrates with scope, freshness and
   const success = (...args) => { const result = invoke(...args); assert.equal(result.code, 0, result.error + JSON.stringify(result.value)); return result.value.results[0]; };
   write('.git', 'gitdir: test');
   write('app/pyproject.toml', '[project]\nname="app"\n');
-  write('app/src/work.py', 'def work(x):\n    if x: return 1\n    return 0\n');
+  write('app/src/work.py', 'def work(x):\n    match x:\n        case 1 | 2 | 3: return 1\n        case _: return 0\n');
   write('app/tests/test_work.py', 'def test_work(): pass\n');
   write('vendor/pyproject.toml', '');
   write('app/nested/pyproject.toml', '');
@@ -44,6 +44,11 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
+    assert.equal(initial.version, '0.3.0-experimental');
+    assert.equal(inspection.evidence.tool.version, '0.3.0-experimental');
+    const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
+    assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
+    assert.equal(facts.functions[0].complexity.value, 2);
     assert.ok(Object.values(inspection.evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
   });
   await t.test('explicit directory and source scopes work without manifests and preserve selection flags', () => {

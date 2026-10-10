@@ -4,7 +4,7 @@ Python support measures selected implementation bodies using Python 3.12's nativ
 
 ## Local package and scope
 
-This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The Python adapter identifies itself as `0.2.0-experimental`; the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
+This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The preferred Python adapter identifies itself as `0.3.0-experimental`; the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
 
 ```sh
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --npm-package <archive.tgz> --cache <cache>
@@ -34,6 +34,7 @@ For a complete run:
 - Separately report selected implementation count, measured CC distribution or hotspots, and `codeQuality.experimentalPreview.population.score` as **experimental method-complexity preview** if present. Use the supplied result; do not reproduce its ladder or weighting in this skill. A null population is unavailable, not zero or ten.
 - Report the selection, Python/parser version, measurement policy, ruleset, calibration, configuration fingerprint, exclusions, and current run/audit IDs. `population.types: 0` is a schema placeholder for an unmeasured quantity, not proof that the project contains no classes.
 - CC ≥ 10 findings are informational control-flow review leads. They do not assert defects, poor performance, inappropriate error handling, or that a safe decomposition exists. Read source before recommending changes. `except` branches contribute to CC but do not establish bad exception handling.
+- Measurement policy `python/owned-function-complexity-v2` treats whole-case simple OR-pattern lists as one membership decision, retaining guards, body decisions, and structural alternatives. Version 0.2.0 used v1, which counted every OR alternative. A policy-driven reduction is not a code improvement; preserve the recorded policy and do not reinterpret historical findings.
 - Recognized overload/protocol/abstract placeholders receive no implementation credit; concrete bodies and ordinary no-op functions remain measured. Honor recorded declaration exclusions without inventing additional exemptions or Python CMAI annotations.
 - Do not give an overall or compare these previews as equivalent to JS/TS or .NET scores. Contextual qualitative observations can accompany the measurements but do not supply missing dimension grades in this experimental workflow.
 
