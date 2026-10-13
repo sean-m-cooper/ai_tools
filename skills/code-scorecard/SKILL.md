@@ -13,7 +13,7 @@ CodeMetrics.AI owns deterministic analysis, schemas, scores, comparison, gates a
 
 Use [bootstrap.md](bootstrap.md) and `scripts/run-scorecard.mjs`. The helper discovers nested entry points, honors compatible exact repository pins, installs isolated tested tools, generates fresh evidence and validates it with CodeMetrics.AI's packaged schemas. The supported schemas and tested versions live in [compatibility.json](compatibility.json). Never automatically upgrade to `latest` or change a repository pin.
 
-- Honor a requested `.sln`, `.slnx`, `.csproj`, `package.json`, `pyproject.toml`, ecosystem, configuration or tsconfig. Otherwise discover `dotnet`, `javascript-typescript`, and `python`. Python also accepts an explicitly selected directory or `.py` file. A containing solution/workspace/manifest takes precedence over its children. Resolve ambiguous candidates with the user before analysis. Python is experimental and currently requires a tested local npm archive; follow [python.md](python.md) before running it.
+- Honor a requested `.sln`, `.slnx`, `.csproj`, `package.json`, `pyproject.toml`, ecosystem, configuration or tsconfig. Otherwise discover `dotnet`, `javascript-typescript`, and `python`. Python also accepts an explicitly selected directory or `.py` file. A containing solution/workspace/manifest takes precedence over its children. Resolve ambiguous candidates with the user before analysis. Python currently requires a tested local npm archive; follow [python.md](python.md) before running it.
 - For large solutions, use the helper's `--timeout-seconds` option and streamed progress. Do not copy the runner or change the analyzer's working directory to bypass SDK selection. Report build-configuration exclusions and test/framework population policies from the current evidence.
 - Produce separate scorecards for each selected ecosystem. No supported entry point means a qualitative-only audit; state the missing deterministic coverage.
 - Read the current helper result and its `artifacts.inspection` path. Runs live under `<repo>/.scorecard/<ecosystem>/runs/<run-id>/`; `latest.json` records the latest attempt, including failure. Old root-level `evidence.json` and CSV files are not fresh evidence.
@@ -84,9 +84,9 @@ For 0.5.0 and later, read `errorHandling.dispositionEvidence`, each handler's `d
 
 `architecture.dependencyGraph` is unscored. Report selected-source and resolution gaps; unknown targets do not establish missing runtime dependencies. Cycles and fan-in/out are review leads, not proven initialization failures or SOLID defects. If dependency views are present, separate implementation references from public re-exports, preserve overlap, and do not add their counts. A complete run proves successful execution within its scope, not complete semantic or runtime coverage.
 
-## Python experimental evidence
+## Python Method Complexity and review evidence
 
-Read [python.md](python.md) for Python setup, population interpretation, and reporting. The current adapter emits complexity, owned statements, block nesting, duplication, and optional coverage/CRAP review evidence, with all nine dimension scores unavailable. Keep statement count and block nesting as separate unscored observations. Show the **experimental complexity preview** separately; do not promote it or CRAP estimates to dimension scores or compute an overall. Complete means the requested measurements succeeded, not that test coverage is comprehensive or current. Report coverage source binding separately from analysis freshness. Collecting new coverage executes tests and is a separate, explicit workflow; importing coverage does not run tests. Python does not yet support score gates or calibrated comparisons.
+Read [python.md](python.md) for Python setup, population interpretation, and reporting. Adapter 0.7.0 scores only `codeQuality`, labeled **Method Complexity**, from selected production implementations. The other eight dimensions remain unavailable. Keep statement count, block nesting, duplication, and coverage/CRAP as separate unscored evidence. Read the supplied dimension score and contribution details; historical `experimentalPreview` values remain previews, never dimension scores. Any reported aggregate must say **partial assessment, 1/9 dimensions scored**, and equals Method Complexity; do not present it as overall codebase health. Complete means the requested measurements succeeded, not that test coverage is comprehensive or current. Report coverage source binding separately from analysis freshness. Collecting new coverage executes tests and is a separate, explicit workflow; importing coverage does not run tests. Only matching supported scoring policies and selections can compare or gate scores; historical previews cannot.
 
 ## Ground recommendations in inspected context
 
@@ -99,7 +99,7 @@ Coupling alone identifies a review candidate. Recommend splitting a type only af
 | Dimension | Qualitative review focus |
 |---|---|
 | Architecture & SOLID | Boundaries, responsibilities, dependency direction, cohesion |
-| Complexity & Decomposition (.NET); Method Complexity (JS/TS) | Branching concentration and distribution across members; review necessary complexity and decomposition tradeoffs |
+| Complexity & Decomposition (.NET); Method Complexity (JS/TS, Python) | Branching concentration and distribution across members; review necessary complexity and decomposition tradeoffs |
 | Testing | Meaningful assertions, test strategy, integration coverage, brittleness |
 | Security | Secrets, authorization, validation, dependency risks |
 | Error Handling | Exception strategy, observability, recovery behavior |

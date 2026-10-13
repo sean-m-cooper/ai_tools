@@ -1,0 +1,26 @@
+[
+  {
+    "id": "single-score",
+    "criterion": "Reports Method Complexity 7.6 as the only scored dimension, with all eight other dimensions unavailable; does not invent grades from review evidence."
+  },
+  {
+    "id": "scope",
+    "criterion": "Any headline or table aggregate is explicitly a partial assessment with 1/9 dimensions scored, not a full codebase-health grade."
+  },
+  {
+    "id": "population",
+    "criterion": "Explains that five selected implementations contain four eligible production bodies; the included CC 40 test function does not affect the score."
+  },
+  {
+    "id": "weighting",
+    "criterion": "Attributes the score to production hard at CC 20, individual score 4, weighted 40%, and three other production bodies with individual score 10 sharing 60%; findings are not additional deductions."
+  },
+  {
+    "id": "review-only",
+    "criterion": "Keeps the two matching 36-statement bodies and nesting observations unscored; no automatic extraction requirement or confirmed defect is inferred."
+  },
+  {
+    "id": "unavailable",
+    "criterion": "Missing coverage/CRAP stays unavailable rather than zero, and lambda decomposition unavailability does not exclude the lambda from Method Complexity scoring."
+  }
+]

@@ -23,13 +23,14 @@
     },
     "python": {
       "package": "codemetrics-ai (bundled codemetrics-python)",
-      "preferredVersion": "0.6.0-experimental",
+      "preferredVersion": "0.7.0",
       "testedVersions": [
         "0.2.0-experimental",
         "0.3.0-experimental",
         "0.4.0-experimental",
         "0.5.0-experimental",
-        "0.6.0-experimental"
+        "0.6.0-experimental",
+        "0.7.0"
       ],
       "requiresLocalPackage": true
     },

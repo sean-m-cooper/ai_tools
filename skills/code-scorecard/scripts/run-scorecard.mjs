@@ -36,7 +36,7 @@ function ancestors(directory, root) {
 }
 function pinnedVersion(root, entryPoint, ecosystem) {
   const policy = compatibility.analyzers[ecosystem];
-  // Python's experimental adapter is bundled in an explicitly supplied npm archive.
+  // Python's adapter is bundled in an explicitly supplied npm archive.
   // Do not mistake application dependency pins for an analyzer pin or execute pyproject build backends.
   if (ecosystem === 'python') return { version: policy.preferredVersion, source: 'compatibility-manifest-local-package' };
   let pin;
@@ -82,8 +82,7 @@ export async function execute(options) {
   if (!scopes.length) throw new Error('No supported entry point found. Specify a nested --entry-point or report a qualitative-only audit.');
   if (scopes.some(scope => scope.ecosystem === 'python')) {
     if (!options['npm-package'] && compatibility.analyzers.python.requiresLocalPackage)
-      throw new Error('Python integration is experimental and not published. Supply --npm-package with a locally built codemetrics-ai archive containing codemetrics-python.');
-    if (options.baseline) throw new Error('Python previews are uncalibrated; baseline comparisons and score gates are not supported.');
+      throw new Error('Python integration is not published. Supply --npm-package with a locally built codemetrics-ai archive containing codemetrics-python.');
     if (options.existing && (options['python-coverage-json'] || options['python-collection-manifest']))
       throw new Error('Historical Python evidence cannot be rebound to new coverage inputs. Run a fresh analysis instead.');
   } else if (Object.keys(options).some(key => key === 'python' || key.startsWith('python-')))

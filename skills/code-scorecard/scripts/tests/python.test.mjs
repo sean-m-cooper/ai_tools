@@ -9,7 +9,7 @@ import { discover, compatibility } from '../run-scorecard.mjs';
 import { installTools, readJson } from '../runtime.mjs';
 
 const runner = fileURLToPath(new URL('../run-scorecard.mjs', import.meta.url));
-test('experimental Python installed package integrates with scope, freshness and failure controls', { timeout: 300_000 }, async t => {
+test('Python Method Complexity installed package integrates with scope, freshness and failure controls', { timeout: 300_000 }, async t => {
   const npmPackage = process.env.SCORECARD_NPM_PACKAGE;
   assert.ok(npmPackage, 'Set SCORECARD_NPM_PACKAGE to the freshly packed development archive.');
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'python skill '));
@@ -37,19 +37,20 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.deepEqual(discovered.value.candidates.python, [path.join(root, 'app/pyproject.toml')]);
   });
   let initial;
-  await t.test('manifest routing emits usable unscored evidence without a CSV artifact', () => {
+  await t.test('manifest routing emits one scored dimension without a CSV artifact', () => {
     initial = success('--ecosystem', 'python');
     const inspection = readJson(initial.artifacts.inspection);
     assert.equal(initial.status, 'complete'); assert.equal(initial.fresh, true);
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.6.0-experimental');
-    assert.equal(inspection.evidence.tool.version, '0.6.0-experimental');
+    assert.equal(initial.version, '0.7.0');
+    assert.equal(inspection.evidence.tool.version, '0.7.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
-    assert.ok(Object.values(inspection.evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    assert.equal(inspection.evidence.dimensions.codeQuality.status, 'scored');
+    assert.ok(Object.entries(inspection.evidence.dimensions).every(([key, d]) => key === 'codeQuality' || d.status === 'skipped' && !('score' in d)));
   });
   await t.test('explicit directory and source scopes work without manifests and preserve selection flags', () => {
     const run = success('--ecosystem', 'python', '--entry-point', 'app', '--python-include-tests');
@@ -66,7 +67,7 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(run.analyzerExitCode, 2); assert.equal(run.validationExitCode, 2);
     assert.notEqual(run.runId, initial.runId); assert.equal(readJson(run.artifacts.inspection).usable, false);
     assert.equal(readJson(path.join(root, '.scorecard/python/latest.json')).runId, run.runId);
-    assert.equal(readJson(run.artifacts.evidence).dimensions.codeQuality.experimentalPreview.population, null);
+    assert.equal(readJson(run.artifacts.evidence).dimensions.codeQuality.methodComplexity.population, null);
     fs.unlinkSync(path.join(root, 'app/src/broken.py'));
   });
   await t.test('historical evidence retains its identities and is explicitly not fresh', () => {
@@ -84,7 +85,8 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(cq.findings[0].category, 'exactBodyDuplicationReview'); assert.equal(cq.findings[0].severity, 'info');
     assert.equal(cq.findings[0].observations.scoringDisposition, 'unscored');
     assert.equal(cq.findings[0].observations.occurrences.length, 3);
-    assert.ok(Object.values(evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    assert.equal(evidence.dimensions.codeQuality.status, 'scored');
+    assert.ok(Object.entries(evidence.dimensions).every(([key, d]) => key === 'codeQuality' || d.status === 'skipped' && !('score' in d)));
     const stale = structuredClone(evidence); stale.dimensions.codeQuality.duplication.runId = initial.runId;
     const staleFile = path.join(temporary, 'stale-duplication.json'); fs.writeFileSync(staleFile, JSON.stringify(stale));
     assert.equal(invoke('--ecosystem', 'python', '--existing', staleFile).code, 2);
@@ -101,7 +103,8 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(report.summary.populations.production.ownedStatements.max, 36);
     assert.equal(report.summary.populations.production.maxBlockNesting.max, 3);
     assert.deepEqual(cq.findings, []);
-    assert.ok(Object.values(evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    assert.equal(evidence.dimensions.codeQuality.status, 'scored');
+    assert.ok(Object.entries(evidence.dimensions).every(([key, d]) => key === 'codeQuality' || d.status === 'skipped' && !('score' in d)));
     for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.populations.production.ownedStatements.p50++; }]) {
       const stale = structuredClone(evidence); mutate(stale.dimensions.codeQuality.decomposition);
       const location = path.join(temporary, 'invalid-decomposition.json'); fs.writeFileSync(location, JSON.stringify(stale));
@@ -126,7 +129,8 @@ test('experimental Python installed package integrates with scope, freshness and
     const evidence = readJson(run.artifacts.evidence), report = evidence.dimensions.codeQuality.coverageReview;
     assert.equal(report.coverageInput.freshness, 'unverified'); assert.equal(report.summary.conditionalEstimates, 1);
     assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
-    assert.ok(Object.values(evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    assert.equal(evidence.dimensions.codeQuality.status, 'scored');
+    assert.ok(Object.entries(evidence.dimensions).every(([key, d]) => key === 'codeQuality' || d.status === 'skipped' && !('score' in d)));
     const stale = structuredClone(evidence); stale.dimensions.codeQuality.coverageReview.auditId = initial.auditId;
     write('stale-coverage.json', JSON.stringify(stale));
     assert.equal(invoke('--ecosystem', 'python', '--existing', 'stale-coverage.json').code, 2);
@@ -135,7 +139,7 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(failed.code, 2);
     const failure = readJson(failed.value.results[0].artifacts.inspection);
     assert.equal(failure.usable, false);
-    assert.equal(failure.evidence.dimensions.codeQuality.experimentalPreview.population, null);
+    assert.equal(failure.evidence.dimensions.codeQuality.methodComplexity.population, null);
     assert.deepEqual(failure.evidence.dimensions.codeQuality.findings, []);
   });
   await t.test('explicit packaged collection survives helper validation and source drift is rejected', async () => {
@@ -162,11 +166,27 @@ test('experimental Python installed package integrates with scope, freshness and
     write('app/src/work.py', source);
     fs.unlinkSync(path.join(root, 'app/exercise.py'));
   });
-  await t.test('no score gates or silent download of an unpublished Python package', () => {
-    const result = invoke('--ecosystem', 'python', '--baseline', initial.artifacts.evidence); assert.equal(result.code, 2);
-    assert.match(result.error, /previews are uncalibrated/);
+  await t.test('compatible Method Complexity gates work without downloading an unpublished Python package', () => {
+    const result = invoke('--ecosystem', 'python', '--baseline', initial.artifacts.evidence, '--max-score-drop', '0');
+    assert.equal(result.code, 0, result.error);
     const missing = spawnSync(process.execPath, [runner, '--repo', root, '--ecosystem', 'python'], { encoding: 'utf8', windowsHide: true });
     assert.equal(missing.status, 2); assert.match(missing.stderr, /not published/);
+  });
+  await t.test('a Method Complexity regression trips the gate and included test code cannot change the production score', () => {
+    const before = success('--ecosystem', 'python');
+    const source = fs.readFileSync(path.join(root, 'app/src/work.py'), 'utf8');
+    write('app/src/work.py', 'def work(x):\n' + '    if x: x -= 1\n'.repeat(19) + '    return x\n');
+    const regressed = invoke('--ecosystem', 'python', '--baseline', before.artifacts.evidence, '--max-score-drop', '1');
+    assert.equal(regressed.code, 1, regressed.error + JSON.stringify(regressed.value));
+    assert.equal(regressed.value.results[0].status, 'gate-failed');
+    const comparison = readJson(regressed.value.results[0].artifacts.comparison);
+    assert.equal(comparison.compatible, true);
+    assert.equal(comparison.dimensions.codeQuality.delta, -6);
+    const included = success('--ecosystem', 'python', '--python-include-tests');
+    const cq = readJson(included.artifacts.evidence).dimensions.codeQuality;
+    assert.equal(cq.score, 4); assert.equal(cq.methodComplexity.eligibleFunctions, 1);
+    assert.equal(cq.methodComplexity.excludedPopulations.test, 1);
+    write('app/src/work.py', source);
   });
   await t.test('polyglot audit preserves separate runs and a shared audit identity', () => {
     write('ui/package.json', '{"name":"fixture"}'); write('ui/app.js', 'export function app(){return 1;}');

@@ -56,5 +56,10 @@
     "id": "js-context",
     "input": "fixtures/js-context.json",
     "criteria": "rubrics/js-context.json"
+  },
+  {
+    "id": "python-method-complexity",
+    "input": "fixtures/python-method-complexity.json",
+    "criteria": "rubrics/python-method-complexity.json"
   }
 ]
