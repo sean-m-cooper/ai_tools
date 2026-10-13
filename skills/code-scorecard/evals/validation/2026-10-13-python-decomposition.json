@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-13",
+  "scope": "Installed development archive and companion skill integration; source-only corpus comparison. No live-model report evaluation.",
+  "adapterVersion": "0.6.0-experimental",
+  "ruleset": "python-2026-10-13-decomposition-preview",
+  "sourceFactsVersion": "0.4.0-experimental",
+  "decompositionVersion": "0.1.0-experimental",
+  "decompositionPolicy": "python/owned-statements-block-nesting-v1",
+  "npmDevelopmentVersion": "0.5.0",
+  "npmArchiveSha256": "ecfd125dc0505569079e2905ae8a26d944cce2f449818ff8c089fdb6ff2ba0e6",
+  "checks": {
+    "pythonRuntimeCatalogAndOfflineHarness": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0
+    },
+    "pythonIntegrationSubtests": 12,
+    "skillStructuralValidation": "passed"
+  },
+  "scenarios": [
+    "Statement count and nesting survive installed helper routing without dimension scores or additional findings.",
+    "Large low-CC and small nested bodies remain separate review observations; lambdas remain unavailable.",
+    "Stale embedded decomposition IDs and altered nearest-rank summaries fail historical import.",
+    "Existing source scope, duplication, coverage binding, failure, historical freshness and polyglot checks pass.",
+    "Adapter validates historical 0.5 coverage evidence without fabricating decomposition."
+  ],
+  "corpus": [
+    {
+      "id": "requests",
+      "revision": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "selectedFunctions": 246,
+      "measuredFunctions": 246,
+      "unavailableFunctions": 0,
+      "exactStandaloneMatch": true,
+      "complexityPreview": 7,
+      "complexityPreviewUnchanged": true
+    },
+    {
+      "id": "starlette",
+      "revision": "96d5023c55b29224edb8d684868c49f681d079a9",
+      "selectedFunctions": 508,
+      "measuredFunctions": 507,
+      "unavailableFunctions": 1,
+      "exactStandaloneMatch": true,
+      "complexityPreview": 7.1,
+      "complexityPreviewUnchanged": true
+    },
+    {
+      "id": "httpie",
+      "revision": "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345",
+      "selectedFunctions": 464,
+      "measuredFunctions": 460,
+      "unavailableFunctions": 4,
+      "exactStandaloneMatch": true,
+      "complexityPreview": 6.8,
+      "complexityPreviewUnchanged": true
+    },
+    {
+      "id": "django",
+      "revision": "dab0a5c47f159eb58472110dcbc10bd4a9b01adb",
+      "selectedFunctions": 9748,
+      "measuredFunctions": 9612,
+      "unavailableFunctions": 136,
+      "exactStandaloneMatch": true,
+      "complexityPreview": 5.6,
+      "complexityPreviewUnchanged": true
+    }
+  ],
+  "releaseState": "Unpublished local development workflow. Explicit local archive remains required; released source pin unchanged."
+}

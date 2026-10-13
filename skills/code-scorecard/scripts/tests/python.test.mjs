@@ -44,8 +44,8 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.5.0-experimental');
-    assert.equal(inspection.evidence.tool.version, '0.5.0-experimental');
+    assert.equal(initial.version, '0.6.0-experimental');
+    assert.equal(inspection.evidence.tool.version, '0.6.0-experimental');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -89,6 +89,25 @@ test('experimental Python installed package integrates with scope, freshness and
     const staleFile = path.join(temporary, 'stale-duplication.json'); fs.writeFileSync(staleFile, JSON.stringify(stale));
     assert.equal(invoke('--ecosystem', 'python', '--existing', staleFile).code, 2);
     fs.unlinkSync(path.join(root, 'app/src/duplicates.py'));
+  });
+  await t.test('decomposition stays unscored with separate size/nesting and rejects stale or altered imports', () => {
+    write('app/src/bodies.py', 'def large(x):\n' + '    x += 1\n'.repeat(35) + '    return x\n' +
+      'def nested(x):\n    if x:\n        for y in x:\n            if y:\n                return y\n    return None\ncallback = lambda x: x\n');
+    const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
+    const cq = evidence.dimensions.codeQuality, report = cq.decomposition;
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.equal(report.summary.selectedFunctions, 4); assert.equal(report.summary.measuredFunctions, 3);
+    assert.equal(report.summary.unavailableFunctions, 1);
+    assert.equal(report.summary.populations.production.ownedStatements.max, 36);
+    assert.equal(report.summary.populations.production.maxBlockNesting.max, 3);
+    assert.deepEqual(cq.findings, []);
+    assert.ok(Object.values(evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.populations.production.ownedStatements.p50++; }]) {
+      const stale = structuredClone(evidence); mutate(stale.dimensions.codeQuality.decomposition);
+      const location = path.join(temporary, 'invalid-decomposition.json'); fs.writeFileSync(location, JSON.stringify(stale));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
+    }
+    fs.unlinkSync(path.join(root, 'app/src/bodies.py'));
   });
   await t.test('stale producer output is rejected even after a zero exit', async () => {
     const tooling = await installTools({ cache, 'npm-package': npmPackage }, compatibility);

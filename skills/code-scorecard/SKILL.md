@@ -86,7 +86,7 @@ For 0.5.0 and later, read `errorHandling.dispositionEvidence`, each handler's `d
 
 ## Python experimental evidence
 
-Read [python.md](python.md) for Python setup, population interpretation, and reporting. The current adapter emits complexity, duplication, and optional coverage/CRAP review evidence, with all nine dimension scores unavailable. Show the **experimental complexity preview** separately; do not promote it or CRAP estimates to dimension scores or compute an overall. Complete means the requested measurements succeeded, not that test coverage is comprehensive or current. Report coverage source binding separately from analysis freshness. Collecting new coverage executes tests and is a separate, explicit workflow; importing coverage does not run tests. Python does not yet support score gates or calibrated comparisons.
+Read [python.md](python.md) for Python setup, population interpretation, and reporting. The current adapter emits complexity, owned statements, block nesting, duplication, and optional coverage/CRAP review evidence, with all nine dimension scores unavailable. Keep statement count and block nesting as separate unscored observations. Show the **experimental complexity preview** separately; do not promote it or CRAP estimates to dimension scores or compute an overall. Complete means the requested measurements succeeded, not that test coverage is comprehensive or current. Report coverage source binding separately from analysis freshness. Collecting new coverage executes tests and is a separate, explicit workflow; importing coverage does not run tests. Python does not yet support score gates or calibrated comparisons.
 
 ## Ground recommendations in inspected context
 
