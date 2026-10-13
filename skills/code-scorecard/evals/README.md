@@ -1,5 +1,7 @@
 # Behavioral report evaluations
 
+The [Python coverage validation](validation/2026-10-12-python-coverage.json) records 28 installed-package/runtime/catalog/offline-harness checks and structural validation for adapter `0.5.0-experimental`. Coverage remains unscored, collection is explicit, and source-bound versus conditional evidence stays distinct from analysis freshness. This record does not claim a live-model report evaluation.
+
 The [pnpm development validation](validation/2026-10-09-pnpm.json) extends the
 [earlier npm dependency validation](validation/2026-10-09-dependencies.json).
 It records 16 offline checks and 15 packaged integration checks, including the

@@ -44,8 +44,8 @@ test('experimental Python installed package integrates with scope, freshness and
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.4.0-experimental');
-    assert.equal(inspection.evidence.tool.version, '0.4.0-experimental');
+    assert.equal(initial.version, '0.5.0-experimental');
+    assert.equal(inspection.evidence.tool.version, '0.5.0-experimental');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -99,6 +99,49 @@ test('experimental Python installed package integrates with scope, freshness and
       assert.equal(result.value.results[0].analyzerExitCode, 0); assert.equal(result.value.results[0].validationExitCode, 2);
       assert.match(result.error, /analysis.runId/);
     } finally { fs.writeFileSync(tooling.python, before); }
+  });
+  await t.test('coverage forwarding keeps unbound reports conditional and fails closed for missing provenance', () => {
+    write('supplied-coverage.json', JSON.stringify({ meta: { format: 3, version: '7.6.1', timestamp: '2020-01-01', branch_coverage: true },
+      files: { 'src/work.py': { executed_lines: [1, 2, 3], missing_lines: [4], excluded_lines: [] } } }));
+    const run = success('--ecosystem', 'python', '--python-coverage-json', 'supplied-coverage.json');
+    const evidence = readJson(run.artifacts.evidence), report = evidence.dimensions.codeQuality.coverageReview;
+    assert.equal(report.coverageInput.freshness, 'unverified'); assert.equal(report.summary.conditionalEstimates, 1);
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.ok(Object.values(evidence.dimensions).every(d => d.status === 'skipped' && !('score' in d)));
+    const stale = structuredClone(evidence); stale.dimensions.codeQuality.coverageReview.auditId = initial.auditId;
+    write('stale-coverage.json', JSON.stringify(stale));
+    assert.equal(invoke('--ecosystem', 'python', '--existing', 'stale-coverage.json').code, 2);
+    assert.equal(invoke('--ecosystem', 'python', '--existing', run.artifacts.evidence, '--python-coverage-json', 'supplied-coverage.json').code, 2);
+    const failed = invoke('--ecosystem', 'python', '--python-coverage-json', 'supplied-coverage.json', '--python-collection-manifest', 'missing.json');
+    assert.equal(failed.code, 2);
+    const failure = readJson(failed.value.results[0].artifacts.inspection);
+    assert.equal(failure.usable, false);
+    assert.equal(failure.evidence.dimensions.codeQuality.experimentalPreview.population, null);
+    assert.deepEqual(failure.evidence.dimensions.codeQuality.findings, []);
+  });
+  await t.test('explicit packaged collection survives helper validation and source drift is rejected', async () => {
+    const tooling = await installTools({ cache, 'npm-package': npmPackage }, compatibility);
+    write('app/exercise.py', 'from src.work import work\nassert work(1) == 1\n');
+    const python = process.env.CODEMETRICS_COVERAGE_PYTHON ?? spawnSync(process.platform === 'win32' ? 'py' : 'python3',
+      [...(process.platform === 'win32' ? ['-3.12'] : []), '-c', 'import sys; print(sys.executable)'], { encoding: 'utf8', windowsHide: true }).stdout.trim();
+    const collection = path.join(temporary, 'collection');
+    const result = spawnSync(process.execPath, [path.join(tooling.packageRoot, 'dist/python-collect-cli.js'), path.join(root, 'app'),
+      '--python', python, '--module', 'exercise', '--include', 'src/**', '--output-directory', collection], { encoding: 'utf8', windowsHide: true, timeout: 60_000 });
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const args = ['--ecosystem', 'python', '--python-include', 'src/**', '--python-coverage-json', path.join(collection, 'coverage.json'),
+      '--python-collection-manifest', path.join(collection, 'provenance.json')];
+    const run = success(...args), evidence = readJson(run.artifacts.evidence);
+    assert.equal(evidence.dimensions.codeQuality.coverageReview.summary.sourceBoundEstimates, 1);
+    assert.equal(readJson(run.artifacts.inspection).usable, true);
+    const source = fs.readFileSync(path.join(root, 'app/src/work.py'), 'utf8');
+    write('app/src/work.py', source.replace('return 0', 'return 2'));
+    const failed = invoke(...args);
+    assert.equal(failed.code, 2);
+    assert.equal(readJson(failed.value.results[0].artifacts.inspection).usable, false);
+    const historical = success('--ecosystem', 'python', '--existing', run.artifacts.evidence);
+    assert.equal(historical.fresh, false);
+    write('app/src/work.py', source);
+    fs.unlinkSync(path.join(root, 'app/exercise.py'));
   });
   await t.test('no score gates or silent download of an unpublished Python package', () => {
     const result = invoke('--ecosystem', 'python', '--baseline', initial.artifacts.evidence); assert.equal(result.code, 2);

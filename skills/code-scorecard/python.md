@@ -1,10 +1,10 @@
 # Experimental Python workflow
 
-Python support measures selected implementation bodies using Python 3.12's native AST. It measures source-only complexity and exact-body duplication, not a nine-dimension scoring implementation. Node.js 20+ and Python 3.12 are required. No target installation, build backend, import, or test execution is needed.
+Python support measures selected implementation bodies using Python 3.12's native AST. It measures source-only complexity, exact-body duplication, and optional imported coverage/CRAP evidence, not a nine-dimension scoring implementation. Node.js 20+ and Python 3.12 are required. Normal scorecard analysis never installs, imports, or executes target code. The separate coverage collector explicitly runs tests.
 
 ## Local package and scope
 
-This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The preferred Python adapter identifies itself as `0.4.0-experimental`; the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
+This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The preferred Python adapter identifies itself as `0.5.0-experimental`; its source-facts producer remains `0.4.0-experimental`, and the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
 
 ```sh
 node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --npm-package <archive.tgz> --cache <cache>
@@ -27,6 +27,33 @@ These are case-sensitive fnmatch patterns, not Git-ignore patterns: `*` can cros
 ## Evidence and presentation
 
 The helper writes evidence v3 and a validated inspection under a unique run directory, with the standard run/audit ID checks. There is no metrics CSV. Full source-facts v2 are embedded at `dimensions.codeQuality.sourceFacts`; this smaller contract's version is separate from evidence schema v3. Keep the enclosing evidence IDs with extracted measurements and findings.
+
+## Optional coverage and CRAP evidence
+
+Pass supplied artifacts with `--python-coverage-json <file>` and optional `--python-collection-manifest <receipt>`. Paths resolve against `--repo`; file keys inside the coverage report resolve against the selected Python `subject.root`. Use the same source-selection flags used during collection. Do not substitute `.NET --coverage`, guess a report by basename, or rebind `--existing` historical evidence to new coverage inputs.
+
+```sh
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --python-include 'src/**' --python-coverage-json <coverage.json> --python-collection-manifest <provenance.json> --npm-package <archive.tgz>
+```
+
+Read `dimensions.codeQuality.coverageReview` and retain its review IDs, input report hash, original collection UUID/timestamps, source binding, selection, and limitations. All nine dimension scores remain unavailable, including Testing.
+
+- `coverage-not-supplied`, missing files, and ambiguous attribution are **unavailable**, not 0% or 100%. A body explicitly reported entirely missing is 0% for that report's test selection.
+- `reported-unverified` rows and `conditional-review-only` CRAP estimates have no source binding. A fresh scorecard run does not refresh old coverage.
+- `reported-source-matched` rows have a locally validated pre/post collection receipt. Show the collection date and test command/scope. This is an unsigned source-consistency check, not proof of assertion quality, dependency/environment identity, or an immutable filesystem. Reverted edits during execution and subprocess coverage are outside the first collector's guarantee.
+- Report `sourceBoundEstimates`, `conditionalEstimates`, and unavailable counts separately. Use supplied covered/executable body-line counts and `crapEstimate.value`; do not substitute branch-inclusive summary percentages or invent a CRAP grading ladder. Full coverage leaves CC intact. Line-based CRAP is review evidence, not a defect prediction, Testing score, or Code Quality deduction.
+- One-line definitions, lambdas, and parents with nested definitions may be unavailable. Do not turn attribution exclusions into criticism. Read source and the actual test selection before interpreting a high estimate; a selected subset of tests is not the project's full coverage.
+- A supplied receipt mismatch, malformed report, or failed collection makes the combined run incomplete and withholds the preview and findings. Never retry by dropping provenance to obtain a successful scorecard. Historical evidence remains historical; its recorded source binding was checked when generated, not against today's checkout during import.
+
+To create coverage, use the package's **separate** `codemetrics-python-collect` command only when test execution is within the user's authorized scope. Do not launch it merely because coverage is absent. Reuse existing authorization rather than requesting it again. The caller chooses an installed Python 3.12 environment containing coverage.py and the project's test dependencies; collection does not install them.
+
+```sh
+codemetrics-python-collect <project-directory> --python <absolute-interpreter> --include 'src/**' --output-directory <new-directory-outside-project> -- -q tests
+```
+
+The installed executable is also available as `node <installed-package>/dist/python-collect-cli.js`. Use a new output directory and an existing parent. Collection records `coverage.json`, `provenance.json`, and `tests.log`; failed tests or source drift leave an incomplete receipt. Pytest is the default module; `--module` and arguments after `--` select the actual test command. The collector uses controlled single-process coverage, disables project coverage configuration and automatic pytest plugin loading, and accepts explicit required plugins via `-p`. Its packaged `dist/python/COVERAGE.md` documents configuration and timeout boundaries.
+
+## Presenting complete source measurements
 
 For a complete run:
 

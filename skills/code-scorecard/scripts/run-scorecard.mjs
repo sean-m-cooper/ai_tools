@@ -84,6 +84,8 @@ export async function execute(options) {
     if (!options['npm-package'] && compatibility.analyzers.python.requiresLocalPackage)
       throw new Error('Python integration is experimental and not published. Supply --npm-package with a locally built codemetrics-ai archive containing codemetrics-python.');
     if (options.baseline) throw new Error('Python previews are uncalibrated; baseline comparisons and score gates are not supported.');
+    if (options.existing && (options['python-coverage-json'] || options['python-collection-manifest']))
+      throw new Error('Historical Python evidence cannot be rebound to new coverage inputs. Run a fresh analysis instead.');
   } else if (Object.keys(options).some(key => key === 'python' || key.startsWith('python-')))
     throw new Error('Python options require a selected Python entry point.');
   if ((options.existing || options.baseline) && scopes.length !== 1) throw new Error('--existing and --baseline require one ecosystem/entry point.');
@@ -116,6 +118,8 @@ export async function execute(options) {
           if (!fs.existsSync(tooling.python)) throw new Error('The supplied npm archive does not contain codemetrics-python. Build the current development package.');
           args.push('--project', scope.entryPoint);
           if (options.python) args.push('--python', path.resolve(root, options.python));
+          for (const flag of ['coverage-json', 'collection-manifest'])
+            if (options['python-' + flag]) args.push('--' + flag, path.resolve(root, options['python-' + flag]));
           for (const flag of ['include', 'exclude', 'test-path', 'production-path'])
             for (const value of options['python-' + flag] ?? []) args.push('--' + flag, value);
           for (const flag of ['include-tests', 'include-generated', 'include-support'])
@@ -188,7 +192,7 @@ export async function execute(options) {
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds', 'python'];
+    const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds', 'python', 'python-coverage-json', 'python-collection-manifest'];
     const { values } = parseArgs({ options: { ...Object.fromEntries(strings.map(key => [key, { type: 'string' }])),
       ...Object.fromEntries(['include', 'exclude', 'test-path', 'production-path'].map(key => ['python-' + key, { type: 'string', multiple: true }])),
       ...Object.fromEntries(['include-tests', 'include-generated', 'include-support'].map(key => ['python-' + key, { type: 'boolean' }])),
