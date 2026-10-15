@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scope",
+    "criterion": "Reports Method Complexity 10 as the only scored dimension. Error Handling and the other seven dimensions remain unavailable; any aggregate is partial, 1/9 dimensions scored."
+  },
+  {
+    "id": "counts",
+    "criterion": "Reports six handlers with four recognized shapes and two unresolved cases. Does not turn these counts into handling-success rates, deductions, or defects."
+  },
+  {
+    "id": "shapes",
+    "criterion": "Identifies guarded-import syntax, local documented no-op, direct literal fallback, and direct bare rethrow as source observations. Does not claim that the import is proven optional, the fallback correct, or the rethrow guaranteed to propagate."
+  },
+  {
+    "id": "unresolved",
+    "criterion": "Explains that finalized is unresolved because of the enclosing finalizer and dispatch lacks a supported local shape. Neither classification establishes bad handling or a required refactor."
+  },
+  {
+    "id": "intent",
+    "criterion": "Preserves cleanup rationale without judging the business decision; treats optional_backend docstring as surrounding prose without changing its original undocumented-no-op classification."
+  },
+  {
+    "id": "provenance",
+    "criterion": "Uses the recorded context policy and current run identity. Does not reinterpret historical reports as having context evidence or compare different adapter rulesets as code changes."
+  },
+  {
+    "id": "limits",
+    "criterion": "Keeps source syntax separate from runtime behavior and business correctness; does not infer complete paths from nearby statements, add a Python error-handling score, or invent CMAI support."
+  }
+]

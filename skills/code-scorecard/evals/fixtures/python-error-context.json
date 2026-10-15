@@ -1,0 +1,2273 @@
+{
+  "request": "Show this Python scorecard and explain the exception-context patterns. Which handlers require fixes, and do the context counts change the scores?",
+  "runnerResult": {
+    "ecosystem": "python",
+    "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+    "version": "0.9.0",
+    "status": "complete",
+    "fresh": true,
+    "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+    "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+    "analyzerExitCode": 0,
+    "validationExitCode": 0
+  },
+  "inspection": {
+    "evidence": {
+      "schemaVersion": 3,
+      "generatedAtUtc": "2026-10-15T14:18:01.909Z",
+      "tool": {
+        "name": "CodeMetrics.AI.Python",
+        "version": "0.9.0",
+        "ecosystem": "python"
+      },
+      "subject": {
+        "root": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+        "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+        "name": "report-source",
+        "variant": "source"
+      },
+      "filters": {
+        "totalUnits": 1,
+        "analyzedUnits": 1,
+        "skipped": []
+      },
+      "population": {
+        "types": 0,
+        "members": 6
+      },
+      "dimensions": {
+        "codeQuality": {
+          "status": "scored",
+          "basis": "Method Complexity of selected production implementations. Decomposition, duplication and coverage/CRAP are unscored review evidence.",
+          "scope": {
+            "id": "python/method-complexity-worst-40-remainder-60/v1",
+            "coverage": "partial",
+            "includes": [
+              "selected-production-function-complexity"
+            ],
+            "excludes": [
+              "test-support-generated-scoring",
+              "decomposition-scoring",
+              "duplication-scoring",
+              "coverage-crap-scoring",
+              "runtime-performance",
+              "semantic-validation"
+            ]
+          },
+          "findings": [],
+          "duplication": {
+            "schemaVersion": 1,
+            "artifactKind": "experimental-python-duplication-review",
+            "producer": {
+              "name": "codemetrics-ai/python-duplication",
+              "version": "0.1.0-experimental"
+            },
+            "generatedAtUtc": "2026-10-15T14:18:01.846711+00:00",
+            "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "status": "complete",
+            "policy": "python/exact-function-body-v1",
+            "configuration": {
+              "policy": "python/exact-function-body-v1",
+              "minimumStatements": 5,
+              "selectionFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "parserVersion": "3.12.10",
+              "maxOwners": 100000,
+              "maxNormalizedBytes": 67108864
+            },
+            "configurationFingerprint": "8735dea6ca0bfb56f25bcc1de8b28b0edfb5085db518f66a8284606f4f351f26",
+            "subject": {
+              "root": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+              "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source"
+            },
+            "sourceFactsProducer": {
+              "name": "codemetrics-ai/python-source-facts",
+              "version": "0.4.0-experimental",
+              "parser": "python-ast",
+              "parserVersion": "3.12.10"
+            },
+            "sourceFactsPolicy": "python/owned-function-complexity-v2",
+            "selection": {
+              "policy": "python/source-selection-v1",
+              "configurationFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "options": {
+                "include": [],
+                "exclude": [],
+                "testPaths": [],
+                "productionPaths": [],
+                "includeTests": false,
+                "includeGenerated": false,
+                "includeSupport": false
+              },
+              "files": [
+                {
+                  "file": "work.py",
+                  "category": "production",
+                  "disposition": "analyzed",
+                  "reason": "production-candidate",
+                  "contentSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+                }
+              ],
+              "prunedDirectories": [],
+              "excludedFunctions": []
+            },
+            "diagnostics": [],
+            "scope": "Exact whole-function AST bodies; names/literals retained; signatures, decorators, leading docstrings and locations excluded. Populations and async/sync kinds compared separately. Not semantic equivalence, partial-block detection, a duplication percentage, or a score.",
+            "groups": [],
+            "excludedFunctions": [
+              {
+                "id": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6",
+                "file": "work.py",
+                "member": "optional_backend",
+                "line": 1,
+                "population": "production",
+                "endLine": 6,
+                "statementCount": 2,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "reason": "below-statement-minimum"
+              },
+              {
+                "id": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a",
+                "file": "work.py",
+                "member": "cleanup",
+                "line": 9,
+                "population": "production",
+                "endLine": 14,
+                "statementCount": 2,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "reason": "below-statement-minimum"
+              },
+              {
+                "id": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1",
+                "file": "work.py",
+                "member": "recover",
+                "line": 17,
+                "population": "production",
+                "endLine": 21,
+                "statementCount": 3,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "reason": "below-statement-minimum"
+              },
+              {
+                "id": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136",
+                "file": "work.py",
+                "member": "propagate",
+                "line": 24,
+                "population": "production",
+                "endLine": 28,
+                "statementCount": 3,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "reason": "below-statement-minimum"
+              },
+              {
+                "id": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d",
+                "file": "work.py",
+                "member": "finalized",
+                "line": 31,
+                "population": "production",
+                "endLine": 37,
+                "statementCount": 4,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "reason": "below-statement-minimum"
+              }
+            ],
+            "summary": {
+              "selectedFunctions": 6,
+              "eligibleFunctions": 1,
+              "excludedFunctions": 5,
+              "exclusionReasons": {
+                "below-statement-minimum": 5
+              },
+              "duplicateGroups": 0,
+              "matchedFunctions": 0
+            }
+          },
+          "coverageReview": {
+            "schemaVersion": 2,
+            "artifactKind": "experimental-python-coverage-review",
+            "producer": {
+              "name": "codemetrics-ai/python-coverage-review",
+              "version": "0.3.0-experimental"
+            },
+            "generatedAtUtc": "2026-10-15T14:18:01.850711+00:00",
+            "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "policy": "python/coveragepy-line-crap-review-v1",
+            "configuration": {
+              "policy": "python/coveragepy-line-crap-review-v1",
+              "selectionFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "complexityPolicy": "python/owned-function-complexity-v2",
+              "parserVersion": "3.12.10",
+              "maxReportBytes": 33554432,
+              "maxOwners": 100000
+            },
+            "configurationFingerprint": "a91ac8445336f143669529e0cd9adbbb17baa6aa07bcfcc0af6cd8bd5c0089e2",
+            "status": "complete",
+            "subject": {
+              "root": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+              "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source"
+            },
+            "sourceFactsProducer": {
+              "name": "codemetrics-ai/python-source-facts",
+              "version": "0.4.0-experimental",
+              "parser": "python-ast",
+              "parserVersion": "3.12.10"
+            },
+            "selection": {
+              "policy": "python/source-selection-v1",
+              "configurationFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "options": {
+                "include": [],
+                "exclude": [],
+                "testPaths": [],
+                "productionPaths": [],
+                "includeTests": false,
+                "includeGenerated": false,
+                "includeSupport": false
+              },
+              "files": [
+                {
+                  "file": "work.py",
+                  "category": "production",
+                  "disposition": "analyzed",
+                  "reason": "production-candidate",
+                  "contentSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+                }
+              ],
+              "prunedDirectories": [],
+              "excludedFunctions": []
+            },
+            "coverageInput": null,
+            "collectionProvenance": null,
+            "diagnostics": [],
+            "scope": "Line-coverage CRAP review estimates, not scores or defect predictions. Imports without collection provenance have unverified source binding and freshness. New review IDs never authenticate historical coverage. Line coverage is not basis-path coverage or test effectiveness.",
+            "functions": [
+              {
+                "id": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6",
+                "file": "work.py",
+                "member": "optional_backend",
+                "line": 1,
+                "population": "production",
+                "endLine": 6,
+                "complexity": 2,
+                "coverage": {
+                  "status": "unavailable",
+                  "reason": "coverage-not-supplied"
+                },
+                "crapEstimate": null,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+              },
+              {
+                "id": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a",
+                "file": "work.py",
+                "member": "cleanup",
+                "line": 9,
+                "population": "production",
+                "endLine": 14,
+                "complexity": 2,
+                "coverage": {
+                  "status": "unavailable",
+                  "reason": "coverage-not-supplied"
+                },
+                "crapEstimate": null,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+              },
+              {
+                "id": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1",
+                "file": "work.py",
+                "member": "recover",
+                "line": 17,
+                "population": "production",
+                "endLine": 21,
+                "complexity": 2,
+                "coverage": {
+                  "status": "unavailable",
+                  "reason": "coverage-not-supplied"
+                },
+                "crapEstimate": null,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+              },
+              {
+                "id": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136",
+                "file": "work.py",
+                "member": "propagate",
+                "line": 24,
+                "population": "production",
+                "endLine": 28,
+                "complexity": 2,
+                "coverage": {
+                  "status": "unavailable",
+                  "reason": "coverage-not-supplied"
+                },
+                "crapEstimate": null,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+              },
+              {
+                "id": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d",
+                "file": "work.py",
+                "member": "finalized",
+                "line": 31,
+                "population": "production",
+                "endLine": 37,
+                "complexity": 2,
+                "coverage": {
+                  "status": "unavailable",
+                  "reason": "coverage-not-supplied"
+                },
+                "crapEstimate": null,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+              },
+              {
+                "id": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700",
+                "file": "work.py",
+                "member": "dispatch",
+                "line": 40,
+                "population": "production",
+                "endLine": 46,
+                "complexity": 3,
+                "coverage": {
+                  "status": "unavailable",
+                  "reason": "coverage-not-supplied"
+                },
+                "crapEstimate": null,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+              }
+            ],
+            "summary": {
+              "selectedFunctions": 6,
+              "conditionalEstimates": 0,
+              "unavailableFunctions": 6,
+              "unavailableReasons": {
+                "coverage-not-supplied": 6
+              },
+              "matchedFiles": 0,
+              "unmatchedReportFiles": [],
+              "sourceBoundEstimates": 0
+            }
+          },
+          "decomposition": {
+            "schemaVersion": 1,
+            "artifactKind": "experimental-python-decomposition-review",
+            "producer": {
+              "name": "codemetrics-ai/python-decomposition",
+              "version": "0.1.0-experimental"
+            },
+            "generatedAtUtc": "2026-10-15T14:18:01.852709+00:00",
+            "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "policy": "python/owned-statements-block-nesting-v1",
+            "configuration": {
+              "policy": "python/owned-statements-block-nesting-v1",
+              "selectionFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "parserVersion": "3.12.10",
+              "maxOwners": 100000,
+              "quantiles": "nearest-rank",
+              "complexityPolicy": "python/owned-function-complexity-v2"
+            },
+            "configurationFingerprint": "a44f1e4ddf53ef68e4554a8128b5ae51745d192519b86a2ffbe3d635086d8a45",
+            "subject": {
+              "root": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+              "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source"
+            },
+            "sourceFactsProducer": {
+              "name": "codemetrics-ai/python-source-facts",
+              "version": "0.4.0-experimental",
+              "parser": "python-ast",
+              "parserVersion": "3.12.10"
+            },
+            "sourceFactsPolicy": "python/owned-function-complexity-v2",
+            "selection": {
+              "policy": "python/source-selection-v1",
+              "configurationFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "options": {
+                "include": [],
+                "exclude": [],
+                "testPaths": [],
+                "productionPaths": [],
+                "includeTests": false,
+                "includeGenerated": false,
+                "includeSupport": false
+              },
+              "files": [
+                {
+                  "file": "work.py",
+                  "category": "production",
+                  "disposition": "analyzed",
+                  "reason": "production-candidate",
+                  "contentSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+                }
+              ],
+              "prunedDirectories": [],
+              "excludedFunctions": []
+            },
+            "status": "complete",
+            "diagnostics": [],
+            "scope": "Owned AST statements and block nesting, separately measured. Nested definitions and declaration syntax excluded. Lambdas unavailable. No expression-size measurement, score, threshold, or safe-extraction claim.",
+            "functions": [
+              {
+                "id": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6",
+                "file": "work.py",
+                "member": "optional_backend",
+                "line": 1,
+                "population": "production",
+                "endLine": 6,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "functionKind": "FunctionDef",
+                "complexity": 2,
+                "disposition": "review-only",
+                "status": "measured",
+                "measurement": {
+                  "ownedStatements": 2,
+                  "maxBlockNesting": 1,
+                  "statementKinds": {
+                    "Import": 1,
+                    "Try": 1
+                  },
+                  "excludedSyntax": {
+                    "Pass": 1,
+                    "docstring": 1
+                  }
+                }
+              },
+              {
+                "id": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a",
+                "file": "work.py",
+                "member": "cleanup",
+                "line": 9,
+                "population": "production",
+                "endLine": 14,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "functionKind": "FunctionDef",
+                "complexity": 2,
+                "disposition": "review-only",
+                "status": "measured",
+                "measurement": {
+                  "ownedStatements": 2,
+                  "maxBlockNesting": 1,
+                  "statementKinds": {
+                    "Expr": 1,
+                    "Try": 1
+                  },
+                  "excludedSyntax": {
+                    "Pass": 1
+                  }
+                }
+              },
+              {
+                "id": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1",
+                "file": "work.py",
+                "member": "recover",
+                "line": 17,
+                "population": "production",
+                "endLine": 21,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "functionKind": "FunctionDef",
+                "complexity": 2,
+                "disposition": "review-only",
+                "status": "measured",
+                "measurement": {
+                  "ownedStatements": 3,
+                  "maxBlockNesting": 1,
+                  "statementKinds": {
+                    "Return": 2,
+                    "Try": 1
+                  },
+                  "excludedSyntax": {}
+                }
+              },
+              {
+                "id": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136",
+                "file": "work.py",
+                "member": "propagate",
+                "line": 24,
+                "population": "production",
+                "endLine": 28,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "functionKind": "FunctionDef",
+                "complexity": 2,
+                "disposition": "review-only",
+                "status": "measured",
+                "measurement": {
+                  "ownedStatements": 3,
+                  "maxBlockNesting": 1,
+                  "statementKinds": {
+                    "Expr": 1,
+                    "Raise": 1,
+                    "Try": 1
+                  },
+                  "excludedSyntax": {}
+                }
+              },
+              {
+                "id": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d",
+                "file": "work.py",
+                "member": "finalized",
+                "line": 31,
+                "population": "production",
+                "endLine": 37,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "functionKind": "FunctionDef",
+                "complexity": 2,
+                "disposition": "review-only",
+                "status": "measured",
+                "measurement": {
+                  "ownedStatements": 4,
+                  "maxBlockNesting": 1,
+                  "statementKinds": {
+                    "Expr": 2,
+                    "Return": 1,
+                    "Try": 1
+                  },
+                  "excludedSyntax": {}
+                }
+              },
+              {
+                "id": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700",
+                "file": "work.py",
+                "member": "dispatch",
+                "line": 40,
+                "population": "production",
+                "endLine": 46,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "functionKind": "FunctionDef",
+                "complexity": 3,
+                "disposition": "review-only",
+                "status": "measured",
+                "measurement": {
+                  "ownedStatements": 5,
+                  "maxBlockNesting": 2,
+                  "statementKinds": {
+                    "Expr": 2,
+                    "If": 1,
+                    "Raise": 1,
+                    "Try": 1
+                  },
+                  "excludedSyntax": {}
+                }
+              }
+            ],
+            "summary": {
+              "selectedFunctions": 6,
+              "measuredFunctions": 6,
+              "unavailableFunctions": 0,
+              "unavailableReasons": {},
+              "populations": {
+                "production": {
+                  "selectedFunctions": 6,
+                  "measuredFunctions": 6,
+                  "unavailableFunctions": 0,
+                  "ownedStatements": {
+                    "count": 6,
+                    "p50": 3,
+                    "p90": 5,
+                    "p95": 5,
+                    "max": 5
+                  },
+                  "maxBlockNesting": {
+                    "count": 6,
+                    "p50": 1,
+                    "p90": 2,
+                    "p95": 2,
+                    "max": 2
+                  }
+                }
+              }
+            }
+          },
+          "sourceFacts": {
+            "schemaVersion": 2,
+            "language": "python",
+            "producer": {
+              "name": "codemetrics-ai/python-source-facts",
+              "version": "0.4.0-experimental",
+              "parser": "python-ast",
+              "parserVersion": "3.12.10"
+            },
+            "measurementPolicy": "python/owned-function-complexity-v2",
+            "status": "complete",
+            "capabilities": {
+              "functionComplexity": "available",
+              "coverage": "unsupported",
+              "maintainability": "unsupported"
+            },
+            "scope": {
+              "description": "Selected Python implementation bodies. File roles are explicit scope conventions, not runtime reachability or defect judgments. See selection inventory.",
+              "excludes": [
+                "nested-function-and-class-bodies-from-parent",
+                "decorators",
+                "class-headers",
+                "annotations",
+                "parameter-initializers",
+                "module-and-class-initializer-decisions",
+                "symlinks",
+                "directory-junctions",
+                ".git",
+                ".mypy_cache",
+                ".pytest_cache",
+                ".tox",
+                ".venv",
+                "__pycache__",
+                "build",
+                "dist",
+                "env",
+                "node_modules",
+                "venv"
+              ]
+            },
+            "diagnostics": [],
+            "functions": [
+              {
+                "id": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6",
+                "file": "work.py",
+                "member": "optional_backend",
+                "line": 1,
+                "ownership": "exclusive-function-body",
+                "complexity": {
+                  "value": 2,
+                  "baseline": 1,
+                  "decisions": {
+                    "ifStatements": 0,
+                    "loops": 0,
+                    "exceptHandlers": 1,
+                    "conditionalExpressions": 0,
+                    "booleanOperators": 0,
+                    "chainedComparisons": 0,
+                    "comprehensionLoops": 0,
+                    "comprehensionFilters": 0,
+                    "matchCases": 0,
+                    "matchGuards": 0,
+                    "matchAlternatives": 0
+                  }
+                },
+                "population": "production"
+              },
+              {
+                "id": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a",
+                "file": "work.py",
+                "member": "cleanup",
+                "line": 9,
+                "ownership": "exclusive-function-body",
+                "complexity": {
+                  "value": 2,
+                  "baseline": 1,
+                  "decisions": {
+                    "ifStatements": 0,
+                    "loops": 0,
+                    "exceptHandlers": 1,
+                    "conditionalExpressions": 0,
+                    "booleanOperators": 0,
+                    "chainedComparisons": 0,
+                    "comprehensionLoops": 0,
+                    "comprehensionFilters": 0,
+                    "matchCases": 0,
+                    "matchGuards": 0,
+                    "matchAlternatives": 0
+                  }
+                },
+                "population": "production"
+              },
+              {
+                "id": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1",
+                "file": "work.py",
+                "member": "recover",
+                "line": 17,
+                "ownership": "exclusive-function-body",
+                "complexity": {
+                  "value": 2,
+                  "baseline": 1,
+                  "decisions": {
+                    "ifStatements": 0,
+                    "loops": 0,
+                    "exceptHandlers": 1,
+                    "conditionalExpressions": 0,
+                    "booleanOperators": 0,
+                    "chainedComparisons": 0,
+                    "comprehensionLoops": 0,
+                    "comprehensionFilters": 0,
+                    "matchCases": 0,
+                    "matchGuards": 0,
+                    "matchAlternatives": 0
+                  }
+                },
+                "population": "production"
+              },
+              {
+                "id": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136",
+                "file": "work.py",
+                "member": "propagate",
+                "line": 24,
+                "ownership": "exclusive-function-body",
+                "complexity": {
+                  "value": 2,
+                  "baseline": 1,
+                  "decisions": {
+                    "ifStatements": 0,
+                    "loops": 0,
+                    "exceptHandlers": 1,
+                    "conditionalExpressions": 0,
+                    "booleanOperators": 0,
+                    "chainedComparisons": 0,
+                    "comprehensionLoops": 0,
+                    "comprehensionFilters": 0,
+                    "matchCases": 0,
+                    "matchGuards": 0,
+                    "matchAlternatives": 0
+                  }
+                },
+                "population": "production"
+              },
+              {
+                "id": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d",
+                "file": "work.py",
+                "member": "finalized",
+                "line": 31,
+                "ownership": "exclusive-function-body",
+                "complexity": {
+                  "value": 2,
+                  "baseline": 1,
+                  "decisions": {
+                    "ifStatements": 0,
+                    "loops": 0,
+                    "exceptHandlers": 1,
+                    "conditionalExpressions": 0,
+                    "booleanOperators": 0,
+                    "chainedComparisons": 0,
+                    "comprehensionLoops": 0,
+                    "comprehensionFilters": 0,
+                    "matchCases": 0,
+                    "matchGuards": 0,
+                    "matchAlternatives": 0
+                  }
+                },
+                "population": "production"
+              },
+              {
+                "id": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700",
+                "file": "work.py",
+                "member": "dispatch",
+                "line": 40,
+                "ownership": "exclusive-function-body",
+                "complexity": {
+                  "value": 3,
+                  "baseline": 1,
+                  "decisions": {
+                    "ifStatements": 1,
+                    "loops": 0,
+                    "exceptHandlers": 1,
+                    "conditionalExpressions": 0,
+                    "booleanOperators": 0,
+                    "chainedComparisons": 0,
+                    "comprehensionLoops": 0,
+                    "comprehensionFilters": 0,
+                    "matchCases": 0,
+                    "matchGuards": 0,
+                    "matchAlternatives": 0
+                  }
+                },
+                "population": "production"
+              }
+            ],
+            "selection": {
+              "policy": "python/source-selection-v1",
+              "configurationFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "options": {
+                "include": [],
+                "exclude": [],
+                "testPaths": [],
+                "productionPaths": [],
+                "includeTests": false,
+                "includeGenerated": false,
+                "includeSupport": false
+              },
+              "files": [
+                {
+                  "file": "work.py",
+                  "category": "production",
+                  "disposition": "analyzed",
+                  "reason": "production-candidate",
+                  "contentSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+                }
+              ],
+              "prunedDirectories": [],
+              "excludedFunctions": []
+            }
+          },
+          "populationNotes": "Units are observed Python files; members are selected implementation bodies. Types are not measured (the required types field is a placeholder zero). Pruned directories do not enumerate unseen files.",
+          "score": 10,
+          "scoringDecision": {
+            "version": 1,
+            "policy": "python/method-complexity-worst-40-remainder-60/v1",
+            "operation": "firstMatch",
+            "finalScore": 10,
+            "inputs": {
+              "measurementPolicy": "python/owned-function-complexity-v2",
+              "eligibleFunctions": 6,
+              "excludedPopulations": {
+                "test": 0,
+                "support": 0,
+                "generated": 0
+              },
+              "anchors": [
+                [
+                  3,
+                  10
+                ],
+                [
+                  5,
+                  8
+                ],
+                [
+                  10,
+                  6
+                ],
+                [
+                  20,
+                  4
+                ],
+                [
+                  40,
+                  0
+                ]
+              ],
+              "weighting": "one-worst-40-percent/remainder-mean-60-percent; singleton-100-percent",
+              "rounding": "decimal-half-up-one-place"
+            },
+            "findingEffects": [],
+            "steps": [
+              {
+                "id": "methodComplexity",
+                "kind": "rule",
+                "condition": "nonempty selected production implementation population",
+                "matched": true,
+                "score": 10,
+                "disposition": "selected",
+                "inputs": {},
+                "findingCategories": [
+                  "methodComplexityReview"
+                ]
+              }
+            ]
+          },
+          "scoring": {
+            "algorithm": "dimension-policy",
+            "finalScore": 10,
+            "aggregateScoreLoss": 0,
+            "contributionMode": "aggregate; findings are not independent deductions",
+            "observations": {
+              "population": {
+                "weakCount": 1,
+                "restCount": 5,
+                "contributions": [
+                  {
+                    "id": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700",
+                    "group": "weakest",
+                    "individualScore": 10,
+                    "weightNumerator": 2,
+                    "weightDenominator": 5,
+                    "weightedScoreLoss": 0
+                  },
+                  {
+                    "id": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136",
+                    "group": "remainder",
+                    "individualScore": 10,
+                    "weightNumerator": 3,
+                    "weightDenominator": 25,
+                    "weightedScoreLoss": 0
+                  },
+                  {
+                    "id": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a",
+                    "group": "remainder",
+                    "individualScore": 10,
+                    "weightNumerator": 3,
+                    "weightDenominator": 25,
+                    "weightedScoreLoss": 0
+                  },
+                  {
+                    "id": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6",
+                    "group": "remainder",
+                    "individualScore": 10,
+                    "weightNumerator": 3,
+                    "weightDenominator": 25,
+                    "weightedScoreLoss": 0
+                  },
+                  {
+                    "id": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d",
+                    "group": "remainder",
+                    "individualScore": 10,
+                    "weightNumerator": 3,
+                    "weightDenominator": 25,
+                    "weightedScoreLoss": 0
+                  },
+                  {
+                    "id": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1",
+                    "group": "remainder",
+                    "individualScore": 10,
+                    "weightNumerator": 3,
+                    "weightDenominator": 25,
+                    "weightedScoreLoss": 0
+                  }
+                ],
+                "losses": {
+                  "weakest": 0,
+                  "remainder": 0
+                },
+                "unroundedScore": 10,
+                "score": 10
+              }
+            }
+          },
+          "methodComplexity": {
+            "status": "scored",
+            "scoringPolicy": "python/method-complexity-worst-40-remainder-60/v1",
+            "measurementPolicy": "python/owned-function-complexity-v2",
+            "comparableAcrossLanguages": false,
+            "selectedFunctions": 6,
+            "eligibleFunctions": 6,
+            "excludedPopulations": {
+              "test": 0,
+              "support": 0,
+              "generated": 0
+            },
+            "population": {
+              "weakCount": 1,
+              "restCount": 5,
+              "contributions": [
+                {
+                  "id": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700",
+                  "group": "weakest",
+                  "individualScore": 10,
+                  "weightNumerator": 2,
+                  "weightDenominator": 5,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136",
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 25,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a",
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 25,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6",
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 25,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d",
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 25,
+                  "weightedScoreLoss": 0
+                },
+                {
+                  "id": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1",
+                  "group": "remainder",
+                  "individualScore": 10,
+                  "weightNumerator": 3,
+                  "weightDenominator": 25,
+                  "weightedScoreLoss": 0
+                }
+              ],
+              "losses": {
+                "weakest": 0,
+                "remainder": 0
+              },
+              "unroundedScore": 10,
+              "score": 10
+            }
+          }
+        },
+        "maintainability": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/maintainability/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "maintainability"
+            ]
+          }
+        },
+        "errorHandling": {
+          "status": "skipped",
+          "basis": "Exception-handler syntax and local documentation are review evidence only; no handling-quality score.",
+          "scope": {
+            "id": "python/exception-handler-observations-v1",
+            "coverage": "partial",
+            "includes": [
+              "selected-exception-suites",
+              "module-and-class-body-handlers",
+              "local-no-op-documentation",
+              "bounded-lexical-context",
+              "conservative-handler-patterns"
+            ],
+            "excludes": [
+              "calibrated-dimension-score",
+              "resolved-exception-types",
+              "business-correctness",
+              "context-manager-suppression",
+              "path-completeness"
+            ]
+          },
+          "findings": [],
+          "review": {
+            "schemaVersion": 1,
+            "artifactKind": "experimental-python-error-handling-review",
+            "producer": {
+              "name": "codemetrics-ai/python-error-handling",
+              "version": "0.1.0-experimental"
+            },
+            "generatedAtUtc": "2026-10-15T14:18:01.854709+00:00",
+            "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "policy": "python/exception-handler-observations-v1",
+            "configuration": {
+              "policy": "python/exception-handler-observations-v1",
+              "selectionFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "parserVersion": "3.12.10",
+              "maxHandlers": 100000,
+              "documentationPolicy": "suite-comments-or-string-statements/tool-directives-excluded/content-not-adjudicated-v1"
+            },
+            "configurationFingerprint": "f55b48c66411b87f5979938a123dfe953a3cbe4e383b524ae522ce20898c4b75",
+            "subject": {
+              "root": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+              "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source"
+            },
+            "sourceFactsProducer": {
+              "name": "codemetrics-ai/python-source-facts",
+              "version": "0.4.0-experimental",
+              "parser": "python-ast",
+              "parserVersion": "3.12.10"
+            },
+            "sourceFactsPolicy": "python/owned-function-complexity-v2",
+            "selection": {
+              "policy": "python/source-selection-v1",
+              "configurationFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "options": {
+                "include": [],
+                "exclude": [],
+                "testPaths": [],
+                "productionPaths": [],
+                "includeTests": false,
+                "includeGenerated": false,
+                "includeSupport": false
+              },
+              "files": [
+                {
+                  "file": "work.py",
+                  "category": "production",
+                  "disposition": "analyzed",
+                  "reason": "production-candidate",
+                  "contentSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+                }
+              ],
+              "prunedDirectories": [],
+              "excludedFunctions": []
+            },
+            "status": "complete",
+            "diagnostics": [],
+            "scope": "Selected-source exception suites, including module/class bodies and except*. Syntactic observations only; no score, handling-quality judgment, resolved exception types, path completeness or propagation guarantee. Context-manager suppression is outside scope.",
+            "handlers": [
+              {
+                "id": "ebd2ead6a6993a8c8fdf8c548df180bab924f067cc8a8f038f977c291b5c4042",
+                "file": "work.py",
+                "line": 5,
+                "endLine": 6,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "optional_backend",
+                  "functionId": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6"
+                },
+                "exceptionTypeSyntax": "ImportError",
+                "bareExcept": false,
+                "exceptionGroup": false,
+                "enclosingFinallyLines": [],
+                "classification": "undocumented-no-op",
+                "documentation": [],
+                "directiveComments": [],
+                "bodyObservations": {
+                  "raises": [],
+                  "returns": [],
+                  "loopTransfers": [],
+                  "calls": 0,
+                  "nestedHandlersExcluded": 0
+                },
+                "disposition": "review-only"
+              },
+              {
+                "id": "1f8e528ca9da66e6adba1423faf575b83e496f7ecd970f1306a286b4da732280",
+                "file": "work.py",
+                "line": 12,
+                "endLine": 14,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "cleanup",
+                  "functionId": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a"
+                },
+                "exceptionTypeSyntax": "OSError",
+                "bareExcept": false,
+                "exceptionGroup": false,
+                "enclosingFinallyLines": [],
+                "classification": "documented-no-op",
+                "documentation": [
+                  {
+                    "kind": "comment",
+                    "line": 13,
+                    "text": "The resource may already be closed; shutdown can continue."
+                  }
+                ],
+                "directiveComments": [],
+                "bodyObservations": {
+                  "raises": [],
+                  "returns": [],
+                  "loopTransfers": [],
+                  "calls": 0,
+                  "nestedHandlersExcluded": 0
+                },
+                "disposition": "review-only"
+              },
+              {
+                "id": "0d6397ab552a0bd70dd5ff33286d6eb604339f8b09c0d3c5e12e98209d8892db",
+                "file": "work.py",
+                "line": 20,
+                "endLine": 21,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "recover",
+                  "functionId": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1"
+                },
+                "exceptionTypeSyntax": "KeyError",
+                "bareExcept": false,
+                "exceptionGroup": false,
+                "enclosingFinallyLines": [],
+                "classification": "terminal-return",
+                "documentation": [],
+                "directiveComments": [],
+                "bodyObservations": {
+                  "raises": [],
+                  "returns": [
+                    {
+                      "line": 21,
+                      "hasValue": true
+                    }
+                  ],
+                  "loopTransfers": [],
+                  "calls": 0,
+                  "nestedHandlersExcluded": 0
+                },
+                "disposition": "review-only"
+              },
+              {
+                "id": "6527b5bf306b4a065b3856a2385419903675353c03aed667bdefdc775637a479",
+                "file": "work.py",
+                "line": 27,
+                "endLine": 28,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "propagate",
+                  "functionId": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136"
+                },
+                "exceptionTypeSyntax": "RuntimeError",
+                "bareExcept": false,
+                "exceptionGroup": false,
+                "enclosingFinallyLines": [],
+                "classification": "terminal-raise",
+                "documentation": [],
+                "directiveComments": [],
+                "bodyObservations": {
+                  "raises": [
+                    {
+                      "line": 28,
+                      "bare": true,
+                      "explicitCause": false
+                    }
+                  ],
+                  "returns": [],
+                  "loopTransfers": [],
+                  "calls": 0,
+                  "nestedHandlersExcluded": 0
+                },
+                "disposition": "review-only"
+              },
+              {
+                "id": "0919858cfddee8aa9fa855149d4537673fbd3025575c817a543c7d537f3e4a12",
+                "file": "work.py",
+                "line": 34,
+                "endLine": 35,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "finalized",
+                  "functionId": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d"
+                },
+                "exceptionTypeSyntax": "ValueError",
+                "bareExcept": false,
+                "exceptionGroup": false,
+                "enclosingFinallyLines": [
+                  32
+                ],
+                "classification": "terminal-return",
+                "documentation": [],
+                "directiveComments": [],
+                "bodyObservations": {
+                  "raises": [],
+                  "returns": [
+                    {
+                      "line": 35,
+                      "hasValue": true
+                    }
+                  ],
+                  "loopTransfers": [],
+                  "calls": 0,
+                  "nestedHandlersExcluded": 0
+                },
+                "disposition": "review-only"
+              },
+              {
+                "id": "27dadd883795277d925c42480ffbecf381b90f8775e9cf420c5688cb35836d78",
+                "file": "work.py",
+                "line": 43,
+                "endLine": 46,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "dispatch",
+                  "functionId": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700"
+                },
+                "exceptionTypeSyntax": "Exception",
+                "bareExcept": false,
+                "exceptionGroup": false,
+                "enclosingFinallyLines": [],
+                "classification": "other-body",
+                "documentation": [],
+                "directiveComments": [],
+                "bodyObservations": {
+                  "raises": [
+                    {
+                      "line": 45,
+                      "bare": true,
+                      "explicitCause": false
+                    }
+                  ],
+                  "returns": [],
+                  "loopTransfers": [],
+                  "calls": 1,
+                  "nestedHandlersExcluded": 0
+                },
+                "disposition": "review-only"
+              }
+            ],
+            "summary": {
+              "handlers": 6,
+              "byClassification": {
+                "documented-no-op": 1,
+                "other-body": 1,
+                "terminal-raise": 1,
+                "terminal-return": 2,
+                "undocumented-no-op": 1
+              },
+              "functionsWithHandlers": 6,
+              "byOwnerKind": {
+                "function": 6
+              },
+              "populations": {
+                "production": {
+                  "handlers": 6,
+                  "byClassification": {
+                    "documented-no-op": 1,
+                    "other-body": 1,
+                    "terminal-raise": 1,
+                    "terminal-return": 2,
+                    "undocumented-no-op": 1
+                  }
+                }
+              }
+            }
+          },
+          "contextReview": {
+            "schemaVersion": 1,
+            "artifactKind": "experimental-python-exception-context-review",
+            "producer": {
+              "name": "codemetrics-ai/python-exception-context",
+              "version": "0.1.0-experimental"
+            },
+            "generatedAtUtc": "2026-10-15T14:18:01.859712+00:00",
+            "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+            "policy": "python/exception-context-patterns-v1",
+            "configuration": {
+              "policy": "python/exception-context-patterns-v1",
+              "handlerPolicy": "python/exception-handler-observations-v1",
+              "maxStatementsPerSuite": 32,
+              "maxFollowingStatements": 3,
+              "maxDocumentationCharacters": 2000,
+              "selectionFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+              "parserVersion": "3.12.10"
+            },
+            "configurationFingerprint": "2ca925a67b88d7140e11f780957940816974a781786afbb71ffc49ddf95a3a22",
+            "handlerReview": {
+              "schemaVersion": 1,
+              "artifactKind": "experimental-python-error-handling-review",
+              "producer": {
+                "name": "codemetrics-ai/python-error-handling",
+                "version": "0.1.0-experimental"
+              },
+              "generatedAtUtc": "2026-10-15T14:18:01.854709+00:00",
+              "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+              "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+              "policy": "python/exception-handler-observations-v1",
+              "configuration": {
+                "policy": "python/exception-handler-observations-v1",
+                "selectionFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+                "parserVersion": "3.12.10",
+                "maxHandlers": 100000,
+                "documentationPolicy": "suite-comments-or-string-statements/tool-directives-excluded/content-not-adjudicated-v1"
+              },
+              "configurationFingerprint": "f55b48c66411b87f5979938a123dfe953a3cbe4e383b524ae522ce20898c4b75",
+              "subject": {
+                "root": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source",
+                "entryPoint": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-error-context-package-2026-10-15\\report-source"
+              },
+              "sourceFactsProducer": {
+                "name": "codemetrics-ai/python-source-facts",
+                "version": "0.4.0-experimental",
+                "parser": "python-ast",
+                "parserVersion": "3.12.10"
+              },
+              "sourceFactsPolicy": "python/owned-function-complexity-v2",
+              "selection": {
+                "policy": "python/source-selection-v1",
+                "configurationFingerprint": "1d376bba0c4e13b51a1c1898d7200fdfb6cccdeeeef74cc2424fd0659b8d756e",
+                "options": {
+                  "include": [],
+                  "exclude": [],
+                  "testPaths": [],
+                  "productionPaths": [],
+                  "includeTests": false,
+                  "includeGenerated": false,
+                  "includeSupport": false
+                },
+                "files": [
+                  {
+                    "file": "work.py",
+                    "category": "production",
+                    "disposition": "analyzed",
+                    "reason": "production-candidate",
+                    "contentSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99"
+                  }
+                ],
+                "prunedDirectories": [],
+                "excludedFunctions": []
+              },
+              "status": "complete",
+              "diagnostics": [],
+              "scope": "Selected-source exception suites, including module/class bodies and except*. Syntactic observations only; no score, handling-quality judgment, resolved exception types, path completeness or propagation guarantee. Context-manager suppression is outside scope.",
+              "handlers": [
+                {
+                  "id": "ebd2ead6a6993a8c8fdf8c548df180bab924f067cc8a8f038f977c291b5c4042",
+                  "file": "work.py",
+                  "line": 5,
+                  "endLine": 6,
+                  "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                  "population": "production",
+                  "owner": {
+                    "kind": "function",
+                    "member": "optional_backend",
+                    "functionId": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6"
+                  },
+                  "exceptionTypeSyntax": "ImportError",
+                  "bareExcept": false,
+                  "exceptionGroup": false,
+                  "enclosingFinallyLines": [],
+                  "classification": "undocumented-no-op",
+                  "documentation": [],
+                  "directiveComments": [],
+                  "bodyObservations": {
+                    "raises": [],
+                    "returns": [],
+                    "loopTransfers": [],
+                    "calls": 0,
+                    "nestedHandlersExcluded": 0
+                  },
+                  "disposition": "review-only"
+                },
+                {
+                  "id": "1f8e528ca9da66e6adba1423faf575b83e496f7ecd970f1306a286b4da732280",
+                  "file": "work.py",
+                  "line": 12,
+                  "endLine": 14,
+                  "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                  "population": "production",
+                  "owner": {
+                    "kind": "function",
+                    "member": "cleanup",
+                    "functionId": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a"
+                  },
+                  "exceptionTypeSyntax": "OSError",
+                  "bareExcept": false,
+                  "exceptionGroup": false,
+                  "enclosingFinallyLines": [],
+                  "classification": "documented-no-op",
+                  "documentation": [
+                    {
+                      "kind": "comment",
+                      "line": 13,
+                      "text": "The resource may already be closed; shutdown can continue."
+                    }
+                  ],
+                  "directiveComments": [],
+                  "bodyObservations": {
+                    "raises": [],
+                    "returns": [],
+                    "loopTransfers": [],
+                    "calls": 0,
+                    "nestedHandlersExcluded": 0
+                  },
+                  "disposition": "review-only"
+                },
+                {
+                  "id": "0d6397ab552a0bd70dd5ff33286d6eb604339f8b09c0d3c5e12e98209d8892db",
+                  "file": "work.py",
+                  "line": 20,
+                  "endLine": 21,
+                  "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                  "population": "production",
+                  "owner": {
+                    "kind": "function",
+                    "member": "recover",
+                    "functionId": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1"
+                  },
+                  "exceptionTypeSyntax": "KeyError",
+                  "bareExcept": false,
+                  "exceptionGroup": false,
+                  "enclosingFinallyLines": [],
+                  "classification": "terminal-return",
+                  "documentation": [],
+                  "directiveComments": [],
+                  "bodyObservations": {
+                    "raises": [],
+                    "returns": [
+                      {
+                        "line": 21,
+                        "hasValue": true
+                      }
+                    ],
+                    "loopTransfers": [],
+                    "calls": 0,
+                    "nestedHandlersExcluded": 0
+                  },
+                  "disposition": "review-only"
+                },
+                {
+                  "id": "6527b5bf306b4a065b3856a2385419903675353c03aed667bdefdc775637a479",
+                  "file": "work.py",
+                  "line": 27,
+                  "endLine": 28,
+                  "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                  "population": "production",
+                  "owner": {
+                    "kind": "function",
+                    "member": "propagate",
+                    "functionId": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136"
+                  },
+                  "exceptionTypeSyntax": "RuntimeError",
+                  "bareExcept": false,
+                  "exceptionGroup": false,
+                  "enclosingFinallyLines": [],
+                  "classification": "terminal-raise",
+                  "documentation": [],
+                  "directiveComments": [],
+                  "bodyObservations": {
+                    "raises": [
+                      {
+                        "line": 28,
+                        "bare": true,
+                        "explicitCause": false
+                      }
+                    ],
+                    "returns": [],
+                    "loopTransfers": [],
+                    "calls": 0,
+                    "nestedHandlersExcluded": 0
+                  },
+                  "disposition": "review-only"
+                },
+                {
+                  "id": "0919858cfddee8aa9fa855149d4537673fbd3025575c817a543c7d537f3e4a12",
+                  "file": "work.py",
+                  "line": 34,
+                  "endLine": 35,
+                  "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                  "population": "production",
+                  "owner": {
+                    "kind": "function",
+                    "member": "finalized",
+                    "functionId": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d"
+                  },
+                  "exceptionTypeSyntax": "ValueError",
+                  "bareExcept": false,
+                  "exceptionGroup": false,
+                  "enclosingFinallyLines": [
+                    32
+                  ],
+                  "classification": "terminal-return",
+                  "documentation": [],
+                  "directiveComments": [],
+                  "bodyObservations": {
+                    "raises": [],
+                    "returns": [
+                      {
+                        "line": 35,
+                        "hasValue": true
+                      }
+                    ],
+                    "loopTransfers": [],
+                    "calls": 0,
+                    "nestedHandlersExcluded": 0
+                  },
+                  "disposition": "review-only"
+                },
+                {
+                  "id": "27dadd883795277d925c42480ffbecf381b90f8775e9cf420c5688cb35836d78",
+                  "file": "work.py",
+                  "line": 43,
+                  "endLine": 46,
+                  "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                  "population": "production",
+                  "owner": {
+                    "kind": "function",
+                    "member": "dispatch",
+                    "functionId": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700"
+                  },
+                  "exceptionTypeSyntax": "Exception",
+                  "bareExcept": false,
+                  "exceptionGroup": false,
+                  "enclosingFinallyLines": [],
+                  "classification": "other-body",
+                  "documentation": [],
+                  "directiveComments": [],
+                  "bodyObservations": {
+                    "raises": [
+                      {
+                        "line": 45,
+                        "bare": true,
+                        "explicitCause": false
+                      }
+                    ],
+                    "returns": [],
+                    "loopTransfers": [],
+                    "calls": 1,
+                    "nestedHandlersExcluded": 0
+                  },
+                  "disposition": "review-only"
+                }
+              ],
+              "summary": {
+                "handlers": 6,
+                "byClassification": {
+                  "documented-no-op": 1,
+                  "other-body": 1,
+                  "terminal-raise": 1,
+                  "terminal-return": 2,
+                  "undocumented-no-op": 1
+                },
+                "functionsWithHandlers": 6,
+                "byOwnerKind": {
+                  "function": 6
+                },
+                "populations": {
+                  "production": {
+                    "handlers": 6,
+                    "byClassification": {
+                      "documented-no-op": 1,
+                      "other-body": 1,
+                      "terminal-raise": 1,
+                      "terminal-return": 2,
+                      "undocumented-no-op": 1
+                    }
+                  }
+                }
+              }
+            },
+            "handlerRowsSha256": "460e28451a99bf423ed4532c268ad8fe125ce34c15cc8fde9b09efc5d9c1975f",
+            "status": "complete",
+            "diagnostics": [],
+            "contexts": [
+              {
+                "handlerId": "ebd2ead6a6993a8c8fdf8c548df180bab924f067cc8a8f038f977c291b5c4042",
+                "file": "work.py",
+                "line": 5,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "optional_backend",
+                  "functionId": "729b851b4511178828057670bc837e9f04138cbbe161bb6e70a2e793146dd0e6"
+                },
+                "tryStatement": {
+                  "line": 3,
+                  "endLine": 6,
+                  "kind": "Try",
+                  "body": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Import",
+                        "line": 4,
+                        "endLine": 4,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "else": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "finally": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "handlerLines": [
+                    5
+                  ]
+                },
+                "handlerBody": {
+                  "statementCount": 1,
+                  "statements": [
+                    {
+                      "kind": "Pass",
+                      "line": 6,
+                      "endLine": 6,
+                      "literalReturnKind": null,
+                      "literalAssignment": null
+                    }
+                  ],
+                  "truncated": false
+                },
+                "followingInSameSuite": {
+                  "suite": "body",
+                  "statementCount": 0,
+                  "statements": [],
+                  "truncated": false
+                },
+                "enclosingConstructs": [
+                  {
+                    "kind": "FunctionDef",
+                    "line": 1
+                  }
+                ],
+                "surroundingDocumentation": {
+                  "items": [
+                    {
+                      "kind": "owner-docstring",
+                      "line": 2,
+                      "text": "Probe an installed backend; caller selects a fallback.",
+                      "truncated": false
+                    }
+                  ],
+                  "truncated": false
+                },
+                "classification": {
+                  "status": "recognized-shape",
+                  "pattern": "guarded-import-shape",
+                  "evidenceLines": [
+                    4,
+                    5
+                  ],
+                  "unresolvedReasons": []
+                },
+                "disposition": "review-only"
+              },
+              {
+                "handlerId": "1f8e528ca9da66e6adba1423faf575b83e496f7ecd970f1306a286b4da732280",
+                "file": "work.py",
+                "line": 12,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "cleanup",
+                  "functionId": "4e43c597195e86461421acb42539c250e65d988084e47cd62d203ef4715cdf4a"
+                },
+                "tryStatement": {
+                  "line": 10,
+                  "endLine": 14,
+                  "kind": "Try",
+                  "body": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Expr",
+                        "line": 11,
+                        "endLine": 11,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "else": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "finally": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "handlerLines": [
+                    12
+                  ]
+                },
+                "handlerBody": {
+                  "statementCount": 1,
+                  "statements": [
+                    {
+                      "kind": "Pass",
+                      "line": 14,
+                      "endLine": 14,
+                      "literalReturnKind": null,
+                      "literalAssignment": null
+                    }
+                  ],
+                  "truncated": false
+                },
+                "followingInSameSuite": {
+                  "suite": "body",
+                  "statementCount": 0,
+                  "statements": [],
+                  "truncated": false
+                },
+                "enclosingConstructs": [
+                  {
+                    "kind": "FunctionDef",
+                    "line": 9
+                  }
+                ],
+                "surroundingDocumentation": {
+                  "items": [],
+                  "truncated": false
+                },
+                "classification": {
+                  "status": "recognized-shape",
+                  "pattern": "locally-documented-no-op",
+                  "evidenceLines": [
+                    13
+                  ],
+                  "unresolvedReasons": []
+                },
+                "disposition": "review-only"
+              },
+              {
+                "handlerId": "0d6397ab552a0bd70dd5ff33286d6eb604339f8b09c0d3c5e12e98209d8892db",
+                "file": "work.py",
+                "line": 20,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "recover",
+                  "functionId": "a0c64e337fcdd2aa8b480b05e28bd5ffb858e9a035c2fa3e513f258a141b2dd1"
+                },
+                "tryStatement": {
+                  "line": 18,
+                  "endLine": 21,
+                  "kind": "Try",
+                  "body": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Return",
+                        "line": 19,
+                        "endLine": 19,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "else": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "finally": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "handlerLines": [
+                    20
+                  ]
+                },
+                "handlerBody": {
+                  "statementCount": 1,
+                  "statements": [
+                    {
+                      "kind": "Return",
+                      "line": 21,
+                      "endLine": 21,
+                      "literalReturnKind": "none",
+                      "literalAssignment": null
+                    }
+                  ],
+                  "truncated": false
+                },
+                "followingInSameSuite": {
+                  "suite": "body",
+                  "statementCount": 0,
+                  "statements": [],
+                  "truncated": false
+                },
+                "enclosingConstructs": [
+                  {
+                    "kind": "FunctionDef",
+                    "line": 17
+                  }
+                ],
+                "surroundingDocumentation": {
+                  "items": [],
+                  "truncated": false
+                },
+                "classification": {
+                  "status": "recognized-shape",
+                  "pattern": "direct-literal-fallback-return",
+                  "evidenceLines": [
+                    20,
+                    21
+                  ],
+                  "unresolvedReasons": []
+                },
+                "disposition": "review-only"
+              },
+              {
+                "handlerId": "6527b5bf306b4a065b3856a2385419903675353c03aed667bdefdc775637a479",
+                "file": "work.py",
+                "line": 27,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "propagate",
+                  "functionId": "18a6868c214501cb482bb6d0a80790259f674ae6d4f004675a29bd6b7db2b136"
+                },
+                "tryStatement": {
+                  "line": 25,
+                  "endLine": 28,
+                  "kind": "Try",
+                  "body": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Expr",
+                        "line": 26,
+                        "endLine": 26,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "else": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "finally": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "handlerLines": [
+                    27
+                  ]
+                },
+                "handlerBody": {
+                  "statementCount": 1,
+                  "statements": [
+                    {
+                      "kind": "Raise",
+                      "line": 28,
+                      "endLine": 28,
+                      "literalReturnKind": null,
+                      "literalAssignment": null
+                    }
+                  ],
+                  "truncated": false
+                },
+                "followingInSameSuite": {
+                  "suite": "body",
+                  "statementCount": 0,
+                  "statements": [],
+                  "truncated": false
+                },
+                "enclosingConstructs": [
+                  {
+                    "kind": "FunctionDef",
+                    "line": 24
+                  }
+                ],
+                "surroundingDocumentation": {
+                  "items": [],
+                  "truncated": false
+                },
+                "classification": {
+                  "status": "recognized-shape",
+                  "pattern": "direct-bare-rethrow",
+                  "evidenceLines": [
+                    27,
+                    28
+                  ],
+                  "unresolvedReasons": []
+                },
+                "disposition": "review-only"
+              },
+              {
+                "handlerId": "0919858cfddee8aa9fa855149d4537673fbd3025575c817a543c7d537f3e4a12",
+                "file": "work.py",
+                "line": 34,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "finalized",
+                  "functionId": "8debcef0e0070ff9207bed86087a112a1f19a0e8cc7ed1e388b083121bb9a96d"
+                },
+                "tryStatement": {
+                  "line": 32,
+                  "endLine": 37,
+                  "kind": "Try",
+                  "body": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Expr",
+                        "line": 33,
+                        "endLine": 33,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "else": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "finally": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Expr",
+                        "line": 37,
+                        "endLine": 37,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "handlerLines": [
+                    34
+                  ]
+                },
+                "handlerBody": {
+                  "statementCount": 1,
+                  "statements": [
+                    {
+                      "kind": "Return",
+                      "line": 35,
+                      "endLine": 35,
+                      "literalReturnKind": "none",
+                      "literalAssignment": null
+                    }
+                  ],
+                  "truncated": false
+                },
+                "followingInSameSuite": {
+                  "suite": "body",
+                  "statementCount": 0,
+                  "statements": [],
+                  "truncated": false
+                },
+                "enclosingConstructs": [
+                  {
+                    "kind": "FunctionDef",
+                    "line": 31
+                  }
+                ],
+                "surroundingDocumentation": {
+                  "items": [],
+                  "truncated": false
+                },
+                "classification": {
+                  "status": "unresolved",
+                  "pattern": null,
+                  "evidenceLines": [
+                    34
+                  ],
+                  "unresolvedReasons": [
+                    "enclosing-finally"
+                  ]
+                },
+                "disposition": "review-only"
+              },
+              {
+                "handlerId": "27dadd883795277d925c42480ffbecf381b90f8775e9cf420c5688cb35836d78",
+                "file": "work.py",
+                "line": 43,
+                "sourceSha256": "81e3cb7eee0d09b81aeebe6fea0d1b7b0921f79cb16ff0f73eb03ff1bb97cb99",
+                "population": "production",
+                "owner": {
+                  "kind": "function",
+                  "member": "dispatch",
+                  "functionId": "957351c13f62a66e64e42c92959b7df6735cffa4d7516e460d7be369d1e6b700"
+                },
+                "tryStatement": {
+                  "line": 41,
+                  "endLine": 46,
+                  "kind": "Try",
+                  "body": {
+                    "statementCount": 1,
+                    "statements": [
+                      {
+                        "kind": "Expr",
+                        "line": 42,
+                        "endLine": 42,
+                        "literalReturnKind": null,
+                        "literalAssignment": null
+                      }
+                    ],
+                    "truncated": false
+                  },
+                  "else": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "finally": {
+                    "statementCount": 0,
+                    "statements": [],
+                    "truncated": false
+                  },
+                  "handlerLines": [
+                    43
+                  ]
+                },
+                "handlerBody": {
+                  "statementCount": 2,
+                  "statements": [
+                    {
+                      "kind": "If",
+                      "line": 44,
+                      "endLine": 45,
+                      "literalReturnKind": null,
+                      "literalAssignment": null
+                    },
+                    {
+                      "kind": "Expr",
+                      "line": 46,
+                      "endLine": 46,
+                      "literalReturnKind": null,
+                      "literalAssignment": null
+                    }
+                  ],
+                  "truncated": false
+                },
+                "followingInSameSuite": {
+                  "suite": "body",
+                  "statementCount": 0,
+                  "statements": [],
+                  "truncated": false
+                },
+                "enclosingConstructs": [
+                  {
+                    "kind": "FunctionDef",
+                    "line": 40
+                  }
+                ],
+                "surroundingDocumentation": {
+                  "items": [],
+                  "truncated": false
+                },
+                "classification": {
+                  "status": "unresolved",
+                  "pattern": null,
+                  "evidenceLines": [
+                    43
+                  ],
+                  "unresolvedReasons": [
+                    "no-supported-local-shape"
+                  ]
+                },
+                "disposition": "review-only"
+              }
+            ],
+            "summary": {
+              "handlers": 6,
+              "recognizedShapes": 4,
+              "unresolved": 2,
+              "byPattern": {
+                "direct-bare-rethrow": 1,
+                "direct-literal-fallback-return": 1,
+                "guarded-import-shape": 1,
+                "locally-documented-no-op": 1
+              },
+              "unresolvedReasons": {
+                "enclosing-finally": 1,
+                "no-supported-local-shape": 1
+              },
+              "populations": {
+                "production": {
+                  "handlers": 6,
+                  "recognizedShapes": 4,
+                  "unresolved": 2,
+                  "byPattern": {
+                    "direct-bare-rethrow": 1,
+                    "direct-literal-fallback-return": 1,
+                    "guarded-import-shape": 1,
+                    "locally-documented-no-op": 1
+                  },
+                  "unresolvedReasons": {
+                    "enclosing-finally": 1,
+                    "no-supported-local-shape": 1
+                  }
+                }
+              }
+            },
+            "scope": "Bounded lexical context and syntactic patterns, not resolved behavior, optionality, handling success, defects or scores. Following statements are lexical siblings, not guaranteed execution. Surrounding prose does not automatically explain a particular handler."
+          }
+        },
+        "performanceAsync": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/performanceAsync/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "performanceAsync"
+            ]
+          }
+        },
+        "security": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/security/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "security"
+            ]
+          }
+        },
+        "testing": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/testing/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "testing"
+            ]
+          }
+        },
+        "documentation": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/documentation/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "documentation"
+            ]
+          }
+        },
+        "dependencyManagement": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/dependencyManagement/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "dependencyManagement"
+            ]
+          }
+        },
+        "architecture": {
+          "status": "skipped",
+          "basis": "Not measured by this Python analyzer.",
+          "findings": [],
+          "scope": {
+            "id": "python/architecture/unsupported",
+            "coverage": "unsupported",
+            "includes": [],
+            "excludes": [
+              "architecture"
+            ]
+          }
+        }
+      },
+      "analysis": {
+        "runId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+        "auditId": "fe35229d-2713-41a4-abb1-c113ffa0e718",
+        "status": "complete",
+        "ruleset": "python-2026-10-15-exception-context-review-v1",
+        "calibration": "baseline",
+        "configurationFingerprint": "638ace6cb6f8c7812a38556a0bfe00b89b970df7a3b2de58830a37390e53d36f",
+        "diagnostics": [],
+        "suppressions": []
+      }
+    },
+    "compatibility": {
+      "mode": "native",
+      "comparisonAvailable": true,
+      "analysisStatus": "complete",
+      "scopeAvailable": true
+    },
+    "usable": true
+  },
+  "currentSource": {
+    "work.py": "def optional_backend():\n    \"\"\"Probe an installed backend; caller selects a fallback.\"\"\"\n    try:\n        import optional_backend\n    except ImportError:\n        pass\n\n\ndef cleanup(resource):\n    try:\n        resource.close()\n    except OSError:\n        # The resource may already be closed; shutdown can continue.\n        pass\n\n\ndef recover(cache, key):\n    try:\n        return cache[key]\n    except KeyError:\n        return None\n\n\ndef propagate(action):\n    try:\n        action()\n    except RuntimeError:\n        raise\n\n\ndef finalized(action, resource):\n    try:\n        action()\n    except ValueError:\n        return None\n    finally:\n        resource.close()\n\n\ndef dispatch(action, handler):\n    try:\n        action()\n    except Exception as error:\n        if handler is None:\n            raise\n        handler(error)\n"
+  }
+}

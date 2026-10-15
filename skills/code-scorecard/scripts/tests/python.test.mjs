@@ -44,8 +44,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.8.0');
-    assert.equal(inspection.evidence.tool.version, '0.8.0');
+    assert.equal(initial.version, '0.9.0');
+    assert.equal(inspection.evidence.tool.version, '0.9.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -59,6 +59,26 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(readJson(single.artifacts.evidence).population.members, 1);
     const selected = success('--ecosystem', 'python', '--entry-point', 'app', '--python-include', 'src/**', '--python-exclude', '**/unused.py');
     assert.deepEqual(readJson(selected.artifacts.evidence).dimensions.codeQuality.sourceFacts.selection.options.include, ['src/**']);
+  });
+  await t.test('exception context stays unscored and stale or altered imports fail validation', () => {
+    write('app/src/context.py', 'try: import optional\nexcept ImportError: pass\n' +
+      'def fallback():\n    try: call()\n    except Missing: return None\n' +
+      'with resource():\n    try: call()\n    except Missing: raise\n');
+    const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
+    const d = evidence.dimensions.errorHandling, report = d.contextReview;
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.deepEqual(report.handlerReview, d.review);
+    assert.equal(report.summary.handlers, 3); assert.equal(report.summary.recognizedShapes, 2); assert.equal(report.summary.unresolved, 1);
+    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.ok(Object.entries(evidence.dimensions).every(([key, value]) => key === 'codeQuality' || value.score === undefined));
+    assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
+    for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.unresolved++; },
+      r => { r.contexts[0].sourceSha256 = '0'.repeat(64); }, r => { r.contexts = []; }]) {
+      const copy = structuredClone(evidence); mutate(copy.dimensions.errorHandling.contextReview);
+      const location = path.join(temporary, 'invalid-context.json'); fs.writeFileSync(location, JSON.stringify(copy));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
+    }
+    fs.unlinkSync(path.join(root, 'app/src/context.py'));
   });
   await t.test('parse failure updates latest attempt and does not reuse prior successful evidence', () => {
     write('app/src/broken.py', 'def broken(:');

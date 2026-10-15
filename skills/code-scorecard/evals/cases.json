@@ -66,5 +66,10 @@
     "id": "python-error-handling",
     "input": "fixtures/python-error-handling.json",
     "criteria": "rubrics/python-error-handling.json"
+  },
+  {
+    "id": "python-error-context",
+    "input": "fixtures/python-error-context.json",
+    "criteria": "rubrics/python-error-context.json"
   }
 ]
