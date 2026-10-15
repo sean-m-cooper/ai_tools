@@ -44,8 +44,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.9.0');
-    assert.equal(inspection.evidence.tool.version, '0.9.0');
+    assert.equal(initial.version, '0.10.0');
+    assert.equal(inspection.evidence.tool.version, '0.10.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -89,6 +89,27 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(readJson(path.join(root, '.scorecard/python/latest.json')).runId, run.runId);
     assert.equal(readJson(run.artifacts.evidence).dimensions.codeQuality.methodComplexity.population, null);
     fs.unlinkSync(path.join(root, 'app/src/broken.py'));
+  });
+  await t.test('raise/chaining evidence preserves counts and rejects stale or inconsistent imports', () => {
+    write('app/src/transfers.py', 'def chained():\n    try: call()\n    except Missing as error: raise NewError() from error\n' +
+      'def suppressed():\n    try: call()\n    except Missing: raise NewError() from None\n' +
+      'def conditional():\n    try: call()\n    except Missing as error:\n        if ready: raise error\n');
+    const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
+    const d = evidence.dimensions.errorHandling, report = d.transferReview;
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.deepEqual(report.contextReview, d.contextReview);
+    assert.equal(report.summary.handlers, 3); assert.equal(report.summary.raiseStatements, 3);
+    assert.equal(report.summary.newlyRecognizedShapes, 2); assert.equal(report.summary.unresolved, 1);
+    assert.equal(report.summary.byCauseSyntax.none, 1); assert.equal(report.summary.handlerNameRaiseSyntax, 1);
+    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
+    for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.raiseStatements++; },
+      r => { r.handlers[0].raises[0].cause.matchesHandlerNameSyntax = false; }, r => { r.handlers = []; }]) {
+      const copy = structuredClone(evidence); mutate(copy.dimensions.errorHandling.transferReview);
+      const location = path.join(temporary, 'invalid-transfers.json'); fs.writeFileSync(location, JSON.stringify(copy));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
+    }
+    fs.unlinkSync(path.join(root, 'app/src/transfers.py'));
   });
   await t.test('historical evidence retains its identities and is explicitly not fresh', () => {
     const imported = success('--ecosystem', 'python', '--existing', initial.artifacts.evidence);

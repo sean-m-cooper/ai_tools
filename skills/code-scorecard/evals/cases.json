@@ -71,5 +71,10 @@
     "id": "python-error-context",
     "input": "fixtures/python-error-context.json",
     "criteria": "rubrics/python-error-context.json"
+  },
+  {
+    "id": "python-error-transfers",
+    "input": "fixtures/python-error-transfers.json",
+    "criteria": "rubrics/python-error-transfers.json"
   }
 ]

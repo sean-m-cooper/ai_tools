@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scope",
+    "criterion": "Reports Method Complexity 10 as the only scored dimension, at most 1/9 dimensions scored. Error Handling remains unavailable; the raise observations add no score, deduction, gate, or defect count."
+  },
+  {
+    "id": "counts",
+    "criterion": "Distinguishes seven handlers and seven owned raise statements, with five recognized shapes and two unresolved cases. The five include one original recognized shape and four newly recognized shapes; does not add the original and extended totals or call these handling-success rates."
+  },
+  {
+    "id": "forms",
+    "criterion": "Distinguishes bare raise, matching handler-name raise, direct call raise, explicit matching handler-name cause, and literal from None. Matching spelling does not establish runtime binding identity, and calls are not proven exception constructors."
+  },
+  {
+    "id": "intent",
+    "criterion": "Preserves the supplied rationale for suppressing backend context display. Does not penalize from None, claim it erases all history, require explicit from everywhere, infer omitted causes lose implicit context, or import the .NET throw ex penalty."
+  },
+  {
+    "id": "unresolved",
+    "criterion": "Reports conditional and finalized as unresolved local patterns, preserving the enclosing-finally reason for finalized. Does not infer defective handling or recommend a required refactor from the classification."
+  },
+  {
+    "id": "provenance",
+    "criterion": "Uses adapter 0.10.0, the recorded raise/chaining policy, and current invocation identity. Newly recognized syntax is a classification extension, not evidence of a code improvement. Historical missing transfer evidence is unavailable, not zero raises."
+  },
+  {
+    "id": "limits",
+    "criterion": "Keeps source observations separate from guaranteed propagation, resolved types, complete control flow, or business correctness. Owned handler raises do not represent every project raise; no invented CMAI support or comment-ratio rule."
+  }
+]
