@@ -44,8 +44,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.7.0');
-    assert.equal(inspection.evidence.tool.version, '0.7.0');
+    assert.equal(initial.version, '0.8.0');
+    assert.equal(inspection.evidence.tool.version, '0.8.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -171,6 +171,29 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(result.code, 0, result.error);
     const missing = spawnSync(process.execPath, [runner, '--repo', root, '--ecosystem', 'python'], { encoding: 'utf8', windowsHide: true });
     assert.equal(missing.status, 2); assert.match(missing.stderr, /not published/);
+  });
+  await t.test('handler evidence remains unscored and stale or altered observations are rejected', () => {
+    write('app/src/handlers.py', 'try: import optional\nexcept ImportError: pass\nclass Client:\n    try: load()\n    except Missing:\n        # Default configuration applies.\n        pass\n    def work(self):\n        try: run()\n        except Missing: return None\n');
+    const run = success('--ecosystem', 'python');
+    const evidence = readJson(run.artifacts.evidence), report = evidence.dimensions.errorHandling.review;
+    assert.equal(report.summary.handlers, 3);
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.deepEqual(report.summary.byOwnerKind, { 'class-body': 1, function: 1, module: 1 });
+    assert.equal(evidence.dimensions.errorHandling.status, 'skipped');
+    assert.equal(evidence.dimensions.errorHandling.score, undefined);
+    assert.deepEqual(evidence.dimensions.errorHandling.findings, []);
+    for (const mutate of [
+      r => { r.runId = '11111111-1111-4111-8111-111111111111'; },
+      r => { r.handlers[0].sourceSha256 = '0'.repeat(64); },
+      r => { r.summary.handlers++; },
+    ]) {
+      const copy = structuredClone(evidence); mutate(copy.dimensions.errorHandling.review);
+      write('forged-handler-evidence.json', JSON.stringify(copy));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', 'forged-handler-evidence.json').code, 2);
+    }
+    const historical = success('--ecosystem', 'python', '--existing', run.artifacts.evidence);
+    assert.equal(historical.fresh, false);
+    fs.unlinkSync(path.join(root, 'app/src/handlers.py'));
   });
   await t.test('a Method Complexity regression trips the gate and included test code cannot change the production score', () => {
     const before = success('--ecosystem', 'python');

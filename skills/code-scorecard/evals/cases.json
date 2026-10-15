@@ -61,5 +61,10 @@
     "id": "python-method-complexity",
     "input": "fixtures/python-method-complexity.json",
     "criteria": "rubrics/python-method-complexity.json"
+  },
+  {
+    "id": "python-error-handling",
+    "input": "fixtures/python-error-handling.json",
+    "criteria": "rubrics/python-error-handling.json"
   }
 ]
