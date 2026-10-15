@@ -44,8 +44,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.10.0');
-    assert.equal(inspection.evidence.tool.version, '0.10.0');
+    assert.equal(initial.version, '0.11.0');
+    assert.equal(inspection.evidence.tool.version, '0.11.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -110,6 +110,27 @@ test('Python Method Complexity installed package integrates with scope, freshnes
       assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
     }
     fs.unlinkSync(path.join(root, 'app/src/transfers.py'));
+  });
+  await t.test('call/return observations and unresolved inventory remain unscored and source-bound', () => {
+    write('app/src/operations.py', 'def reraised():\n    try: call()\n    except Missing as error:\n        logger.exception(error)\n        raise\n' +
+      'def returned():\n    try: call()\n    except Missing: return factory()()\n' +
+      'def fallback():\n    try: call()\n    except Missing: return recover()\n');
+    const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
+    const d = evidence.dimensions.errorHandling, report = d.operationReview;
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.deepEqual(report.transferReview, d.transferReview);
+    assert.equal(report.summary.handlers, 3); assert.equal(report.summary.callExpressions, 4);
+    assert.equal(report.summary.returnStatements, 2); assert.equal(report.summary.newlyRecognizedShapes, 2);
+    assert.equal(report.summary.inputUnresolvedInventory.handlers, 3); assert.equal(report.summary.unresolved, 1);
+    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
+    for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.inputUnresolvedInventory.multiStatement++; },
+      r => { r.handlers[0].calls[0].endColumn++; }, r => { r.handlers = []; }, r => { r.score = 10; }]) {
+      const copy = structuredClone(evidence); mutate(copy.dimensions.errorHandling.operationReview);
+      const location = path.join(temporary, 'invalid-operations.json'); fs.writeFileSync(location, JSON.stringify(copy));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
+    }
+    fs.unlinkSync(path.join(root, 'app/src/operations.py'));
   });
   await t.test('historical evidence retains its identities and is explicitly not fresh', () => {
     const imported = success('--ecosystem', 'python', '--existing', initial.artifacts.evidence);

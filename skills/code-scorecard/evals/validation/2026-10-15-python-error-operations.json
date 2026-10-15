@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-15",
+  "adapterVersion": "0.11.0",
+  "ruleset": "python-2026-10-15-exception-operations-review-v1",
+  "archiveSha256": "8b6d852487ba0221b9b881703a079156d70f2bc0c48919f42dcefce64ae795f0",
+  "checkpoint": "54ca6f0",
+  "archive": "TestResults/python-error-operations-package-2026-10-15/codemetrics-ai-0.5.0.tgz",
+  "checks": {
+    "pythonTestsPassed": 140,
+    "focusedOperationTestsIncluded": 14,
+    "sharedConformanceTestsPassed": 7,
+    "javascriptTypescriptTestsPassedAcrossRuns": 256,
+    "installedPythonEvidenceTestsPassed": 35,
+    "skillIntegrationSupportingHarnessChecksPassedAcrossRuns": 34,
+    "pythonIntegrationSubtestsIncluded": 17,
+    "skillStructuralValidation": "passed",
+    "packagedProducerAndGuideBytesMatchSource": true,
+    "matchedPackagedFiles": 22,
+    "archiveExcludesPythonBytecode": true,
+    "reportingFixture": "analyzer-generated, inspector-validated, offline harness only; no live-model evaluation",
+    "verificationRetries": [
+      "JS/TS: initial full run passed 255/256; one unchanged async test timed out at 5 seconds. Isolated retry passed in 3.54 seconds without timeout changes.",
+      "Skill: initial runtime/catalog checks passed, but coverage collection used an interpreter without coverage.py. All 18 Python integration checks including the parent passed when rerun with the existing coverage-enabled interpreter."
+    ]
+  },
+  "operationIdentityCorrection": {
+    "producerVersion": "0.2.0-experimental",
+    "change": "Operation IDs include start and end line/column. Distinct nested calls can share a starting position.",
+    "previousRepeatedStartOperations": {
+      "requests": 0,
+      "starlette": 1,
+      "httpie": 0,
+      "django": 26
+    },
+    "countsClassificationsAndOtherMetadataUnchanged": true,
+    "correctedStandaloneReports": "TestResults/python-error-operations-2026-10-15-extents",
+    "correctedStandaloneImplementationSha256": "0552ddc4f4dd4c798e22a8ea0c48b2b60e16a99063f21efe6f1b2df927824a8e"
+  },
+  "releaseState": "Local development archive; not pushed or published. Error Handling unscored; Method Complexity remains the only scored Python dimension.",
+  "corpus": [
+    {
+      "id": "requests",
+      "revision": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "methodComplexityScore": 7,
+      "matchedStandaloneOperationReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 66,
+      "callExpressions": 42,
+      "returnStatements": 13,
+      "recognizedShapes": 43,
+      "newlyRecognizedShapes": 7,
+      "unresolved": 23
+    },
+    {
+      "id": "starlette",
+      "revision": "96d5023c55b29224edb8d684868c49f681d079a9",
+      "methodComplexityScore": 7.1,
+      "matchedStandaloneOperationReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 62,
+      "callExpressions": 59,
+      "returnStatements": 10,
+      "recognizedShapes": 18,
+      "newlyRecognizedShapes": 1,
+      "unresolved": 44
+    },
+    {
+      "id": "httpie",
+      "revision": "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345",
+      "methodComplexityScore": 6.8,
+      "matchedStandaloneOperationReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 69,
+      "callExpressions": 44,
+      "returnStatements": 10,
+      "recognizedShapes": 31,
+      "newlyRecognizedShapes": 9,
+      "unresolved": 38
+    },
+    {
+      "id": "django",
+      "revision": "dab0a5c47f159eb58472110dcbc10bd4a9b01adb",
+      "methodComplexityScore": 5.6,
+      "matchedStandaloneOperationReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 1267,
+      "callExpressions": 1179,
+      "returnStatements": 295,
+      "recognizedShapes": 550,
+      "newlyRecognizedShapes": 137,
+      "unresolved": 717
+    }
+  ],
+  "skillSha256": "e5a4bfd4a0a19f7c3bb2991213194feccf8a01e7caa4d9cfa1c368ae19c7e465",
+  "pythonGuideSha256": "4a8a80fd32c1ab1af6c63e59a7b831aab3356e6a01d189cab703e8e6b2b4a2a6",
+  "reportingFixtureSha256": "c9bc7d9a266181926f4b87b06b761d34971dda4e40572fe2ca69a6a2d95031d6"
+}

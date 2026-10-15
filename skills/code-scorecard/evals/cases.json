@@ -76,5 +76,10 @@
     "id": "python-error-transfers",
     "input": "fixtures/python-error-transfers.json",
     "criteria": "rubrics/python-error-transfers.json"
+  },
+  {
+    "id": "python-error-operations",
+    "input": "fixtures/python-error-operations.json",
+    "criteria": "rubrics/python-error-operations.json"
   }
 ]
