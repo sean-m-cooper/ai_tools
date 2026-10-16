@@ -81,5 +81,10 @@
     "id": "python-error-operations",
     "input": "fixtures/python-error-operations.json",
     "criteria": "rubrics/python-error-operations.json"
+  },
+  {
+    "id": "python-async-usage",
+    "input": "fixtures/python-async-usage.json",
+    "criteria": "rubrics/python-async-usage.json"
   }
 ]

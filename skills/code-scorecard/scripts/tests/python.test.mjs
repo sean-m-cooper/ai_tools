@@ -44,8 +44,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.11.0');
-    assert.equal(inspection.evidence.tool.version, '0.11.0');
+    assert.equal(initial.version, '0.12.0');
+    assert.equal(inspection.evidence.tool.version, '0.12.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -131,6 +131,31 @@ test('Python Method Complexity installed package integrates with scope, freshnes
       assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
     }
     fs.unlinkSync(path.join(root, 'app/src/operations.py'));
+  });
+  await t.test('async observations preserve ownership and reject stale or altered imports without scores', () => {
+    write('app/src/async_work.py', 'import time\nimport asyncio\nfrom asgiref.sync import sync_to_async\n' +
+      'async def work(items):\n    time.sleep(0)\n    await asyncio.to_thread(time.sleep, 1)\n' +
+      '    await sync_to_async(time.sleep)(1)\n    deferred = (time.sleep(x) for x in items)\n' +
+      '    def nested():\n        time.sleep(2)\n    return nested\n');
+    const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
+    const d = evidence.dimensions.performanceAsync, report = d.review;
+    assert.equal(report.runId, run.runId); assert.equal(report.auditId, run.auditId);
+    assert.equal(report.summary.asyncFunctions, 1); assert.equal(report.summary.deferredGeneratorCallExpressions, 1);
+    assert.equal(report.summary.asyncBodyCallCategories['blocking-call-candidate'], 1);
+    assert.equal(report.summary.asyncBodyCallCategories['offload-call'], 1);
+    assert.equal(report.summary.asyncBodyCallCategories['offload-wrapper-construction'], 1);
+    assert.equal(report.summary.asyncBodyCallCategories['offload-wrapped-invocation'], 1);
+    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(evidence.dimensions.errorHandling.score, undefined);
+    assert.equal(Object.values(evidence.dimensions).filter(dimension => dimension.status === 'scored').length, 1);
+    assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
+    for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.asyncFunctions++; },
+      r => { r.functions.find(f => f.measurement).measurement.calls[0].endColumn++; }, r => { r.functions = []; }, r => { r.score = 10; }]) {
+      const copy = structuredClone(evidence); mutate(copy.dimensions.performanceAsync.review);
+      const location = path.join(temporary, 'invalid-async.json'); fs.writeFileSync(location, JSON.stringify(copy));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', location).code, 2);
+    }
+    fs.unlinkSync(path.join(root, 'app/src/async_work.py'));
   });
   await t.test('historical evidence retains its identities and is explicitly not fresh', () => {
     const imported = success('--ecosystem', 'python', '--existing', initial.artifacts.evidence);
