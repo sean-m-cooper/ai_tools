@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-19",
+  "adapterVersion": "0.13.0",
+  "standaloneCheckpoint": "90121e1",
+  "archiveSha256": "7bf9e9c3873c4fbc0ff88e64b1aa8c5ac8243c2301baf183c926a6c2f7e7d78b",
+  "integrationArchiveSha256": "28ff86ed16fb0d03689ce5784f9c80810713d896b51485da936e0eea2b7dba03",
+  "archiveDifference": [
+    "python/METHOD_COMPLEXITY.md"
+  ],
+  "runtimeByteIdentical": true,
+  "pythonIntegration": {
+    "passed": 20,
+    "subtests": 19,
+    "skipped": 0,
+    "log": "E:/repos/CodeMetrics.AI/TestResults/python-async-context-package-2026-10-18/skill-integration.log"
+  },
+  "supportingAndHarnessChecks": {
+    "passed": 16,
+    "skipped": 0
+  },
+  "skillStructuralValidation": "Passed using Python 3.12 and PyYAML in E:/temp/codemetrics-skill-validator",
+  "reportingEvaluation": {
+    "runId": "14b0e860-998f-4172-a711-6fb7c3ce9129",
+    "auditId": "81f1ab6d-82f6-4454-9a69-e90362a395f1",
+    "sha256": "086d08c74dc0d016f703ef6cba08a96ac08246b9fc06fb8f41c6ed8ce946ccb8",
+    "criteria": 7,
+    "origin": "Fresh final-archive helper run and validated inspection",
+    "validation": "Offline fixture/harness validation only; no live-model report generated or judged."
+  },
+  "scoringBoundary": "Method Complexity only; Async/Blocking Usage and Error Handling remain unscored",
+  "publication": "Local package only; not pushed or published"
+}

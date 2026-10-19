@@ -37,6 +37,28 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.deepEqual(discovered.value.candidates.python, [path.join(root, 'app/pyproject.toml')]);
   });
   let initial;
+  await t.test('async context links survive installed helper validation without scores', () => {
+    write('app/src/async_context.py', 'from asgiref.sync import sync_to_async as wrap\ndef local(x):\n    return x + 1\nasync def run(items):\n    wrapped = wrap(local)\n    await wrapped(1)\n    await wrapped(2)\n    deferred = (wrapped(x) for x in items)\n');
+    const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
+    const d = evidence.dimensions.performanceAsync, r = d.contextReview;
+    assert.equal(r.runId, run.runId); assert.equal(r.auditId, run.auditId);
+    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(evidence.dimensions.errorHandling.status, 'skipped');
+    assert.equal(r.summary.contexts['async-body'].storedWrapperInvocationLinks, 2);
+    assert.equal(r.summary.contexts['deferred-generator-body'].storedWrapperInvocationLinks, 0);
+    assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
+    for (const mutate of [
+      report => { report.runId = '11111111-1111-4111-8111-111111111111'; },
+      report => { report.asyncRowsSha256 = '0'.repeat(64); },
+      report => { report.summary.contexts['async-body'].storedWrapperInvocationLinks++; },
+      report => { report.functions.flatMap(row => row.calls).find(call => call.storedWrapper?.definition).storedWrapper.definition.constructionCallId = '0'.repeat(64); },
+    ]) {
+      const altered = structuredClone(evidence); mutate(altered.dimensions.performanceAsync.contextReview);
+      write('forged-async-context.json', JSON.stringify(altered));
+      assert.equal(invoke('--ecosystem', 'python', '--existing', 'forged-async-context.json').code, 2);
+    }
+    fs.unlinkSync(path.join(root, 'app/src/async_context.py'));
+  });
   await t.test('manifest routing emits one scored dimension without a CSV artifact', () => {
     initial = success('--ecosystem', 'python');
     const inspection = readJson(initial.artifacts.inspection);
@@ -44,8 +66,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.12.0');
-    assert.equal(inspection.evidence.tool.version, '0.12.0');
+    assert.equal(initial.version, '0.13.0');
+    assert.equal(inspection.evidence.tool.version, '0.13.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);

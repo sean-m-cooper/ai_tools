@@ -86,5 +86,10 @@
     "id": "python-async-usage",
     "input": "fixtures/python-async-usage.json",
     "criteria": "rubrics/python-async-usage.json"
+  },
+  {
+    "id": "python-async-context",
+    "input": "fixtures/python-async-context.json",
+    "criteria": "rubrics/python-async-context.json"
   }
 ]

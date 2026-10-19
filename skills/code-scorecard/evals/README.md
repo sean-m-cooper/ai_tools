@@ -1,5 +1,7 @@
 # Behavioral report evaluations
 
+The [Python async-context validation record](validation/2026-10-19-python-async-context.json) covers adapter 0.13.0 packaging and skill integration: 36 integration/supporting checks, structural validation, and a fresh final-archive helper fixture. The `python-async-context` case exercises stored-wrapper links, repeated callback references, unresolved shapes, deferred work, shadowing, and documented intent. Seven criteria preserve the distinction between source links and runtime behavior. Validation is offline only; no live-model report or judgment was generated.
+
 The [Python coverage validation](validation/2026-10-12-python-coverage.json) records 28 installed-package/runtime/catalog/offline-harness checks and structural validation for adapter `0.5.0-experimental`. Coverage remains unscored, collection is explicit, and source-bound versus conditional evidence stays distinct from analysis freshness. This record does not claim a live-model report evaluation.
 
 The [pnpm development validation](validation/2026-10-09-pnpm.json) extends the
