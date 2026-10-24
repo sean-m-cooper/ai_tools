@@ -1,5 +1,7 @@
 # Behavioral report evaluations
 
+The [Python callback-adapter validation record](validation/2026-10-24-python-async-adapters.json) covers development adapter 0.14.0 and a fresh installed-helper reporting fixture. The `python-async-adapters` case separates partial construction/reference counts, decorator source links, unresolved rebinding, deferred work, and documented handler intent. Seven criteria protect the unscored boundaries. Validation is offline only; no live-model report or judgment was generated.
+
 The [Python async-context validation record](validation/2026-10-19-python-async-context.json) covers adapter 0.13.0 packaging and skill integration: 36 integration/supporting checks, structural validation, and a fresh final-archive helper fixture. The `python-async-context` case exercises stored-wrapper links, repeated callback references, unresolved shapes, deferred work, shadowing, and documented intent. Seven criteria preserve the distinction between source links and runtime behavior. Validation is offline only; no live-model report or judgment was generated.
 
 The [Python coverage validation](validation/2026-10-12-python-coverage.json) records 28 installed-package/runtime/catalog/offline-harness checks and structural validation for adapter `0.5.0-experimental`. Coverage remains unscored, collection is explicit, and source-bound versus conditional evidence stays distinct from analysis freshness. This record does not claim a live-model report evaluation.

@@ -91,5 +91,10 @@
     "id": "python-async-context",
     "input": "fixtures/python-async-context.json",
     "criteria": "rubrics/python-async-context.json"
+  },
+  {
+    "id": "python-async-adapters",
+    "input": "fixtures/python-async-adapters.json",
+    "criteria": "rubrics/python-async-adapters.json"
   }
 ]
