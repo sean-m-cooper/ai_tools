@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-28",
+  "package": "codemetrics-ai",
+  "npmVersion": "0.6.0-preview.1",
+  "pythonAdapterVersion": "0.15.0",
+  "releaseUrl": "https://github.com/sean-m-cooper/CodeMetrics.AI/releases/tag/js-v0.6.0-preview.1",
+  "releaseCommit": "d048b3cccea94923173cfb80df2616224f717efa",
+  "testedSourceCommit": "be7846ff96308815a49d91182bf8799f6645f170",
+  "sourceAndReleaseTreesEqual": true,
+  "registry": {
+    "version": "0.6.0-preview.1",
+    "dist": {
+      "shasum": "d829267541026d27ff6d1bd635a27bf78c0242e1",
+      "tarball": "https://registry.npmjs.org/codemetrics-ai/-/codemetrics-ai-0.6.0-preview.1.tgz",
+      "fileCount": 155,
+      "integrity": "sha512-/TUPooVhoEraiItJ/V7ZPs+WNlF//h6UPQMM2OLaNxsLCI04+R36KkWU4OFPJ4qMmzkaF8Hv4ECq4c7cwKNWLA==",
+      "signatures": [
+        {
+          "sig": "MEUCIEm3wKciJO4W8u+XuzUSq9UJ/DsehpCyx57EMNVzYHkrAiEAoSpQY3PT9b0z4VPCSOqcutmaHgKHfIW7vfLG/xBohlw=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEUCIQC6FrE0BgAX+oiYU0tC0FcQaoc5J88J2z11kpKJZwlGqQIgMDJbxbbdvN+W80bNwO0PIj/K/ScUJ3LVj1d/IIZb0J4="
+        }
+      ],
+      "unpackedSize": 827603
+    },
+    "gitHead": "d048b3cccea94923173cfb80df2616224f717efa"
+  },
+  "distTags": {
+    "latest": "0.5.0",
+    "preview": "0.6.0-preview.1"
+  },
+  "checks": {
+    "analyzerCI": {
+      "conclusion": "success",
+      "headSha": "be7846ff96308815a49d91182bf8799f6645f170",
+      "status": "completed",
+      "url": "https://github.com/sean-m-cooper/CodeMetrics.AI/actions/runs/40814547302"
+    },
+    "skillCandidateCI": {
+      "conclusion": "success",
+      "headSha": "3f14dec6158eb667101ca871ae52014a60ad8a25",
+      "status": "completed",
+      "url": "https://github.com/sean-m-cooper/ai_tools/actions/runs/40814570470"
+    },
+    "publication": {
+      "conclusion": "success",
+      "headSha": "d048b3cccea94923173cfb80df2616224f717efa",
+      "status": "completed",
+      "url": "https://github.com/sean-m-cooper/CodeMetrics.AI/actions/runs/40814966373"
+    }
+  },
+  "publishedInstall": {
+    "freshCache": true,
+    "localArchiveOverride": false,
+    "passed": true,
+    "provenance": {
+      "npmVersion": "0.6.0-preview.1",
+      "pythonAdapterVersion": "0.15.0",
+      "resolved": "https://registry.npmjs.org/codemetrics-ai/-/codemetrics-ai-0.6.0-preview.1.tgz",
+      "integrity": "sha512-/TUPooVhoEraiItJ/V7ZPs+WNlF//h6UPQMM2OLaNxsLCI04+R36KkWU4OFPJ4qMmzkaF8Hv4ECq4c7cwKNWLA==",
+      "runId": "d2dd7a98-2b61-4a60-b29e-7e72ef1ad562",
+      "auditId": "d08edda1-e077-4969-8734-4ef16d507a1d"
+    },
+    "fixture": "evals/fixtures/python-preview-release.json",
+    "fixtureSha256": "115da6a57b8e608f4a85b13b8655c68169a2ade408e18291bf92b3a04c3ad07d"
+  },
+  "reportEvaluation": {
+    "startedAtUtc": "2026-10-29T04:02:12.257Z",
+    "skillSha256": "4ef096816ed7a041927a8635411d020a040c24dd753f70622c210cdb5c87a18d",
+    "adapter": "codex exec, fresh ephemeral read-only processes, CLI default model, user config ignored",
+    "controls": false,
+    "cases": [
+      {
+        "id": "python-preview-release",
+        "inputSha256": "5835653602e50b31b4f8a478da0cff5ea2aaf7f90e15eafe67452a825a673758",
+        "criteriaSha256": "9ecc382cbfa6d213bf8fa2e5f7d3516984b407c7ba1d4aec876e82897c80322d",
+        "status": "passed",
+        "samples": [
+          {
+            "name": "generated",
+            "passed": true,
+            "failures": [],
+            "generationMs": 53455,
+            "judgmentMs": 19652,
+            "generator": {
+              "model": "gpt-6.1-sol",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.165.0-alpha.1.2"
+            },
+            "judge": {
+              "model": "gpt-6.1-sol",
+              "provider": "openai",
+              "sandbox": "read-only",
+              "reasoning effort": "none",
+              "cliVersion": "0.165.0-alpha.1.2"
+            },
+            "reportSha256": "540121dba80680557173114ad822b95ae3ea134d7f78b4e820d63ede5ede0e87"
+          }
+        ]
+      }
+    ]
+  },
+  "report": "evals/validation/2026-10-28-python-preview.report.md",
+  "reportSha256": "29eb343bdc2f3d60d5a027942d08863009a43af3e0b874c98c9a2d04fda31328",
+  "judgment": "evals/validation/2026-10-28-python-preview.judgment.json",
+  "judgmentSha256": "649083ad5def01c1f8160b57d704cfae70e93c98ab7cbdd56f5b180684bcd4f6",
+  "offlineHarness": {
+    "passed": 3,
+    "failed": 0
+  },
+  "preflight": {
+    "case": "python-async-scoring",
+    "passedCriteria": 6,
+    "failedCriteria": [
+      "provenance"
+    ],
+    "explanation": "The preflight report omitted historical-version guidance. The new release request explicitly asks how to compare a 0.14.0 report, matching the existing unchanged rubric. The published-package case passed all seven criteria."
+  },
+  "releaseFixes": [
+    "Cross-platform npm CLI discovery in package smoke test",
+    "Calibration baseline npm identity only; all scores/populations/findings unchanged",
+    "Native Windows short-path entry-point identity matching coverage collection receipts"
+  ],
+  "boundaries": {
+    "errorHandlingScored": false,
+    "maximumScoredDimensions": 2,
+    "scoreMeaning": "Recognized blocking usage within bounded source analysis, not runtime performance or proof unresolved calls are safe.",
+    "liveEvaluation": "One synthetic source fixture from a fresh published install; seven criteria. Other historical report cases were not rerun.",
+    "skillPullRequest": "https://github.com/sean-m-cooper/ai_tools/pull/19",
+    "skillVerificationHead": "3f14dec",
+    "noCrossLanguageCalibrationClaim": true
+  },
+  "rawGeneratedReportSha256": "540121dba80680557173114ad822b95ae3ea134d7f78b4e820d63ede5ede0e87",
+  "storedReportFormatting": "Trailing Markdown hard-break spaces removed for repository whitespace checks; raw report hash retained above and in reportEvaluation."
+}

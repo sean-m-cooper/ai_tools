@@ -101,5 +101,10 @@
     "id": "python-async-scoring",
     "input": "fixtures/python-async-scoring.json",
     "criteria": "rubrics/python-async-scoring.json"
+  },
+  {
+    "id": "python-preview-release",
+    "input": "fixtures/python-preview-release.json",
+    "criteria": "rubrics/python-async-scoring.json"
   }
 ]
