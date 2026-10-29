@@ -73,7 +73,7 @@ def optional_feature():
   assert.match(published.resolved, /^https:\/\/registry\.npmjs\.org\/codemetrics-ai\/-\//);
   assert.match(published.integrity, /^sha512-/);
   fs.writeFileSync(path.join(output, 'report-input.json'), JSON.stringify({
-    request: 'Show the full Python scorecard. Explain the async score, repeated helper calls, documented choice, offloaded callback, and unresolved receiver. Should the documented optional-feature handler lower Error Handling?',
+    request: 'Show the full Python scorecard. Explain the async score, repeated helper calls, documented choice, offloaded callback, and unresolved receiver. Should the documented optional-feature handler lower Error Handling? How should I compare this with a Python adapter 0.14.0 report?',
     runnerResult: result, inspection, currentSource: { 'work.py': source },
   }, null, 2) + '\n');
   fs.writeFileSync(path.join(output, 'package-provenance.json'), JSON.stringify({
