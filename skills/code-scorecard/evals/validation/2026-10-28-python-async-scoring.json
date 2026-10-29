@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-28",
+  "adapterVersion": "0.15.0",
+  "ruleset": "python-2026-10-28-async-scoring-v1",
+  "archive": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-async-scoring-package-2026-10-28\\final\\codemetrics-ai-0.5.0.tgz",
+  "archiveSha256": "63ae250d104c7aa9a54255bc74fab9fe9b88bf4acbede390be465360a0ae5516",
+  "analyzerValidationRecord": "E:\\repos\\CodeMetrics.AI\\shared\\scorecard-schema\\calibration-runs\\python-async-scoring-package-2026-10-28.json",
+  "analyzerValidationRecordSha256": "7d4b4bfac70e27aa08d1ba85c57d6f61184fe76263f3ad4af90fee12a12d287d",
+  "fixture": {
+    "path": "E:\\repos\\ai_tools-js-0.4-release\\skills\\code-scorecard\\evals\\fixtures\\python-async-scoring.json",
+    "sha256": "23f305383a1d6d28a8c0ee89f2011710228d103bfc623d9878d372a390cea70e",
+    "runId": "e032510c-8fef-4646-bbf4-070efdd0b0c8",
+    "auditId": "37214f5a-8d16-4bc6-9576-49378949faf1",
+    "methodComplexityScore": 10,
+    "asyncScore": 8,
+    "affectedOwners": 1,
+    "eligibleOwners": 25,
+    "ownersWithUnresolvedPaths": 1,
+    "errorHandlingScored": false
+  },
+  "checks": [
+    {
+      "name": "final-installed-skill-integration",
+      "passed": 22,
+      "failed": 0,
+      "log": "TestResults/python-async-scoring-package-2026-10-28/final/skill-integration.log",
+      "logSha256": "fb3ca5dde8b68afb97353d6ba9b722ed60015b64e9d089832b625378e1d36df2"
+    },
+    {
+      "name": "skill-runtime-catalog-offline-harness",
+      "passed": 16,
+      "failed": 0,
+      "log": "TestResults/python-async-scoring-package-2026-10-28/final/skill-support.log",
+      "logSha256": "c9bab0c40c4f4a97e1e8edce3821b7e9dd159908bbe41554bdb7e128b0e8bb90"
+    }
+  ],
+  "skillStructureValidation": {
+    "status": "passed",
+    "log": "TestResults/python-async-scoring-package-2026-10-28/final/skill-structure.log"
+  },
+  "boundaries": {
+    "scoredDimensions": [
+      "Method Complexity",
+      "Async/Blocking Usage"
+    ],
+    "errorHandlingScored": false,
+    "noEligibleAsyncOwners": "unavailable; do not award a 10",
+    "asyncScope": "partial source-only recognized blocking patterns; unresolved paths remain visible",
+    "validation": "Internal report consistency and provenance checks, not independent AST replay or source authentication.",
+    "installedEvidenceAndCorpusArchive": "Initial archive tested; final archive has identical 139 runtime files and clarified documentation.",
+    "skillIntegrationArchive": "Final archive",
+    "liveModelEvaluation": "not run; offline fixture, rubric, and harness validation only",
+    "publication": "not published or pushed",
+    "packagingAndSkillCommit": "pending; initial standalone work committed separately"
+  }
+}

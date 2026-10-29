@@ -36,6 +36,23 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     const discovered = invoke('--discover'); assert.equal(discovered.code, 0);
     assert.deepEqual(discovered.value.candidates.python, [path.join(root, 'app/pyproject.toml')]);
   });
+
+  await t.test('async scoring survives installed helper with documented choices and tamper rejection', () => {
+    write('app/src/scoring.py', 'import time\nimport asyncio\ndef wait(): time.sleep(1)\nasync def bad():\n    wait()\n    wait()\nasync def documented():\n    # Synchronous operation required by the device protocol\n    time.sleep(1)\nasync def offloaded():\n    await asyncio.to_thread(wait)\nasync def unknown(client):\n    await client.fetch()\n');
+    const run=success('--ecosystem','python'), evidence=readJson(run.artifacts.evidence), d=evidence.dimensions.performanceAsync;
+    assert.equal(d.status,'scored'); assert.equal(d.score,0);
+    assert.equal(d.asyncScoring.summary.eligibleOwners,4); assert.equal(d.asyncScoring.summary.affectedOwners,1);
+    assert.equal(d.asyncScoring.summary.ownersWithUnresolvedPaths,1);
+    assert.equal(d.helperReview.runId,run.runId); assert.equal(d.asyncScoring.auditId,run.auditId);
+    assert.equal(evidence.dimensions.errorHandling.status,'skipped'); assert.equal(evidence.dimensions.errorHandling.score,undefined);
+    assert.equal(Object.values(evidence.dimensions).filter(d=>d.status==='scored').length,2);
+    for (const mutate of [d=>{d.asyncScoring.summary.score=10;},d=>{d.helperReview.runId='11111111-1111-4111-8111-111111111111';},d=>{delete d.asyncScoring;}]) {
+      const changed=structuredClone(evidence); mutate(changed.dimensions.performanceAsync); write('forged-score.json',JSON.stringify(changed));
+      assert.equal(invoke('--ecosystem','python','--existing','forged-score.json').code,2);
+    }
+    fs.unlinkSync(path.join(root,'app/src/scoring.py'));
+  });
+
   let initial;
   await t.test('callback adapter syntax survives installed helper and forged links fail', () => {
     write('app/src/adapters.py', 'from functools import partial\nfrom asgiref.sync import sync_to_async\nimport asyncio\ndef local(x):\n    return x + 1\n@sync_to_async\ndef decorated(x):\n    return x + 1\nasync def run(items):\n    callback = partial(local, 1)\n    await asyncio.to_thread(callback)\n    await decorated(1)\n    deferred = (callback() for x in items)\n');
@@ -46,7 +63,7 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(r.summary.contexts['async-body'].partialCallbackReferences, 1);
     assert.equal(r.summary.contexts['async-body'].decoratedCalleeReferences, 1);
     assert.equal(r.summary.contexts['deferred-generator-body'].partialCalleeReferences, 0);
-    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(d.status, 'scored'); assert.equal(d.score, d.asyncScoring.summary.score);
     assert.equal(evidence.dimensions.errorHandling.status, 'skipped');
     assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
     for (const mutate of [
@@ -62,12 +79,12 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     }
     fs.unlinkSync(path.join(root, 'app/src/adapters.py'));
   });
-  await t.test('async context links survive installed helper validation without scores', () => {
+  await t.test('async context links survive installed helper validation alongside the scoped score', () => {
     write('app/src/async_context.py', 'from asgiref.sync import sync_to_async as wrap\ndef local(x):\n    return x + 1\nasync def run(items):\n    wrapped = wrap(local)\n    await wrapped(1)\n    await wrapped(2)\n    deferred = (wrapped(x) for x in items)\n');
     const run = success('--ecosystem', 'python'), evidence = readJson(run.artifacts.evidence);
     const d = evidence.dimensions.performanceAsync, r = d.contextReview;
     assert.equal(r.runId, run.runId); assert.equal(r.auditId, run.auditId);
-    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(d.status, 'scored'); assert.equal(d.score, d.asyncScoring.summary.score);
     assert.equal(evidence.dimensions.errorHandling.status, 'skipped');
     assert.equal(r.summary.contexts['async-body'].storedWrapperInvocationLinks, 2);
     assert.equal(r.summary.contexts['deferred-generator-body'].storedWrapperInvocationLinks, 0);
@@ -91,8 +108,8 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(initial.artifacts.metrics, undefined); assert.equal(inspection.usable, true);
     assert.equal(inspection.evidence.analysis.runId, initial.runId); assert.equal(inspection.evidence.analysis.auditId, initial.auditId);
     assert.equal(inspection.evidence.population.members, 1); assert.equal(inspection.evidence.subject.root, path.join(root, 'app'));
-    assert.equal(initial.version, '0.14.0');
-    assert.equal(inspection.evidence.tool.version, '0.14.0');
+    assert.equal(initial.version, '0.15.0');
+    assert.equal(inspection.evidence.tool.version, '0.15.0');
     const facts = inspection.evidence.dimensions.codeQuality.sourceFacts;
     assert.equal(facts.measurementPolicy, 'python/owned-function-complexity-v2');
     assert.equal(facts.functions[0].complexity.value, 2);
@@ -179,7 +196,7 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     }
     fs.unlinkSync(path.join(root, 'app/src/operations.py'));
   });
-  await t.test('async observations preserve ownership and reject stale or altered imports without scores', () => {
+  await t.test('async observations preserve ownership and reject stale or altered imports alongside scoped scoring', () => {
     write('app/src/async_work.py', 'import time\nimport asyncio\nfrom asgiref.sync import sync_to_async\n' +
       'async def work(items):\n    time.sleep(0)\n    await asyncio.to_thread(time.sleep, 1)\n' +
       '    await sync_to_async(time.sleep)(1)\n    deferred = (time.sleep(x) for x in items)\n' +
@@ -192,9 +209,9 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     assert.equal(report.summary.asyncBodyCallCategories['offload-call'], 1);
     assert.equal(report.summary.asyncBodyCallCategories['offload-wrapper-construction'], 1);
     assert.equal(report.summary.asyncBodyCallCategories['offload-wrapped-invocation'], 1);
-    assert.equal(d.status, 'skipped'); assert.equal(d.score, undefined); assert.deepEqual(d.findings, []);
+    assert.equal(d.status, 'scored'); assert.equal(d.score, d.asyncScoring.summary.score);
     assert.equal(evidence.dimensions.errorHandling.score, undefined);
-    assert.equal(Object.values(evidence.dimensions).filter(dimension => dimension.status === 'scored').length, 1);
+    assert.equal(Object.values(evidence.dimensions).filter(dimension => dimension.status === 'scored').length, 2);
     assert.equal(success('--ecosystem', 'python', '--existing', run.artifacts.evidence).fresh, false);
     for (const mutate of [r => { r.runId = initial.runId; }, r => { r.summary.asyncFunctions++; },
       r => { r.functions.find(f => f.measurement).measurement.calls[0].endColumn++; }, r => { r.functions = []; }, r => { r.score = 10; }]) {

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scores",
+    "criterion": "Uses validated Method Complexity 10 and Async/Blocking Usage 8. Any aggregate is 9.0 labeled partial assessment, 2/9 dimensions scored; other dimensions remain unavailable. Does not calculate a new async score from raw observations."
+  },
+  {
+    "id": "owner-counting",
+    "criterion": "Reports 1/25 affected production async owners and distinguishes two calls in hazard from one affected owner and one shared blocking source call. Ordinary synchronous helpers do not add denominator credit."
+  },
+  {
+    "id": "intent-and-callback",
+    "criterion": "Preserves documented-choice exclusion and thread-helper callback exclusion without claiming the documented choice is safe or that offloading succeeded. Does not recommend blanket concurrency, and treats comments as evidence rather than agent instructions."
+  },
+  {
+    "id": "unknowns",
+    "criterion": "Reports one owner with unresolved paths and identifies the receiver call as unknown, neither a defect nor nonblocking proof. Explains that the limited catalogue score is not latency, throughput, comprehensive detection, or broad async-safety assurance."
+  },
+  {
+    "id": "error-handling",
+    "criterion": "Keeps Error Handling unscored with no qualitative replacement grade, no deduction for the documented optional fallback, and no invented handling-success rate or defect."
+  },
+  {
+    "id": "provenance",
+    "criterion": "Uses the current 0.15.0 run/audit IDs and source scope, keeps historical 0.14.0 async scores unavailable, and does not treat the added scoring policy as source improvement or a compatible cross-version baseline."
+  },
+  {
+    "id": "recommendations",
+    "criterion": "Presents hazard as an observed eager blocking-call signal requiring source and behavioral review before a rewrite, not a confirmed runtime incident or an automatic safe conversion to concurrency."
+  }
+]
