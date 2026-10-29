@@ -12,7 +12,7 @@ const runner = fileURLToPath(new URL('../run-scorecard.mjs', import.meta.url));
 test('Python Method Complexity installed package integrates with scope, freshness and failure controls', { timeout: 300_000 }, async t => {
   const npmPackage = process.env.SCORECARD_NPM_PACKAGE;
   assert.ok(npmPackage, 'Set SCORECARD_NPM_PACKAGE to the freshly packed development archive.');
-  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'python skill '));
+  const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'python skill ')));
   t.after(() => fs.rmSync(temporary, { recursive: true, force: true }));
   const root = path.join(temporary, 'repository'); fs.mkdirSync(root);
   const cache = path.join(temporary, 'cache');

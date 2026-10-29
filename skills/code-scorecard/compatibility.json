@@ -6,7 +6,7 @@
   "preferredEvidenceSchema": 3,
   "source": {
     "repository": "sean-m-cooper/CodeMetrics.AI",
-    "revision": "b6de22ff6c9c9d34dcd9c043bc253629f66bb2b1"
+    "revision": "be7846ff96308815a49d91182bf8799f6645f170"
   },
   "analyzers": {
     "dotnet": {

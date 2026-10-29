@@ -14,7 +14,7 @@ const dotnetPackage = process.env.SCORECARD_DOTNET_PACKAGE;
 
 test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_000 }, async t => {
   assert.ok(npmPackage && dotnetPackage, 'Set SCORECARD_NPM_PACKAGE and SCORECARD_DOTNET_PACKAGE to freshly built local packages.');
-  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'scorecard integration '));
+  const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'scorecard integration ')));
   const root = path.join(temporary, 'repository with spaces');
   const cache = path.join(temporary, 'tool cache');
   const write = (file, value) => { const full = path.join(root, file); fs.mkdirSync(path.dirname(full), { recursive: true }); fs.writeFileSync(full, value); };

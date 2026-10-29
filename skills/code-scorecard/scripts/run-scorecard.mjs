@@ -62,12 +62,12 @@ export async function execute(options) {
   if (Number(process.versions.node.split('.')[0]) < 20) throw new Error('Node.js 20 or newer is required.');
   const timeoutSeconds = Number(options['timeout-seconds'] ?? 1800);
   if (!Number.isSafeInteger(timeoutSeconds) || timeoutSeconds < 1 || timeoutSeconds > 86400) throw new Error('--timeout-seconds must be an integer between 1 and 86400.');
-  const root = fs.realpathSync(path.resolve(options.repo ?? '.'));
+  const root = fs.realpathSync.native(path.resolve(options.repo ?? '.'));
   if (options.ecosystem && !ecosystems.includes(options.ecosystem)) throw new Error('Unknown ecosystem.');
   let selected = options.ecosystem ? [options.ecosystem] : ecosystems;
   let explicit;
   if (options['entry-point']) {
-    explicit = fs.realpathSync(path.resolve(root, options['entry-point']));
+    explicit = fs.realpathSync.native(path.resolve(root, options['entry-point']));
     if (!within(root, explicit)) throw new Error('Entry point must be inside --repo.');
     const ecosystem = /\.csproj$|\.slnx?$/i.test(explicit) ? 'dotnet' : path.basename(explicit) === 'package.json' ? 'javascript-typescript'
       : path.basename(explicit) === 'pyproject.toml' || /\.pyi?$/.test(explicit) || (options.ecosystem === 'python' && fs.statSync(explicit).isDirectory()) ? 'python' : undefined;
