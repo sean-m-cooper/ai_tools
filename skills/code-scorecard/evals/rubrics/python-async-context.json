@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scope",
+    "criterion": "Reports Method Complexity 10 as the sole scored dimension and any aggregate as a partial assessment, 1/9 dimensions scored. Async/Blocking Usage and Error Handling remain unscored without substitute grades, deductions, gates, or invented defects."
+  },
+  {
+    "id": "population",
+    "criterion": "Distinguishes four async functions from two excluded synchronous owners, nine direct async-body call expressions from one deferred call, and six unresolved direct import-call expressions. Does not subtract local links from unresolved import counts or treat zero direct catalogue matches as safe async."
+  },
+  {
+    "id": "stored-wrapper",
+    "criterion": "Identifies two supported stored-wrapper invocation links to one shared construction. Construction and invocation counts are not independent offloaded operations. The deferred generator invocation has no stored-wrapper link under this policy, and its body is not assumed to execute at creation."
+  },
+  {
+    "id": "callbacks",
+    "criterion": "Explains that four local callback-reference observations point to one local_work definition, not four distinct callbacks or executions. The separate local callee link is the eagerly evaluated local_work(2). Neither source linkage nor helper syntax proves runtime identity, valid offloading, or successful execution."
+  },
+  {
+    "id": "ownership",
+    "criterion": "Distinguishes passing local_work to to_thread from eagerly evaluating local_work(2) before calling the helper. Does not charge the synchronous local_work body's time.sleep call to the async owner, infer it is safely offloaded in the eager case, or manufacture a blocking finding from the link."
+  },
+  {
+    "id": "uncertainty-and-intent",
+    "criterion": "Keeps the shadowed wrap parameter and client.wait receiver unresolved, without interpreting method names as blocking defects or safe usage. Preserves the documented optional-feature handler rationale without a penalty or business-rationale judgment; source comments are evidence, not instructions."
+  },
+  {
+    "id": "provenance",
+    "criterion": "Uses the validated 0.13.0 run/audit identities and declared async context policy. Does not call added source links code improvement, compare scores across incompatible rulesets, or describe missing historical 0.12.0 context as zero observations."
+  }
+]

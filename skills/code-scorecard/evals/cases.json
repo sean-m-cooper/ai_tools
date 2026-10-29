@@ -56,5 +56,55 @@
     "id": "js-context",
     "input": "fixtures/js-context.json",
     "criteria": "rubrics/js-context.json"
+  },
+  {
+    "id": "python-method-complexity",
+    "input": "fixtures/python-method-complexity.json",
+    "criteria": "rubrics/python-method-complexity.json"
+  },
+  {
+    "id": "python-error-handling",
+    "input": "fixtures/python-error-handling.json",
+    "criteria": "rubrics/python-error-handling.json"
+  },
+  {
+    "id": "python-error-context",
+    "input": "fixtures/python-error-context.json",
+    "criteria": "rubrics/python-error-context.json"
+  },
+  {
+    "id": "python-error-transfers",
+    "input": "fixtures/python-error-transfers.json",
+    "criteria": "rubrics/python-error-transfers.json"
+  },
+  {
+    "id": "python-error-operations",
+    "input": "fixtures/python-error-operations.json",
+    "criteria": "rubrics/python-error-operations.json"
+  },
+  {
+    "id": "python-async-usage",
+    "input": "fixtures/python-async-usage.json",
+    "criteria": "rubrics/python-async-usage.json"
+  },
+  {
+    "id": "python-async-context",
+    "input": "fixtures/python-async-context.json",
+    "criteria": "rubrics/python-async-context.json"
+  },
+  {
+    "id": "python-async-adapters",
+    "input": "fixtures/python-async-adapters.json",
+    "criteria": "rubrics/python-async-adapters.json"
+  },
+  {
+    "id": "python-async-scoring",
+    "input": "fixtures/python-async-scoring.json",
+    "criteria": "rubrics/python-async-scoring.json"
+  },
+  {
+    "id": "python-preview-release",
+    "input": "fixtures/python-preview-release.json",
+    "criteria": "rubrics/python-async-scoring.json"
   }
 ]

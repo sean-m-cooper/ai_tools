@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-15",
+  "adapterVersion": "0.9.0",
+  "ruleset": "python-2026-10-15-exception-context-review-v1",
+  "archiveSha256": "fec3f1869c4533de273fe3af338a084638570dcfbe6c08a73631718f3bc0b1a0",
+  "checkpoint": "fa70917",
+  "archive": "TestResults/python-error-context-package-2026-10-15/codemetrics-ai-0.5.0.tgz",
+  "checks": {
+    "pythonTestsPassed": 110,
+    "sharedTestsPassed": 9,
+    "javascriptTypescriptTestsPassed": 256,
+    "installedPythonEvidenceTestsPassed": 27,
+    "skillIntegrationSupportingHarnessChecksPassed": 32,
+    "pythonIntegrationSubtestsIncluded": 15,
+    "skillStructuralValidation": "passed",
+    "packagedProducerAndGuideBytesMatchSource": true,
+    "archiveExcludesPythonBytecode": true,
+    "reportingFixture": "analyzer-generated, inspector-validated, offline harness only; no live-model evaluation"
+  },
+  "releaseState": "Local development archive; not pushed or published. Error Handling unscored; Method Complexity remains the only scored Python dimension.",
+  "corpus": [
+    {
+      "id": "requests",
+      "revision": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "methodComplexityScore": 7,
+      "matchedStandaloneContextReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 66,
+      "recognizedShapes": 17,
+      "unresolved": 49
+    },
+    {
+      "id": "starlette",
+      "revision": "96d5023c55b29224edb8d684868c49f681d079a9",
+      "methodComplexityScore": 7.1,
+      "matchedStandaloneContextReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 62,
+      "recognizedShapes": 5,
+      "unresolved": 57
+    },
+    {
+      "id": "httpie",
+      "revision": "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345",
+      "methodComplexityScore": 6.8,
+      "matchedStandaloneContextReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 69,
+      "recognizedShapes": 9,
+      "unresolved": 60
+    },
+    {
+      "id": "django",
+      "revision": "dab0a5c47f159eb58472110dcbc10bd4a9b01adb",
+      "methodComplexityScore": 5.6,
+      "matchedStandaloneContextReport": true,
+      "unchangedComplexityAndPriorReviews": true,
+      "handlers": 1267,
+      "recognizedShapes": 162,
+      "unresolved": 1105
+    }
+  ],
+  "skillSha256": "c39e54b6060349dd97fc8e256ad9398e12ba99bf7500d92cacbef4908406c070",
+  "pythonGuideSha256": "a7193b579500e808ab6036eeafc9f31dd5285da4164f2cfcdb254eac254c3d02",
+  "reportingFixtureSha256": "13f8561fbc4caa3148832b68c51df01d94243fc21ba7ae0cd8d7fd772c6f512b"
+}

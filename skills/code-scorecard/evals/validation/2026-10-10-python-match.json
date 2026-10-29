@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-10",
+  "scope": "Local Windows installed-package integration and structural validation; no live-model evaluation",
+  "adapterVersion": "0.3.0-experimental",
+  "measurementPolicy": "python/owned-function-complexity-v2",
+  "npmDevelopmentVersion": "0.5.0",
+  "npmArchiveSha256": "b523807c4f3f25422e899b75d19a9e580031eb92a8a7dc15581826a7d01ee2e8",
+  "checks": {
+    "pythonRuntimeCatalogAndOfflineHarness": { "passed": 25, "failed": 0, "skipped": 0 },
+    "pythonIntegrationSubtests": 8,
+    "skillStructuralValidation": "passed"
+  },
+  "change": "Preferred adapter updated to 0.3.0-experimental; installed match fixture confirms CC 2 and v2 provenance. Historical v1 measurements must not be reinterpreted as code improvement.",
+  "releaseState": "Unpublished local development workflow. Explicit local archive remains required; existing released source pin is unchanged."
+}

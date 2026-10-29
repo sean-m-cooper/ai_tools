@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scope",
+    "criterion": "Reports Method Complexity 10 as the only scored dimension; Error Handling and the other seven dimensions stay unavailable. Any aggregate is explicitly partial, 1/9 dimensions scored."
+  },
+  {
+    "id": "counts",
+    "criterion": "Reports five handler observations: one documented no-op, one undocumented no-op, one terminal return, one terminal raise, and one other-body. Does not describe these as five defective methods or a handling-success rate."
+  },
+  {
+    "id": "context",
+    "criterion": "Recognizes optional_backend as probing candidate imports, with intent explained by its function docstring despite no local suite comment; does not demand a fix from its no-op category alone."
+  },
+  {
+    "id": "intent",
+    "criterion": "Preserves the documented shutdown rationale in cleanup without judging the business choice or requiring more words."
+  },
+  {
+    "id": "transfers",
+    "criterion": "Treats the None fallback and rethrow as observed syntax, not proof of correctness; recognizes that dispatch contains conditional rethrow and handler invocation despite other-body classification."
+  },
+  {
+    "id": "unscored",
+    "criterion": "Does not add an Error Handling score, independent complexity penalty, or automatic refactoring requirement from these categories. Keeps existing measured CC intact."
+  },
+  {
+    "id": "boundaries",
+    "criterion": "Distinguishes documentation presence from adequacy and unresolved syntax from proven runtime behavior. Does not transplant a .NET rethrow rule or invent Python CMAI support."
+  }
+]

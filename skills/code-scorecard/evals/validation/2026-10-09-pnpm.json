@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-09",
+  "status": "Uncommitted pnpm development validation; not published",
+  "analyzerBaseRevision": "3c210b8138afdf1e60de565d3d6d966c04139cb7",
+  "analyzerSourceSha256": "26747eb6fbd59b3c86c7b3295f32ee27960339b0a1bf2ee44aa98df44a75ad51",
+  "ruleset": "javascript-typescript-2026-10-09-dependency-evidence",
+  "analyzerTestsPassed": 256,
+  "finalDependencyRegressionTestsPassed": 46,
+  "pnpmTestsPassed": 24,
+  "finalCheckNote": "The full suite passed before the final environment-only document guard; all dependency tests passed again afterward.",
+  "installedPackageSmokePassed": true,
+  "sharedCalibrationFixturesPassed": 6,
+  "publicSourceSelectionsPassed": 6,
+  "otherDimensionsAndRawCsvUnchanged": true,
+  "nonPnpmInventoriesUnchanged": true,
+  "skillOfflineTestsPassed": 16,
+  "packagedSkillIntegrationTestsPassed": 15,
+  "pnpmCaseRequiredAndExercised": true,
+  "integrationSkips": 0,
+  "quickValidatePassed": true,
+  "liveModelEvaluation": "not run; deterministic integration and evidence checks only",
+  "publishedCompatibilityPinsChanged": false,
+  "localNpmPackage": {
+    "name": "codemetrics-ai-0.5.0.tgz",
+    "sha256": "8c8ad05ff13bfb5e2ad9db11c7d0dc1a100bd9b562b06d3c4cd9de85d1965f64"
+  },
+  "calibrationSummary": {
+    "tanstackQueryCorePackageGroups": 265,
+    "tanstackReactQueryPackageGroups": 537,
+    "tanstackReactQuerySnapshotLocations": 544,
+    "tanstackUnresolvedReferences": 0,
+    "metadataRequested": false,
+    "dependencyScore": null
+  },
+  "logs": "E:\\repos\\CodeMetrics.AI\\TestResults\\js-ts-pnpm"
+}

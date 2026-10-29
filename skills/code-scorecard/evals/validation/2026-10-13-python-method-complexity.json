@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-13",
+  "scope": "Accepted Method Complexity product baseline with installed-package verification; no live-model report evaluation or cross-language calibration.",
+  "adapterVersion": "0.7.0",
+  "ruleset": "python-2026-10-13-method-complexity-v1",
+  "calibration": "baseline",
+  "policy": "python/method-complexity-worst-40-remainder-60/v1",
+  "measurementPolicy": "python/owned-function-complexity-v2",
+  "sourceFactsVersion": "0.4.0-experimental",
+  "scoredDimension": "codeQuality",
+  "displayLabel": "Method Complexity",
+  "eligiblePopulation": "selected production implementations",
+  "unscoredEvidence": [
+    "ownedStatements",
+    "maxBlockNesting",
+    "exactBodyDuplication",
+    "coverage",
+    "CRAP"
+  ],
+  "npmDevelopmentVersion": "0.5.0",
+  "npmArchiveSha256": "cbcefe9391efba58957cc6388f35a5e964340e2582b9dff0a13c3ab8182d0f3c",
+  "checks": {
+    "pythonRuntimeCatalogAndOfflineHarness": {
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0
+    },
+    "pythonIntegrationSubtests": 13,
+    "skillStructuralValidation": "passed",
+    "reportingFixture": "Analyzer-generated and validated; no live-model evaluation."
+  },
+  "scenarios": [
+    "Accepted CC anchors, interpolation, singleton weighting and decimal half-up rounding.",
+    "Included tests/support/generated bodies cannot pad production scores; explicit production overrides remain visible.",
+    "Lambdas remain in the complexity population despite unavailable decomposition or coverage.",
+    "Duplication, nesting, size and coverage observations do not supply scores or independent deductions.",
+    "Empty production populations and incomplete combined runs withhold the score.",
+    "Historical 0.5/0.6 evidence retains preview contracts; unsupported or downgraded producers cannot introduce scores.",
+    "Compatible current baselines can gate score drops; previews and empty populations cannot gate.",
+    "Helper regression produces gate-failed with a compatible Method Complexity delta of -6.",
+    "Analyzer-generated reporting fixture validates; offline harness checks its rubric and inputs, not actual model behavior."
+  ],
+  "corpus": [
+    {
+      "id": "requests",
+      "revision": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "eligibleFunctions": 246,
+      "methodComplexityScore": 7,
+      "previousPreview": 7,
+      "rawFactsUnchanged": true,
+      "reviewEvidenceUnchanged": true,
+      "contributionsUnchanged": true,
+      "historicalComparisonRejected": true
+    },
+    {
+      "id": "starlette",
+      "revision": "96d5023c55b29224edb8d684868c49f681d079a9",
+      "eligibleFunctions": 508,
+      "methodComplexityScore": 7.1,
+      "previousPreview": 7.1,
+      "rawFactsUnchanged": true,
+      "reviewEvidenceUnchanged": true,
+      "contributionsUnchanged": true,
+      "historicalComparisonRejected": true
+    },
+    {
+      "id": "httpie",
+      "revision": "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345",
+      "eligibleFunctions": 464,
+      "methodComplexityScore": 6.8,
+      "previousPreview": 6.8,
+      "rawFactsUnchanged": true,
+      "reviewEvidenceUnchanged": true,
+      "contributionsUnchanged": true,
+      "historicalComparisonRejected": true
+    },
+    {
+      "id": "django",
+      "revision": "dab0a5c47f159eb58472110dcbc10bd4a9b01adb",
+      "eligibleFunctions": 9748,
+      "methodComplexityScore": 5.6,
+      "previousPreview": 5.6,
+      "rawFactsUnchanged": true,
+      "reviewEvidenceUnchanged": true,
+      "contributionsUnchanged": true,
+      "historicalComparisonRejected": true
+    }
+  ],
+  "releaseState": "Local development workflow; explicit local archive required. Released ecosystem pins unchanged; not pushed or published.",
+  "skillSha256": "3beffe11ac3416aa8c3210553e3f47ed9443e8959566d558ab36a14de6abcd6f",
+  "pythonGuideSha256": "28478679a870a3e9bba2d52d65592e82122a4436d4d577cf859b15312a3ec998"
+}

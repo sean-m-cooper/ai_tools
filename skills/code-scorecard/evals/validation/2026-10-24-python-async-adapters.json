@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-24",
+  "adapterVersion": "0.14.0",
+  "standaloneCheckpoint": "e7b3f4d",
+  "archiveSha256": "748640495cdf6588530f358a1b7bb2168ad6e177e62c3b5f3fc25a0708ffebe3",
+  "pythonIntegration": {
+    "passed": 21,
+    "subtests": 20,
+    "skipped": 0,
+    "log": "E:\\repos\\CodeMetrics.AI\\TestResults\\python-async-adapters-package-2026-10-24\\final\\skill-integration.log"
+  },
+  "supportingAndHarnessChecks": {
+    "passed": 16,
+    "skipped": 0
+  },
+  "skillStructuralValidation": "Passed using the isolated coverage-independent PyYAML environment E:/temp/codemetrics-skill-validation",
+  "reportingEvaluation": {
+    "runId": "cfcfb4a7-16e2-4a52-82b0-85614ef350f3",
+    "auditId": "bcfffae6-74e5-4177-a265-29aee03f87b2",
+    "sha256": "aa89efee7e34d04ff1ec35d7b6b5d43c61dab31677fadc5d7216a404f97a5dd6",
+    "criteria": 7,
+    "origin": "Fresh final-archive helper run and validated inspection",
+    "validation": "Offline fixture/harness validation only; no live-model report generated or judged."
+  },
+  "scoringBoundary": "Method Complexity only; Async/Blocking Usage and Error Handling remain unscored",
+  "publication": "Local package only; not pushed or published"
+}

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-10",
+  "scope": "Local installed-package integration and structural validation; no live-model report evaluation",
+  "adapterVersion": "0.4.0-experimental",
+  "complexityPolicy": "python/owned-function-complexity-v2",
+  "duplicationPolicy": "python/exact-function-body-v1",
+  "npmDevelopmentVersion": "0.5.0",
+  "npmArchiveSha256": "212f1b1f0658881595b3b2873bdd0394557229edff792781c8e2b73d103f3494",
+  "checks": {
+    "pythonRuntimeCatalogAndOfflineHarness": { "passed": 26, "failed": 0, "skipped": 0 },
+    "pythonIntegrationSubtests": 9,
+    "skillStructuralValidation": "passed"
+  },
+  "scenarios": [
+    "One group with three occurrences is reported once with three matched bodies",
+    "Duplication report shares the enclosing run and audit identities",
+    "Stale embedded duplication IDs are rejected even on historical import",
+    "All dimension scores remain unavailable and findings remain informational",
+    "Existing scope, parse-failure, freshness, historical-import and polyglot controls pass"
+  ],
+  "releaseState": "Unpublished local development workflow. Explicit local archive remains required; released source pin unchanged."
+}

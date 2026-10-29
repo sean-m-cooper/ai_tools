@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-16",
+  "adapterVersion": "0.12.0",
+  "standaloneCheckpoint": "70153d4",
+  "archiveSha256": "62f751a7fa798a89ddbc725054311972c607e4ec718808eb266f839816211507",
+  "pythonIntegration": {
+    "passed": 19,
+    "subtests": 18,
+    "skipped": 0,
+    "log": "E:/repos/CodeMetrics.AI/TestResults/python-async-package-2026-10-16/skill-integration.log"
+  },
+  "supportingAndHarnessChecks": {
+    "passed": 16,
+    "skipped": 0
+  },
+  "skillStructuralValidation": "passed using Python 3.12 and PyYAML 6.0.3 in E:/temp/codemetrics-skill-validator",
+  "reportingEvaluation": {
+    "fixture": "python-async-usage",
+    "fixtureSha256": "7a2cd2bfd895a20183319429ac223909b73678c9c30d409d1d7e03b7cf88b66d",
+    "origin": "Fresh installed helper invocation and validated inspection",
+    "criteria": 7,
+    "validation": "offline fixture and harness validation only; no live-model report generated or judged"
+  },
+  "scoringBoundary": "Method Complexity only; Async/Blocking Usage and Error Handling unscored",
+  "publication": "Local package only; not pushed or published"
+}

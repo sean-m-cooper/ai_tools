@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "id": "scores",
+      "passed": true,
+      "reason": "Uses validated scores 10 and 8, labels the 9.0 aggregate partial with 2/9 dimensions scored, and leaves other dimensions unavailable. Explains the recorded async band without substituting a new score.",
+      "quote": "**Python overall: 9.0/10 — partial assessment, 2/9 dimensions scored.**"
+    },
+    {
+      "id": "owner-counting",
+      "passed": true,
+      "reason": "Correctly reports 1/25 affected owners and distinguishes repeated paths, the shared blocking source call, and the synchronous helper's exclusion from the denominator.",
+      "quote": "Two scored paths, **one distinct blocking source call and one affected async owner**. The synchronous helper is not another eligible async owner."
+    },
+    {
+      "id": "intent-and-callback",
+      "passed": true,
+      "reason": "Preserves both exclusions, treats documentation as intent evidence, and avoids claiming safety or successful offloading or recommending blanket concurrency.",
+      "quote": "Classified `excluded-execution-context`; remains eligible but unaffected. This does not prove successful offloading or thread safety."
+    },
+    {
+      "id": "unknowns",
+      "passed": true,
+      "reason": "Identifies one unresolved owner and receiver call without declaring a defect or nonblocking behavior. Clearly limits the score's detection, runtime-performance, and safety implications.",
+      "quote": "The current evidence establishes neither a blocking defect nor safe async behavior."
+    },
+    {
+      "id": "error-handling",
+      "passed": true,
+      "reason": "Keeps Error Handling unavailable, applies no fallback deduction or replacement grade, and does not invent recovery success or a defect.",
+      "quote": "**No. Error Handling remains unscored; there is no grade to lower.**"
+    },
+    {
+      "id": "provenance",
+      "passed": true,
+      "reason": "Reports the matching current run/audit IDs, version and source scope. Keeps historical async scoring unavailable and requires a fresh baseline rather than interpreting expanded scoring as source improvement.",
+      "quote": "For future regression tracking, establish a fresh **0.15.0 baseline**. A score change across adapter versions alone does not demonstrate source improvement or regression."
+    },
+    {
+      "id": "recommendations",
+      "passed": true,
+      "reason": "Treats hazard as a source-supported blocking-call signal and requires behavioral review before selecting a rewrite, without asserting a runtime incident or guaranteed safe conversion.",
+      "quote": "Confirm timing and execution requirements before choosing a cooperative delay or offloading approach; an appropriate replacement remains unresolved."
+    }
+  ]
+}

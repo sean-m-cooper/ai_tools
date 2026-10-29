@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-12",
+  "scope": "Local installed-package integration and structural validation; no live-model report evaluation",
+  "adapterVersion": "0.5.0-experimental",
+  "sourceFactsVersion": "0.4.0-experimental",
+  "coverageReviewVersion": "0.3.0-experimental",
+  "coveragePolicy": "python/coveragepy-line-crap-review-v1",
+  "collectionPolicy": "python/coverage-collection-v1",
+  "npmDevelopmentVersion": "0.5.0",
+  "npmArchiveSha256": "d3dc223b73ff3f93b1ae8dd090e07264c2c595630bfc397b0c9c599895c1e33d",
+  "checks": {
+    "pythonRuntimeCatalogAndOfflineHarness": { "passed": 28, "failed": 0, "skipped": 0 },
+    "pythonIntegrationSubtests": 11,
+    "skillStructuralValidation": "passed"
+  },
+  "scenarios": [
+    "Supplied coverage and optional collection receipt are forwarded with repository-relative paths",
+    "Unbound coverage remains conditional even when analysis is fresh",
+    "Explicit packaged collection binds source and passes helper validation",
+    "Same-size source drift and missing provenance fail the combined run",
+    "Stale embedded coverage identities are rejected on historical import",
+    "Historical imports stay not fresh and cannot be rebound to new coverage inputs",
+    "All dimension scores remain unavailable with no CRAP grading or score gates",
+    "Existing scope, duplication, failure, freshness, and polyglot controls pass"
+  ],
+  "releaseState": "Unpublished local development workflow. Explicit local archive remains required; released source pin unchanged."
+}

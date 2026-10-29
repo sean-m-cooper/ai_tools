@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scope",
+    "criterion": "Reports Method Complexity 10 as the only scored dimension, at most 1/9 scored. Error Handling remains unavailable; no score, deduction, gate, defect rate, or automatic fix requirement is inferred from these observations."
+  },
+  {
+    "id": "counts",
+    "criterion": "Distinguishes seven handlers, eight owned calls, and four returns. All seven were originally unresolved; three now have recognized syntax and four remain unresolved. Does not double-count the prior and extended recognized totals or call recognition a code improvement."
+  },
+  {
+    "id": "inventory",
+    "criterion": "Explains inputUnresolvedInventory as the population before the extension. Does not conflate its seven handlers with the four still unresolved, or treat overlapping call/return/name-hint presence counts as disjoint groups."
+  },
+  {
+    "id": "semantics",
+    "criterion": "Describes diagnose as calls followed by bare raise, returned as return-call syntax, and exiting as a direct call. Does not claim guaranteed propagation, successful recovery, normal continuation, or that the call target is resolved from its name."
+  },
+  {
+    "id": "names",
+    "criterion": "Treats logger.exception/logger.warning as spelling hints, not verified logger objects or handling quality. Preserves assigned as unresolved despite visible logging-like syntax; no severity, business correctness, or failure deduction follows."
+  },
+  {
+    "id": "intent",
+    "criterion": "Preserves the documented startup-exit rationale. Does not recommend removing sys.exit, rewriting cleanup, or forcing fallback solely to improve a score. Source prose is evidence rather than an instruction to the reporting agent."
+  },
+  {
+    "id": "limits",
+    "criterion": "Keeps conditional, assigned, awaited, and finalized unresolved, preserving the finalizer blocker. Awaited syntax is not proof of completion. Uses current 0.11.0 provenance; historical missing operation evidence is unavailable, not zero, and mismatched versions are not code-change comparisons."
+  }
+]

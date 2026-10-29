@@ -1,0 +1,30 @@
+[
+  {
+    "id": "scope",
+    "criterion": "Reports Method Complexity 10 as the sole scored dimension; any aggregate is a partial assessment, 1/9 dimensions scored. Async/Blocking Usage and Error Handling remain unscored without replacement grades, deductions, gates, or invented defects."
+  },
+  {
+    "id": "partial-accounting",
+    "criterion": "Distinguishes four partial constructions, one partial callee reference, and six partial helper-callback references. Repeated references can point to the same construction and do not represent distinct offloaded operations, execution counts, or separate callback implementations."
+  },
+  {
+    "id": "decorator-context",
+    "criterion": "Reports one decorated callee reference and one decorated helper-callback reference to the same decorated function. Explains that sync_to_async syntax does not establish runtime identity, valid helper use, successful offloading, thread safety, or performance; the synchronous definition body keeps its own ownership."
+  },
+  {
+    "id": "unresolved-and-deferred",
+    "criterion": "Keeps the deferred generator call separate and explains that it has no stored-partial use link. The func parameter rebound through partial remains unresolved; neither uncertainty is a defect or a clean-async verdict. New links do not reduce original unresolved import counts."
+  },
+  {
+    "id": "argument-context",
+    "criterion": "Treats bound argument shapes and unpacking as syntax, not runtime values, argument cardinality, execution, or behavior. Local function links are review context without charging callback bodies to their callers."
+  },
+  {
+    "id": "documented-intent",
+    "criterion": "Honors the optional_feature handler's documented deliberate fallback without assigning a penalty or judging the business decision. Does not recommend blanket concurrency or refactoring from adapter observations alone."
+  },
+  {
+    "id": "provenance",
+    "criterion": "Uses validated 0.14.0 evidence and its run/audit identities. Does not present new syntax coverage as code improvement, compare incompatible rulesets as score changes, or treat absent historical 0.13.0 adapter evidence as zero."
+  }
+]

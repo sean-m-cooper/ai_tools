@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-15",
+  "adapterVersion": "0.8.0",
+  "ruleset": "python-2026-10-15-error-handling-review-v1",
+  "checkpoint": "48c1697",
+  "archive": "TestResults/python-error-handling-package-2026-10-15-verified/codemetrics-ai-0.5.0.tgz",
+  "fullTestArchiveSha256": "31c3a5b7ff9037b5498292be7d0799c59347ffa2d6578ba577ffa8c5588d2728",
+  "archiveSha256": "bdd8284608e04ad3b76f4d0f11376e4774329939e1a9ee9c66d4cd57aede07ea",
+  "checks": {
+    "pythonTestsPassed": 94,
+    "sharedTestsPassed": 9,
+    "javascriptTypescriptTestsPassed": 256,
+    "installedPythonEvidenceTestsPassed": 23,
+    "skillIntegrationSupportingHarnessChecksPassed": 31,
+    "pythonIntegrationSubtestsIncluded": 14,
+    "skillStructuralValidation": "passed",
+    "finalArchiveRuntimeFilesByteIdenticalToFullTestArchive": true,
+    "finalArchiveOnlyChange": "README.md version/scope description",
+    "finalInstalledSmoke": "generated and validated",
+    "reportingFixture": "analyzer-generated, inspector-validated, offline harness only; no live-model evaluation"
+  },
+  "releaseState": "Local development archive; not pushed or published. Method Complexity remains the only scored Python dimension.",
+  "corpus": [
+    {
+      "id": "requests",
+      "revision": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "handlers": 66,
+      "methodComplexityScore": 7,
+      "matchedStandaloneHandlerReport": true,
+      "unchangedComplexityAndPriorReviews": true
+    },
+    {
+      "id": "starlette",
+      "revision": "96d5023c55b29224edb8d684868c49f681d079a9",
+      "handlers": 62,
+      "methodComplexityScore": 7.1,
+      "matchedStandaloneHandlerReport": true,
+      "unchangedComplexityAndPriorReviews": true
+    },
+    {
+      "id": "httpie",
+      "revision": "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345",
+      "handlers": 69,
+      "methodComplexityScore": 6.8,
+      "matchedStandaloneHandlerReport": true,
+      "unchangedComplexityAndPriorReviews": true
+    },
+    {
+      "id": "django",
+      "revision": "dab0a5c47f159eb58472110dcbc10bd4a9b01adb",
+      "handlers": 1267,
+      "methodComplexityScore": 5.6,
+      "matchedStandaloneHandlerReport": true,
+      "unchangedComplexityAndPriorReviews": true
+    }
+  ],
+  "skillSha256": "7fea00b12e57d4c003483f05827018fd41c214b323fe5ed7c072367021bd4f0a",
+  "pythonGuideSha256": "ff46652490c052aa232091d09b69e2e6a11c6b8b0073438a4af3e43671cc6a1b",
+  "reportingFixtureSha256": "346139e6410356ab79db63444dc1f1491296c69fa76ca9277329a1d44f7588fe"
+}

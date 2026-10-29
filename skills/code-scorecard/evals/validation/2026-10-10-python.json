@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-10",
+  "scope": "Local Windows packaged integration and structural verification; no live-model report evaluation",
+  "adapterVersion": "0.2.0-experimental",
+  "npmDevelopmentVersion": "0.5.0",
+  "npmArchiveSha256": "812258de577dfff5fdd14582621c446c7d13d80c0fba431a14ecc1cb0a42e5be",
+  "checks": {
+    "allSkillScriptAndOfflineHarnessTests": { "passed": 40, "failed": 0, "skipped": 0 },
+    "pythonIntegrationSubtests": 8,
+    "skillStructuralValidation": "passed"
+  },
+  "pythonScenarios": [
+    "Manifest discovery and dependency exclusions",
+    "Fresh validated evidence without dimension scores or CSV",
+    "Explicit directories, individual files, and selection overrides",
+    "Parse failure updates latest attempt without restoring old results",
+    "Explicit historical import retains original evidence identities",
+    "Zero-exit stale producer output is rejected",
+    "No score gates or silent download of an unpublished command",
+    "Polyglot audit uses separate run IDs and a shared audit ID"
+  ],
+  "releaseState": "Unpublished local development workflow. Existing source pin retained; explicit local archive required. Older pinned CI cannot verify Python."
+}
