@@ -56,13 +56,12 @@ jobs:
           $env:SCORECARD_DOTNET_PACKAGE = (Get-Item packages/*.nupkg).FullName
           node --test skills/code-scorecard/scripts/tests/runtime.test.mjs skills/code-scorecard/scripts/tests/integration.test.mjs
           exit $LASTEXITCODE
-      - name: Verify experimental Python when the pinned source includes it
+      - name: Install authored coverage fixture dependency
+        run: python -m pip install coverage==7.6.1
+      - name: Verify Python preview from the pinned source
         shell: pwsh
         run: |
-          if (!(Test-Path contract-source/analyzers/javascript-typescript/src/python-cli.ts)) {
-            Write-Host 'Python integration is not verified by this older source pin. Run the local-package Python suite before advancing the coordinated pin.'
-            exit 0
-          }
+          if (!(Test-Path contract-source/analyzers/javascript-typescript/src/python-cli.ts)) { throw 'The pinned preview must include the Python CLI.' }
           $env:SCORECARD_NPM_PACKAGE = (Get-Item packages/*.tgz).FullName
           node --test skills/code-scorecard/scripts/tests/python.test.mjs
           exit $LASTEXITCODE

@@ -317,11 +317,11 @@ test('Python Method Complexity installed package integrates with scope, freshnes
     write('app/src/work.py', source);
     fs.unlinkSync(path.join(root, 'app/exercise.py'));
   });
-  await t.test('compatible Method Complexity gates work without downloading an unpublished Python package', () => {
+  await t.test('compatible Method Complexity gates work with the pinned Python package', () => {
     const result = invoke('--ecosystem', 'python', '--baseline', initial.artifacts.evidence, '--max-score-drop', '0');
     assert.equal(result.code, 0, result.error);
-    const missing = spawnSync(process.execPath, [runner, '--repo', root, '--ecosystem', 'python'], { encoding: 'utf8', windowsHide: true });
-    assert.equal(missing.status, 2); assert.match(missing.stderr, /not published/);
+    assert.equal(compatibility.analyzers.python.requiresLocalPackage, false);
+    assert.equal(result.value.results[0].source, 'compatibility-manifest-local-package');
   });
   await t.test('handler evidence remains unscored and stale or altered observations are rejected', () => {
     write('app/src/handlers.py', 'try: import optional\nexcept ImportError: pass\nclass Client:\n    try: load()\n    except Missing:\n        # Default configuration applies.\n        pass\n    def work(self):\n        try: run()\n        except Missing: return None\n');

@@ -193,7 +193,7 @@ test('packaged analyzers satisfy the scorecard skill contract', { timeout: 300_0
       const inspection=readJson(run.artifacts.inspection);
       const dimensions=inspection.evidence.dimensions;
       assert.equal(inspection.usable,true);
-      assert.equal(inspection.evidence.tool.version,'0.5.0');
+      assert.equal(inspection.evidence.tool.version,compatibility.analyzers['javascript-typescript'].preferredVersion);
       const usage=dimensions.performanceAsync.scoring.observations;
       assert.equal(usage.eligibleOwners,3); assert.equal(usage.affectedOwners,0);
       const decomposition=dimensions.codeQuality.componentDetails.decomposition;

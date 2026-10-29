@@ -2,15 +2,17 @@
 
 Python support measures selected implementation bodies using Python 3.12's native AST. It measures source-only complexity, owned statements, block nesting, exact-body duplication, and optional imported coverage/CRAP evidence, not a nine-dimension scoring implementation. Node.js 20+ and Python 3.12 are required. Normal scorecard analysis never installs, imports, or executes target code. The separate coverage collector explicitly runs tests.
 
-## Local package and scope
+## Preview installation and scope
 
-This integration is not published yet. Supply a freshly built `codemetrics-ai` npm archive containing `codemetrics-python` via `--npm-package`. The preferred Python adapter identifies itself as `0.15.0`; its source-facts producer remains `0.4.0-experimental`, and the enclosing development npm package retains the manifest's evidence-tool version. The helper deliberately refuses to download a published package as a substitute. Do not remove this restriction until a coordinated release has been tested and the compatibility manifest updated.
+The helper installs the exact `codemetrics-ai@0.6.0-preview.1` npm package from the compatibility manifest into an isolated cache. The Python adapter identifies itself as `0.15.0`; its source-facts producer remains `0.4.0-experimental`. Node.js 20+ and Python 3.12 are required. No separate PyPI package or target dependency installation is needed. Python scoring is a preview: Method Complexity and Async/Blocking Usage only; Error Handling remains unscored.
 
 ```sh
-node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --npm-package <archive.tgz> --cache <cache>
-node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point src/app.py --npm-package <archive.tgz>
-node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --entry-point . --python-include 'src/**' --npm-package <archive.tgz>
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --entry-point src/app.py
+node <skill>/scripts/run-scorecard.mjs --repo <repo> --ecosystem python --entry-point . --python-include 'src/**'
 ```
+
+Use `--npm-package <archive.tgz>` only for an explicitly supplied compatible development archive. It has a separate content-hashed cache and never falls back to a published package. The npm `preview` tag is for discovery; the skill uses an exact version, not a moving tag.
 
 Discovery selects `pyproject.toml` and stops below a containing manifest. It does not resolve workspace membership, installed-package boundaries, or runtime reachability. A nested manifest outside the requested selection needs a separate run. For repositories without a manifest, explicitly choose a source directory or file. A manifest selects its containing directory; it is not executed or interpreted as analyzer configuration. Python finding paths are relative to that selected directory (or a selected file's parent), recorded as `subject.root`.
 

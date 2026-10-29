@@ -36,9 +36,9 @@ function ancestors(directory, root) {
 }
 function pinnedVersion(root, entryPoint, ecosystem) {
   const policy = compatibility.analyzers[ecosystem];
-  // Python's adapter is bundled in an explicitly supplied npm archive.
+  // Python's adapter is bundled in the exact npm package selected by the compatibility manifest.
   // Do not mistake application dependency pins for an analyzer pin or execute pyproject build backends.
-  if (ecosystem === 'python') return { version: policy.preferredVersion, source: 'compatibility-manifest-local-package' };
+  if (ecosystem === 'python') return { version: policy.preferredVersion, source: 'compatibility-manifest' };
   let pin;
   for (const directory of ancestors(path.dirname(entryPoint), root)) {
     const file = path.join(directory, ecosystem === 'dotnet' ? '.config/dotnet-tools.json' : 'package.json');
@@ -89,6 +89,8 @@ export async function execute(options) {
     throw new Error('Python options require a selected Python entry point.');
   if ((options.existing || options.baseline) && scopes.length !== 1) throw new Error('--existing and --baseline require one ecosystem/entry point.');
   if (!options.baseline && (options['fail-on-new'] !== undefined || options['max-score-drop'] !== undefined)) throw new Error('Quality gates require --baseline.');
+  for (const scope of scopes)
+    if (scope.ecosystem === 'python' && options['npm-package']) scope.source = 'compatibility-manifest-local-package';
   const auditId = randomUUID();
   const results = [];
   for (const scope of scopes) {
@@ -114,7 +116,7 @@ export async function execute(options) {
           if (options.coverage) args.push('--coverage', path.resolve(root, options.coverage));
           summary.analyzerExitCode = await run(tooling.dotnet, args, root, {}, timeoutSeconds * 1000);
         } else if (scope.ecosystem === 'python') {
-          if (!fs.existsSync(tooling.python)) throw new Error('The supplied npm archive does not contain codemetrics-python. Build the current development package.');
+          if (!fs.existsSync(tooling.python)) throw new Error('The selected npm package does not contain codemetrics-python. Use the tested Python preview package.');
           args.push('--project', scope.entryPoint);
           if (options.python) args.push('--python', path.resolve(root, options.python));
           for (const flag of ['coverage-json', 'collection-manifest'])
