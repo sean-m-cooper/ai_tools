@@ -5,11 +5,13 @@ description: "Use when asked for a codebase scorecard, quality audit, 9-dimensio
 
 # Code Scorecard
 
-Audit nine dimensions using CodeMetrics.AI evidence and targeted qualitative review. Announce: "I'm using the code-scorecard skill to perform a 9-dimension audit."
+Audit nine dimensions using CodeTestament (formerly CodeMetrics.AI) evidence and targeted qualitative review. Announce: "I'm using the code-scorecard skill to perform a 9-dimension audit."
 
-CodeMetrics.AI owns deterministic analysis, schemas, scores, comparison, gates and SARIF. This skill owns scope selection, interpretation, qualitative review and recommendations. Do not reproduce analyzer score policies in skill scripts.
+The analyzer owns deterministic analysis, schemas, scores, comparison, gates and SARIF. This skill owns scope selection, interpretation, qualitative review and recommendations. Do not reproduce analyzer score policies in skill scripts.
 
 ## Generate evidence
+
+CodeTestament is currently a local package migration. Public defaults remain on the published legacy packages. Follow [package selection and migration](bootstrap.md#package-selection-and-codetestament-migration) for explicit new-package selection, local archives, and historical imports. A new brand does not change scores or authorize rewriting baselines. CMAI codes and existing annotations remain valid.
 
 Use [bootstrap.md](bootstrap.md) and `scripts/run-scorecard.mjs`. The helper discovers nested entry points, honors compatible exact repository pins, installs isolated tested tools, generates fresh evidence and validates it with CodeMetrics.AI's packaged schemas. The supported schemas and tested versions live in [compatibility.json](compatibility.json). Never automatically upgrade to `latest` or change a repository pin.
 

@@ -65,7 +65,7 @@ def optional_feature():
   assert.equal(dimensions.errorHandling.status, 'skipped');
   assert.equal(dimensions.errorHandling.score, undefined);
   assert.equal(Object.values(dimensions).filter(item => item.status === 'scored').length, 2);
-  const install = path.join(cache, 'npm', compatibility.evidenceToolVersion);
+  const install = result.tooling.analyzer.cache;
   const manifest = JSON.parse(fs.readFileSync(path.join(install, 'node_modules/codemetrics-ai/package.json'), 'utf8'));
   assert.equal(manifest.version, compatibility.evidenceToolVersion);
   const lock = JSON.parse(fs.readFileSync(path.join(install, 'package-lock.json'), 'utf8'));

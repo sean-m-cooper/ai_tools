@@ -6,6 +6,7 @@ import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { readJson, writeJson, run, installTools } from './runtime.mjs';
 import { readPackagedRuleCatalog } from './rule-catalog.mjs';
+import { selectInstallation, assertEvidenceIdentity } from './package-selection.mjs';
 
 export const compatibility = readJson(new URL('../compatibility.json', import.meta.url));
 const excluded = new Set(['.git', '.scorecard', '.worktrees', 'node_modules', 'bin', 'obj', 'dist', 'build', 'vendor', '.next', 'coverage', '.venv', 'venv', 'TestResults', 'fixtures', '__fixtures__', 'testdata']);
@@ -25,31 +26,6 @@ export function discover(root, ecosystem) {
       .flatMap(entry => visit(path.join(directory, entry.name)));
   }
   return visit(root);
-}
-function ancestors(directory, root) {
-  const result = [];
-  for (let current = directory; within(root, current); current = path.dirname(current)) {
-    result.push(current);
-    if (current === root) break;
-  }
-  return result;
-}
-function pinnedVersion(root, entryPoint, ecosystem) {
-  const policy = compatibility.analyzers[ecosystem];
-  // Python's adapter is bundled in the exact npm package selected by the compatibility manifest.
-  // Do not mistake application dependency pins for an analyzer pin or execute pyproject build backends.
-  if (ecosystem === 'python') return { version: policy.preferredVersion, source: 'compatibility-manifest' };
-  let pin;
-  for (const directory of ancestors(path.dirname(entryPoint), root)) {
-    const file = path.join(directory, ecosystem === 'dotnet' ? '.config/dotnet-tools.json' : 'package.json');
-    if (!fs.existsSync(file)) continue;
-    const config = readJson(file);
-    pin = ecosystem === 'dotnet' ? Object.entries(config.tools ?? {}).find(([name]) => name.toLowerCase() === 'codemetrics.ai')?.[1].version
-      : config.devDependencies?.['codemetrics-ai'] ?? config.dependencies?.['codemetrics-ai'];
-    if (pin !== undefined || (ecosystem === 'dotnet' && config.isRoot)) break;
-  }
-  if (pin !== undefined && !policy.testedVersions.includes(pin)) throw new Error(`Repository pin ${pin} is not in tested ${ecosystem} versions (${policy.testedVersions.join(', ')}). Keep the pin; update compatibility intentionally after testing. Exact versions are required.`);
-  return { version: pin ?? policy.preferredVersion, source: pin === undefined ? 'compatibility-manifest' : 'repository-pin' };
 }
 function expectedRoot(entryPoint) {
   const fallback = path.dirname(entryPoint);
@@ -78,11 +54,9 @@ export async function execute(options) {
   if (options.discover) return { candidates };
   for (const [ecosystem, entries] of Object.entries(candidates))
     if (entries.length > 1) throw new Error(`Ambiguous ${ecosystem} scope; pass --entry-point. Candidates: ${entries.join(', ')}`);
-  const scopes = Object.entries(candidates).filter(([, entries]) => entries.length).map(([ecosystem, [entryPoint]]) => ({ ecosystem, entryPoint, ...pinnedVersion(root, entryPoint, ecosystem) }));
+  const scopes = Object.entries(candidates).filter(([, entries]) => entries.length).map(([ecosystem, [entryPoint]]) => ({ ecosystem, entryPoint, ...selectInstallation(root, entryPoint, ecosystem, options, compatibility) }));
   if (!scopes.length) throw new Error('No supported entry point found. Specify a nested --entry-point or report a qualitative-only audit.');
   if (scopes.some(scope => scope.ecosystem === 'python')) {
-    if (!options['npm-package'] && compatibility.analyzers.python.requiresLocalPackage)
-      throw new Error('Python integration is not published. Supply --npm-package with a locally built codemetrics-ai archive containing codemetrics-python.');
     if (options.existing && (options['python-coverage-json'] || options['python-collection-manifest']))
       throw new Error('Historical Python evidence cannot be rebound to new coverage inputs. Run a fresh analysis instead.');
   } else if (Object.keys(options).some(key => key === 'python' || key.startsWith('python-')))
@@ -90,7 +64,7 @@ export async function execute(options) {
   if ((options.existing || options.baseline) && scopes.length !== 1) throw new Error('--existing and --baseline require one ecosystem/entry point.');
   if (!options.baseline && (options['fail-on-new'] !== undefined || options['max-score-drop'] !== undefined)) throw new Error('Quality gates require --baseline.');
   for (const scope of scopes)
-    if (scope.ecosystem === 'python' && options['npm-package']) scope.source = 'compatibility-manifest-local-package';
+    if (scope.ecosystem === 'python' && options['npm-package'] && scope.source === 'compatibility-manifest') scope.source = 'compatibility-manifest-local-package';
   const auditId = randomUUID();
   const results = [];
   for (const scope of scopes) {
@@ -98,11 +72,15 @@ export async function execute(options) {
     const directory = path.join(root, '.scorecard', scope.ecosystem, 'runs', runId);
     const latest = path.join(root, '.scorecard', scope.ecosystem, 'latest.json');
     const evidence = options.existing ? path.resolve(root, options.existing) : path.join(directory, 'evidence.json');
-    const summary = { ...scope, runId, auditId, timeoutSeconds, status: 'running', fresh: !options.existing, artifacts: { evidence, inspection: path.join(directory, 'inspection.json') } };
+    const { record, ...selection } = scope;
+    const summary = { ...selection, runId, auditId, timeoutSeconds, status: 'running', fresh: !options.existing, artifacts: { evidence, inspection: path.join(directory, 'inspection.json') } };
     fs.mkdirSync(directory, { recursive: true });
     writeJson(latest, summary);
     try {
-      const tooling = await installTools(options, compatibility, scope.ecosystem === 'dotnet' && !options.existing ? scope.version : undefined);
+      const tooling = await installTools(options, compatibility, scope.ecosystem === 'dotnet' && !options.existing ? record : undefined,
+        scope.ecosystem !== 'dotnet' && (!options.existing || record.expectedNameOption) ? record : undefined);
+      summary.tooling = { analyzer: options.existing ? null : scope.ecosystem === 'dotnet' ? tooling.dotnetIdentity : tooling.identity,
+        evidence: tooling.evidenceIdentity };
       const variant = scope.ecosystem === 'dotnet' ? options.configuration ?? 'Release' : 'source';
       if (!options.existing) {
         const args = ['--run-id', runId, '--audit-id', auditId, '--scorecard-output', evidence];
@@ -116,7 +94,7 @@ export async function execute(options) {
           if (options.coverage) args.push('--coverage', path.resolve(root, options.coverage));
           summary.analyzerExitCode = await run(tooling.dotnet, args, root, {}, timeoutSeconds * 1000);
         } else if (scope.ecosystem === 'python') {
-          if (!fs.existsSync(tooling.python)) throw new Error('The selected npm package does not contain codemetrics-python. Use the tested Python preview package.');
+          if (!fs.existsSync(tooling.python)) throw new Error('The selected npm package does not contain its tested Python command. Use a supported Python preview package.');
           args.push('--project', scope.entryPoint);
           if (options.python) args.push('--python', path.resolve(root, options.python));
           for (const flag of ['coverage-json', 'collection-manifest'])
@@ -137,12 +115,24 @@ export async function execute(options) {
         '--expected-ecosystem', scope.ecosystem, '--expected-entry-point', scope.entryPoint, '--expected-variant', variant, '--expected-root',
         scope.ecosystem === 'python' ? (fs.statSync(scope.entryPoint).isDirectory() ? scope.entryPoint : path.dirname(scope.entryPoint)) : expectedRoot(scope.entryPoint)];
       // Historical imports retain their recorded tool version; an explicit repository pin still takes precedence.
-      if (!options.existing || scope.source === 'repository-pin') inspectArgs.push('--expected-version', scope.version);
+      if (!options.existing || scope.source === 'repository-pin') {
+        inspectArgs.push('--expected-version', scope.version);
+        if (tooling.expectedNameOption) inspectArgs.push('--expected-name', scope.toolName);
+      }
       if (!options.existing) inspectArgs.push('--expected-run-id', runId, '--expected-audit-id', auditId);
       summary.validationExitCode = await run(process.execPath, inspectArgs, root);
       // Inspection is written only after canonical schema and requested provenance validation.
       const inspection = fs.existsSync(summary.artifacts.inspection) ? readJson(summary.artifacts.inspection) : null;
       if (inspection) {
+        try { assertEvidenceIdentity(inspection.evidence, scope, compatibility, options.existing); }
+        catch (error) {
+          summary.validationExitCode = 2;
+          inspection.usable = false;
+          inspection.provenanceError = error.message;
+          writeJson(summary.artifacts.inspection, inspection);
+          throw error;
+        }
+        summary.recordedTool = inspection.evidence.tool;
         summary.evidenceRunId = inspection.evidence.analysis?.runId ?? null;
         summary.evidenceAuditId = inspection.evidence.analysis?.auditId ?? null;
         summary.assessmentFailures = Object.entries(inspection.evidence.dimensions)
@@ -193,7 +183,7 @@ export async function execute(options) {
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds', 'python', 'python-coverage-json', 'python-collection-manifest'];
+    const strings = ['repo', 'entry-point', 'ecosystem', 'configuration', 'coverage', 'tsconfig', 'cache', 'npm-package', 'dotnet-package', 'evidence-package', 'npm-tool', 'dotnet-tool', 'existing', 'baseline', 'fail-on-new', 'max-score-drop', 'timeout-seconds', 'python', 'python-coverage-json', 'python-collection-manifest'];
     const { values } = parseArgs({ options: { ...Object.fromEntries(strings.map(key => [key, { type: 'string' }])),
       ...Object.fromEntries(['include', 'exclude', 'test-path', 'production-path'].map(key => ['python-' + key, { type: 'string', multiple: true }])),
       ...Object.fromEntries(['include-tests', 'include-generated', 'include-support'].map(key => ['python-' + key, { type: 'boolean' }])),

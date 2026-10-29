@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-29",
+  "status": "Local skill migration validation; uncommitted, not pushed or published",
+  "skillBaseRevision": "33aaa528e673f5c06f724578b99b6edced037000",
+  "analyzerRevision": "b3b655a4da0e40166162d7cc587fd689b043149e",
+  "defaults": {
+    "npm": "codemetrics-ai@0.6.0-preview.2",
+    "dotnet": "CodeMetrics.AI@2.3.1"
+  },
+  "publishedCompatibilityPinsChanged": false,
+  "checksPassed": {
+    "offlineAndEvaluationHarness": 21,
+    "legacyInstalledIntegration": 15,
+    "pythonInstalledIntegration": 22,
+    "brandMigrationIntegration": 7,
+    "publishedDefaultEmptyCache": 1,
+    "total": 66
+  },
+  "integrationSkips": 0,
+  "quickValidatePassed": true,
+  "workflowYamlParses": true,
+  "workflowExecuted": false,
+  "liveModelEvaluation": "not run; deterministic workflow and evidence checks only",
+  "platform": "Windows",
+  "finalMigrationDotnetSdk": "10.0.401",
+  "finalMigrationDotnetRuntime": "10.0.12",
+  "dotnetEnvironmentNote": "One rerun selected the machine release-candidate runtime and failed tool startup. Final migration validation explicitly selected the release SDK/runtime at E:/tools/dotnet via session-local PATH and DOTNET_ROOT. No runtime fallback was added to the helper.",
+  "pythonErrorHandlingScored": false,
+  "verifiedBehaviors": [
+    "Exact legacy and CodeTestament package/version selection",
+    "Conflicting pins and unsupported ranges rejected",
+    "Older JS pin launches its own analyzer with a separate current reader",
+    "Cache keys separate package/version/registry/local archive hash",
+    "Installed metadata validated on cache reuse",
+    "Wrong local NuGet archive cannot fall back to a registry copy",
+    "Old cache directories preserved",
+    "Fresh mixed-language audit has separate run IDs and one audit ID",
+    "Historical imports retain producer identities",
+    "Cross-brand baseline gates reject comparison",
+    "Producer identity mismatch makes inspection unusable"
+  ],
+  "localArtifacts": [
+    {
+      "package": "CodeTestament.Scorecard",
+      "version": "2.4.0",
+      "archiveSha256": "de8fedde9941338ac47e5bb574e466f5e9183733d8562c637312d01ea617c863"
+    },
+    {
+      "package": "codetestament",
+      "version": "0.6.0-preview.3",
+      "archiveSha256": "695888c32bac941f487b206699e3522a1d85b37facebfdddc2879eea6e2299fc"
+    },
+    {
+      "package": "codemetrics-ai",
+      "version": "0.6.0-preview.2",
+      "archiveSha256": "1ec5a51478f6b8a13a9addb286089503a3b85fa0cafebe293c951969f9e0fcc8"
+    },
+    {
+      "package": "CodeMetrics.AI",
+      "version": "2.3.1",
+      "archiveSha256": "fd504c8b5c690e39ca82906eea9409bc133627aeb4d22a56d7ecffcd3bdcdf27"
+    },
+    {
+      "package": "codemetrics-ai",
+      "version": "0.2.0",
+      "archiveSha256": "73733aa3f9d391174fd51e5ec2b276f93b7faf5fba906277c1a1c8eaf3ba3612"
+    }
+  ],
+  "logs": "E:\\repos\\CodeMetrics.AI\\TestResults\\skill-migration",
+  "migrationReceipt": "E:\\repos\\CodeMetrics.AI\\TestResults\\skill-migration\\receipt-final.json",
+  "remaining": [
+    "Commit and push the migration changes when requested",
+    "Run optional Windows/Linux CI using the exact remotely available migration revision",
+    "Publish and verify producer packages before changing public defaults"
+  ]
+}

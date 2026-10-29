@@ -4,6 +4,8 @@ Python support measures selected implementation bodies using Python 3.12's nativ
 
 ## Preview installation and scope
 
+For local CodeTestament validation, follow [package selection and migration](bootstrap.md#package-selection-and-codetestament-migration). Select `codetestament@0.6.0-preview.3` with its matching archive; its Python adapter is still `0.15.0`. This does not change the published default below or enable Error Handling scoring.
+
 The helper installs the exact `codemetrics-ai@0.6.0-preview.2` npm package from the compatibility manifest into an isolated cache. The Python adapter identifies itself as `0.15.0`; its source-facts producer remains `0.4.0-experimental`. Node.js 20+ and Python 3.12 are required. No separate PyPI package or target dependency installation is needed. Python scoring is a preview: Method Complexity and Async/Blocking Usage only; Error Handling remains unscored.
 
 ```sh
