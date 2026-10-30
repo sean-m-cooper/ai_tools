@@ -4,23 +4,26 @@ The canonical skill, helper scripts, compatibility records, tests and evaluation
 now live with the analyzers in the CodeTestament repository. This repository keeps
 a pinned marketplace reference, not another copy of the implementation.
 
-- [Canonical skill](https://github.com/sean-m-cooper/CodeMetrics.AI/tree/2b3f580308530e228075b2ce7dbaa3ec66188c56/skills/code-scorecard/SKILL.md)
-- [Installation and maintenance](https://github.com/sean-m-cooper/CodeMetrics.AI/tree/2b3f580308530e228075b2ce7dbaa3ec66188c56/docs/scorecard-skill.md)
-- [Scoring and output guide](https://github.com/sean-m-cooper/CodeMetrics.AI/tree/2b3f580308530e228075b2ce7dbaa3ec66188c56/docs/code-scorecard.md)
-- [Compatibility manifest](https://github.com/sean-m-cooper/CodeMetrics.AI/tree/2b3f580308530e228075b2ce7dbaa3ec66188c56/skills/code-scorecard/compatibility.json)
+- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/53f7e28afc04661d7d77187148a42b62b6897ed8/skills/code-scorecard/SKILL.md)
+- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/53f7e28afc04661d7d77187148a42b62b6897ed8/docs/scorecard-skill.md)
+- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/53f7e28afc04661d7d77187148a42b62b6897ed8/docs/code-scorecard.md)
+- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/53f7e28afc04661d7d77187148a42b62b6897ed8/skills/code-scorecard/compatibility.json)
 
-Pinned source commit: `2b3f580308530e228075b2ce7dbaa3ec66188c56`. The GitHub repository is currently named
-`sean-m-cooper/CodeMetrics.AI`; its proposed rename has not happened.
+Pinned source commit: `53f7e28afc04661d7d77187148a42b62b6897ed8`. GitHub was renamed to
+`sean-m-cooper/CodeTestament` on 2026-10-29. The pinned source commit has been pushed.
 
 ## Installation
 
-After the source commit and this marketplace update are pushed:
+Once this marketplace update is merged into main:
 
 ```text
 /plugin marketplace add sean-m-cooper/ai_tools
 /plugin install codetestament@ai-tools
 /reload-plugins
 ```
+
+For pre-merge verification, add this marketplace with
+`claude plugin marketplace add "sean-m-cooper/ai_tools#codex/codetestament-skill-migration"`.
 
 Use `/codetestament:code-scorecard` instead of `/ai-tools:code-scorecard`.
 Install the separate plugin and update/reload ai-tools to remove the old bundled

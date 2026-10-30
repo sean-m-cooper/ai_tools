@@ -16,8 +16,8 @@
       "name": "codetestament",
       "source": {
         "source": "url",
-        "url": "https://github.com/sean-m-cooper/CodeMetrics.AI.git",
-        "sha": "2b3f580308530e228075b2ce7dbaa3ec66188c56"
+        "url": "https://github.com/sean-m-cooper/CodeTestament.git",
+        "sha": "53f7e28afc04661d7d77187148a42b62b6897ed8"
       },
       "description": "CodeTestament code-scorecard skill, maintained with its .NET, JS/TS and Python preview analyzers.",
       "policy": {

@@ -30,8 +30,8 @@ marketplace references that separate plugin at a pinned commit. Install it with
 `/plugin install codetestament@ai-tools`, then reload and use
 `/codetestament:code-scorecard`. Updating ai-tools alone does not install the
 separate plugin. See [the scorecard reference](docs/code-scorecard.md) for migration
-and the canonical source. The new reference requires the CodeTestament commit to
-be pushed before remote installation.
+and the canonical source. The pinned CodeTestament commit is pushed; default
+marketplace discovery will expose this entry once this change is merged into main.
 
 ## Skills
 
