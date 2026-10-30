@@ -4,12 +4,12 @@ The canonical skill, helper scripts, compatibility records, tests and evaluation
 now live with the analyzers in the CodeTestament repository. This repository keeps
 a pinned marketplace reference, not another copy of the implementation.
 
-- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/628f17c1bc0ec1f369caa5ceb44b065236acde93/skills/code-scorecard/SKILL.md)
-- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/628f17c1bc0ec1f369caa5ceb44b065236acde93/docs/scorecard-skill.md)
-- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/628f17c1bc0ec1f369caa5ceb44b065236acde93/docs/code-scorecard.md)
-- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/628f17c1bc0ec1f369caa5ceb44b065236acde93/skills/code-scorecard/compatibility.json)
+- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/562ce959a8cbebbc50c7e7089431bbad75b9278a/skills/code-scorecard/SKILL.md)
+- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/562ce959a8cbebbc50c7e7089431bbad75b9278a/docs/scorecard-skill.md)
+- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/562ce959a8cbebbc50c7e7089431bbad75b9278a/docs/code-scorecard.md)
+- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/562ce959a8cbebbc50c7e7089431bbad75b9278a/skills/code-scorecard/compatibility.json)
 
-Pinned source commit: `628f17c1bc0ec1f369caa5ceb44b065236acde93`. GitHub was renamed to
+Pinned source commit: `562ce959a8cbebbc50c7e7089431bbad75b9278a`. GitHub was renamed to
 `sean-m-cooper/CodeTestament` on 2026-10-29. The pinned source commit has been pushed.
 
 ## Installation
@@ -39,6 +39,8 @@ Error Handling stays unscored.
 ## Maintenance
 
 Make all scorecard changes and run its integration checks in CodeTestament.
-Publish and verify the source commit first, then update the `sha` on the
+Bump the plugin version in CodeTestament when publishing changed skill or plugin
+metadata; hosts can retain the cached version when only a SHA changes. Publish
+and verify that source commit first, then update the `sha` on the
 `codetestament` marketplace entry. Do not restore a bundled implementation here.
 The moved skill and guide retain their original CC BY 4.0 license and attribution.
