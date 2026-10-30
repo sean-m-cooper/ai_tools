@@ -10,7 +10,21 @@
     {
       "name": "ai-tools",
       "source": "./",
-      "description": "All ai_tools skills (audit-writing-architecture, author-style-guide, cold-start-audit, code-map, code-scorecard, content-voice-audit, content-voice-revision, feature-writer, root-cause, security-audit, story-prefinement, story-splitter, story-writer) plus commands."
+      "description": "All ai_tools skills (audit-writing-architecture, author-style-guide, cold-start-audit, code-map, content-voice-audit, content-voice-revision, feature-writer, root-cause, security-audit, story-prefinement, story-splitter, story-writer) plus commands."
+    },
+    {
+      "name": "codetestament",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/sean-m-cooper/CodeTestament.git",
+        "sha": "562ce959a8cbebbc50c7e7089431bbad75b9278a"
+      },
+      "description": "CodeTestament code-scorecard skill, maintained with its .NET, JS/TS and Python preview analyzers.",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer tools"
     }
   ]
 }

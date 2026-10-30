@@ -12,7 +12,7 @@ This repository contains:
 
 ## Installation
 
-This repo is a [Claude Code plugin marketplace](https://docs.claude.com/en/docs/claude-code/plugins). Install everything as a single bundled plugin:
+This repo is a [Claude Code plugin marketplace](https://docs.claude.com/en/docs/claude-code/plugins). Install the bundled development and writing skills:
 
 ```bash
 /plugin marketplace add sean-m-cooper/ai_tools
@@ -20,7 +20,18 @@ This repo is a [Claude Code plugin marketplace](https://docs.claude.com/en/docs/
 /reload-plugins
 ```
 
-The first command registers the marketplace; the second installs the `ai-tools` plugin (all skills and commands); `/reload-plugins` applies it to the current session. Once installed, skills are invoked with the plugin namespace, e.g. `/ai-tools:code-scorecard`. Run `/plugin update ai-tools` to pull the latest version.
+The first command registers the marketplace; the second installs the `ai-tools`
+plugin; `/reload-plugins` applies it to the current session. Invoke bundled skills
+with their namespace, e.g. `/ai-tools:code-map`. Run `/plugin update ai-tools` to
+pull the latest version.
+
+Code scorecards are maintained with the analyzers in **CodeTestament**. This
+marketplace references that separate plugin at a pinned commit. Install it with
+`/plugin install codetestament@ai-tools`, then reload and use
+`/codetestament:code-scorecard`. Updating ai-tools alone does not install the
+separate plugin. See [the scorecard reference](docs/code-scorecard.md) for migration
+and the canonical source. The pinned CodeTestament commit is pushed; default
+marketplace discovery will expose this entry once this change is merged into main.
 
 ## Skills
 
@@ -34,7 +45,7 @@ Each skill is a focused, well-structured prompt designed to guide AI agents (lik
 | **[author-style-guide](skills/author-style-guide/)** | Analyze writing samples, interview the author, and create a reusable guide covering core voice rules, audience and channel registers, and positioning |
 | **[cold-start-audit](skills/cold-start-audit/)** | Audit standalone writing, specifications, runbooks, prompts, and instructions for context their intended consumers were never given |
 | **[code-map](skills/code-map/)** | Generate AI-optimized YAML code maps (`.codemap.yaml`) that help AI agents quickly understand repository structure and navigate codebases efficiently |
-| **[code-scorecard](skills/code-scorecard/)** | Audit a codebase across nine quality dimensions on a 0–10 scale, using deterministic metrics from the `CodeMetrics.AI` tool as evidence; supports `--verbose`, `--stats`, and `--explain` output modes |
+| **[code-scorecard](docs/code-scorecard.md)** (external) | CodeTestament scorecards for .NET, JS/TS and the Python preview; installed as the separate `codetestament` plugin |
 | **[content-voice-audit](skills/content-voice-audit/)** | Run a read-only editorial audit for AI-sounding cadence, weak evidence, formulaic phrasing, and thin structure |
 | **[content-voice-revision](skills/content-voice-revision/)** | Revise selected long-form content from audit findings while preserving the author's voice and requiring real evidence |
 | **[feature-writer](skills/feature-writer/)** | Write comprehensive feature implementations with proper architecture, testing, and documentation |
@@ -171,7 +182,6 @@ ai_tools/
 │   ├── author-style-guide/              # Personalized author voice guidance
 │   ├── cold-start-audit/                 # Standalone context-dependency audit
 │   ├── code-map/                        # AI-optimized codebase mapping
-│   ├── code-scorecard/                  # 9-dimension codebase quality audit
 │   ├── content-voice-audit/             # Read-only editorial quality audit
 │   ├── content-voice-revision/          # Evidence-backed content revision
 │   ├── feature-writer/                  # Feature implementation guidance
@@ -184,7 +194,7 @@ ai_tools/
 │   └── root-cause.md                    # Root cause analysis workflow
 ├── docs/                                # Human-facing documentation
 │   ├── agentic-standards.md             # Standards module guide
-│   └── code-scorecard.md                # Scorecard scoring and output guide
+│   └── code-scorecard.md                # Reference to the canonical CodeTestament skill
 ├── agentic_coding_standards_example/    # Complete standards framework
 │   └── ai/                              # Detailed standard modules
 │       ├── agentic_standards.md         # Root document (start here)
