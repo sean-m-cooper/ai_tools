@@ -17,7 +17,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/sean-m-cooper/CodeTestament.git",
-        "sha": "562ce959a8cbebbc50c7e7089431bbad75b9278a"
+        "sha": "4a8be18c7f2088fc6707966ba24ed4a8715dcdbe"
       },
       "description": "CodeTestament code-scorecard skill, maintained with its .NET, JS/TS and Python preview analyzers.",
       "policy": {
