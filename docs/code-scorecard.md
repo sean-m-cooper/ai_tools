@@ -4,12 +4,12 @@ The canonical skill, helper scripts, compatibility records, tests and evaluation
 now live with the analyzers in the CodeTestament repository. This repository keeps
 a pinned marketplace reference, not another copy of the implementation.
 
-- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/a77ceda0eebb4e08a6637bd8c23141f4f36e1f38/skills/code-scorecard/SKILL.md)
-- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/a77ceda0eebb4e08a6637bd8c23141f4f36e1f38/docs/scorecard-skill.md)
-- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/a77ceda0eebb4e08a6637bd8c23141f4f36e1f38/docs/code-scorecard.md)
-- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/a77ceda0eebb4e08a6637bd8c23141f4f36e1f38/skills/code-scorecard/compatibility.json)
+- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/c40e23f56f8c99c227385767da367d18c420b877/skills/code-scorecard/SKILL.md)
+- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/c40e23f56f8c99c227385767da367d18c420b877/docs/scorecard-skill.md)
+- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/c40e23f56f8c99c227385767da367d18c420b877/docs/code-scorecard.md)
+- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/c40e23f56f8c99c227385767da367d18c420b877/skills/code-scorecard/compatibility.json)
 
-Pinned source commit: `a77ceda0eebb4e08a6637bd8c23141f4f36e1f38`. GitHub was renamed to
+Pinned source commit: `c40e23f56f8c99c227385767da367d18c420b877`. GitHub was renamed to
 `sean-m-cooper/CodeTestament` on 2026-10-29. The pinned source commit has been pushed.
 
 ## Installation
@@ -28,7 +28,7 @@ copy. Updating ai-tools alone does not install CodeTestament. Other agent hosts
 should load the canonical `skills/code-scorecard/SKILL.md`; copy its whole folder
 when installing skills manually.
 
-Plugin **0.2.1** defaults to published NuGet `CodeTestament.Scorecard@2.4.0`
+Plugin **0.2.2** defaults to published NuGet `CodeTestament.Scorecard@2.4.1`
 for .NET, `codetestament@0.5.1` for JS/TS, and `codetestament@0.6.0-preview.3` for Python (adapter `0.15.0`). Fresh registry
 installs are verified without local archives. Update the marketplace and plugin,
 then reload the host to replace an older cached installation. Existing exact pins, CMAI annotations and
