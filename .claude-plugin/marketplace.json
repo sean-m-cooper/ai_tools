@@ -17,9 +17,9 @@
       "source": {
         "source": "url",
         "url": "https://github.com/sean-m-cooper/CodeTestament.git",
-        "sha": "52338061b6f8527607d23a0cc6d94f298bc38555"
+        "sha": "d2745216fd0490b6505c363507d02cfd78006b8c"
       },
-      "description": "CodeTestament code-scorecard skill, maintained with its .NET, JS/TS and Python preview analyzers.",
+      "description": "CodeTestament code-scorecard skill, maintained with its .NET, JS/TS and Python analyzers.",
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
