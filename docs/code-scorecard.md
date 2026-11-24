@@ -4,12 +4,12 @@ The canonical skill, helper scripts, compatibility records, tests and evaluation
 now live with the analyzers in the CodeTestament repository. This repository keeps
 a pinned marketplace reference, not another copy of the implementation.
 
-- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/52338061b6f8527607d23a0cc6d94f298bc38555/skills/code-scorecard/SKILL.md)
-- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/52338061b6f8527607d23a0cc6d94f298bc38555/docs/scorecard-skill.md)
-- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/52338061b6f8527607d23a0cc6d94f298bc38555/docs/code-scorecard.md)
-- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/52338061b6f8527607d23a0cc6d94f298bc38555/skills/code-scorecard/compatibility.json)
+- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/6c0bf17cb8796bd4ef6d4de91e6f308a06c3fa89/skills/code-scorecard/SKILL.md)
+- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/6c0bf17cb8796bd4ef6d4de91e6f308a06c3fa89/docs/scorecard-skill.md)
+- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/6c0bf17cb8796bd4ef6d4de91e6f308a06c3fa89/docs/code-scorecard.md)
+- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/6c0bf17cb8796bd4ef6d4de91e6f308a06c3fa89/skills/code-scorecard/compatibility.json)
 
-Pinned source commit: `52338061b6f8527607d23a0cc6d94f298bc38555`. GitHub was renamed to
+Pinned source commit: `6c0bf17cb8796bd4ef6d4de91e6f308a06c3fa89`. GitHub was renamed to
 `sean-m-cooper/CodeTestament` on 2026-10-29. The pinned source commit has been pushed.
 
 ## Installation
@@ -28,8 +28,8 @@ copy. Updating ai-tools alone does not install CodeTestament. Other agent hosts
 should load the canonical `skills/code-scorecard/SKILL.md`; copy its whole folder
 when installing skills manually.
 
-Plugin **0.3.0** defaults to published NuGet `CodeTestament.Scorecard@2.4.3`
-for .NET, `codetestament@0.6.0` for JS/TS and Python (adapter `0.15.0`). Fresh registry
+Plugin **0.4.0** defaults to published NuGet `CodeTestament.Scorecard@2.4.3`
+for .NET, `codetestament@0.7.0` for JS/TS and Python (adapter `0.15.0`). Fresh registry
 installs are verified without local archives. Update the marketplace and plugin,
 then reload the host to replace an older cached installation. Existing exact pins, CMAI annotations and
 historical evidence keep the same compatibility rules. Python remains a partial assessment with at most two scored dimensions;
@@ -41,7 +41,7 @@ JS/TS 0.5.2 and preview 0.6.0-preview.4 fix configuration fingerprints across wo
 
 The .NET 2.4.3 release corrects EF Core SQL false positives: resolved parameterizing APIs no longer lower Security scores, while unsafe raw SQL construction remains flagged. Rerun affected scorecards; update older explicit pins to adopt the fix.
 
-Stable npm 0.6.0 includes Python and the optional JS/TS dependency metadata probe. The skill uses exact versions; existing supported preview pins remain honored until explicitly updated.
+Stable npm 0.7.0 adds scoring policies for all nine JS/TS dimensions. Available evidence still controls which dimensions can be scored. Complexity & Decomposition retains both component scores; Error Handling discloses assessed and unknown populations. Request dependency metadata for a connected scorecard. Regenerate JS/TS baselines with 0.7.0 before comparison; historical evidence is unchanged. Python retains its two scored dimensions. The skill uses exact versions; existing supported preview pins remain honored until explicitly updated.
 
 ## Maintenance
 
