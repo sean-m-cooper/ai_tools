@@ -4,12 +4,12 @@ The canonical skill, helper scripts, compatibility records, tests and evaluation
 now live with the analyzers in the CodeTestament repository. This repository keeps
 a pinned marketplace reference, not another copy of the implementation.
 
-- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/29aa7dc5682407d7f2ef764ad4019f3e45b4a3bb/skills/code-scorecard/SKILL.md)
-- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/29aa7dc5682407d7f2ef764ad4019f3e45b4a3bb/docs/scorecard-skill.md)
-- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/29aa7dc5682407d7f2ef764ad4019f3e45b4a3bb/docs/code-scorecard.md)
-- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/29aa7dc5682407d7f2ef764ad4019f3e45b4a3bb/skills/code-scorecard/compatibility.json)
+- [Canonical skill](https://github.com/sean-m-cooper/CodeTestament/tree/1d2636a72dea45bc45f741cf0c927920bbe9fa70/skills/code-scorecard/SKILL.md)
+- [Installation and maintenance](https://github.com/sean-m-cooper/CodeTestament/tree/1d2636a72dea45bc45f741cf0c927920bbe9fa70/docs/scorecard-skill.md)
+- [Scoring and output guide](https://github.com/sean-m-cooper/CodeTestament/tree/1d2636a72dea45bc45f741cf0c927920bbe9fa70/docs/code-scorecard.md)
+- [Compatibility manifest](https://github.com/sean-m-cooper/CodeTestament/tree/1d2636a72dea45bc45f741cf0c927920bbe9fa70/skills/code-scorecard/compatibility.json)
 
-Pinned source commit: `29aa7dc5682407d7f2ef764ad4019f3e45b4a3bb`. GitHub was renamed to
+Pinned source commit: `1d2636a72dea45bc45f741cf0c927920bbe9fa70`. GitHub was renamed to
 `sean-m-cooper/CodeTestament` on 2026-10-29. The pinned source commit has been pushed.
 
 ## Installation
